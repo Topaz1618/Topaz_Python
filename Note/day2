@@ -1,0 +1,301 @@
+列表
+	>>> a = ['youxi','baga','yamei','peipeipei']	#定义列表
+	>>> a
+	['youxi', 'baga', 'yamei', 'peipeipei']
+	>>> a.insert(1,'nani')							#插入
+	>>> a
+	['youxi', 'nani', 'baga', 'yamei', 'peipeipei']
+	>>> del a[4]									#删除
+	>>> a
+	['youxi', 'nani', 'baga', 'yamei']
+	>>> a.remove('yamei')							#删除指定元素
+	>>> a
+	['youxi', 'nani', 'baga']
+	>>> a.pop()										#删除最后一个
+	'baga'
+	>>> a
+	['youxi', 'nani']
+	>>> b = ['xixi','lala','bo']					#扩展
+	>>> a.extend(b)
+	>>> a
+	['youxi', 'nani', 'xixi', 'lala', 'bo']
+	>>> a.count("nani")								#统计
+	1
+	>>> a.sort()									#排序，3.0里不同类型不能放在一起排序了
+	>>> a
+	['bo', 'lala', 'nani', 'xixi', 'youxi']
+	>>> a.reverse()									#反转
+	>>> a
+	['youxi', 'xixi', 'nani', 'lala', 'bo']
+	>>> a.index("xixi")								#获取下标
+	1
+元组
+	只有两个方法：count、index，完。
+	
+字符串
+	>>> a = "topaz"				
+	>>> a.capitalize()		#首字母大写
+	'Topaz'
+	>>> a = "Topaz"
+	>>> a.casefold()		#大写都变成小写
+	'topaz'				
+	>>> a.count("t")		#统计t出现的次数
+	1
+	>>> a.encode()			#将字符串编码成bytes格式
+	b'topaz'	
+	>>> a.endswith("z")		#判断是不是以z为结尾
+	True
+	>>> a.find("o")			#查找o，返回o的索引
+	1
+	>>> a.center(50,"-")	#输出
+	'----------------------Topaz-----------------------'
+更多操作：http://www.cnblogs.com/alex3714/articles/5717620.html
+
+字典:
+	1.dict是无序的
+	2.key必须是唯一的,so 天生去重
+	>>> info
+	{'你大舅': '你舅', '你二舅': '你舅', '高板凳': '木头', '低板凳': '木头'}
+	>>> info['topaz']='socute'	#增加
+	>>> info
+	{'topaz': 'socute','你大舅': '你舅', '你二舅': '你舅', '高板凳': '木头', '低板凳': '木头'}
+	>>> info['topaz']= 'piupiu' #修改
+	>>> info
+	{'topaz': 'piupiu','你大舅': '你舅', '你二舅': '你舅', '高板凳': '木头', '低板凳': '木头'}
+	>>> info.pop("你大舅")		#删除
+	>>> info
+	{'你二舅': '你舅', 'topaz': 'piupiu', '高板凳': '木头', '低板凳': '木头'}
+	>>> del info["你二舅"]
+	>>> info
+	{'topaz': 'piupiu', '高板凳': '木头', '低板凳': '木头'}
+	>>> 'topaz' in info		#获取方法一
+	True
+	>>> info.get('topaz')	#获取方法二
+	'piupiu'
+	>>> info.get('topaz1')	#获取下字典里没有的
+	>>> a = info.get('topaz1')
+	>>> print(a)
+	None
+	>>> info['topaz']		#获取方法三
+	'piupiu'
+	>>> info['topaz1']		#获取下字典里没有的，报错了哦~ get不会，不存在只返回None
+	Traceback (most recent call last):
+	File "<input>", line 1, in <module>
+	KeyError: 'topaz1'
+
+程序: 三级菜单
+要求: 
+打印省、市、县三级菜单
+可返回上一级
+可随时退出程序
+tests.py
+	menu = {
+		'北京':{
+			'海淀':{
+				'五道口':{
+					'soho':{},
+					'网易':{},
+					'google':{}
+				},
+				'中关村':{
+					'爱奇艺':{},
+					'汽车之家':{},
+					'youku':{},
+				},
+				'上地':{
+					'百度':{},
+				},
+			},
+			'昌平':{
+				'沙河':{
+					'老男孩':{},
+					'北航':{},
+				},
+				'天通苑':{},
+				'回龙观':{},
+			},
+			'朝阳':{},
+			'东城':{},
+		},
+		'上海':{
+			'闵行':{
+				"人民广场":{
+					'炸鸡店':{}
+				}
+			},
+			'闸北':{
+				'火车战':{
+					'携程':{}
+				}
+			},
+			'浦东':{},
+		},
+		'山东':{},
+	}
+	exit_flag = False
+	# current_layer = menu
+	layers = [menu]     #这个主要用于返回上一层用
+	
+	while not exit_flag:
+		# print('最初的起点',menu)
+		for k in menu:
+			'''这步循环字典，字典menu是有变化的，两种情况：
+				1.用户输入正确选项，拿到的menu变小，循环小的menu
+				2.用户输入b返回上级，拿到layer列表最后一次添加的menu'''
+			print(k)        #打印出当前字典的key
+		choice = input(">>:").strip()
+		if choice == "b":           #回到上一层目录，第一次肯定走else，之后可以返回上一级
+			menu = layers[-1]       #取出最后一个就是上一层的目录
+			print("change to laster", menu)
+			layers.pop()            #layers列表去掉最后一次添加的目录，因为无限循环还会再做选择，返回上一级（把layer上一级的字典赋给menu），不删除这次的menu会就会原地不动
+			# print(layers)
+		elif choice not  in menu:
+			print("不正确选项")
+			continue   #没有选项，停留在当前目录
+		else:                                 #选择了（进入下一层目录）
+			'''1.在layer列表里添加menu有什么作用：用来返回上一层，如果一直选择进入下一层没问题，但总有一天要返回上一级目录
+				2.添加的menu都是什么：layers.append(menu)之后是menu = menu[choice]，也就是说第一次做选择，layer里的
+				menu是原字典，之后再做选择，都会把上一次的menu添加进去
+			'''
+			layers.append(menu)
+			menu = menu[choice]                #保存起选择的值，返回到最初的起点
+	
+	
+	'''
+	最初的起点 {'北京': {'东城': {}, '昌平': {'沙河': {'北航': {}, '老男孩': {}}, '回龙观': {}, '天通苑': {}}, '朝阳': {}, '海淀': {'上地': {'百度': {}}, '五道口': {'网易': {}, 'soho': {}, 'google': {}}, '中关村': {'youku': {}, '汽车之家': {}, '爱奇艺': {}}}}, '山东': {}, '上海': {'闵行': {'人民广场': {'炸鸡店': {}}}, '浦东': {}, '闸北': {'火车战': {'携程': {}}}}}
+	北京
+	山东
+	上海
+	>>:北京
+	最初的起点 {'东城': {}, '昌平': {'沙河': {'北航': {}, '老男孩': {}}, '回龙观': {}, '天通苑': {}}, '朝阳': {}, '海淀': {'上地': {'百度': {}}, '五道口': {'网易': {}, 'soho': {}, 'google': {}}, '中关村': {'youku': {}, '汽车之家': {}, '爱奇艺': {}}}}
+	东城
+	昌平
+	朝阳
+	海淀
+	>>:海淀
+	最初的起点 {'上地': {'百度': {}}, '五道口': {'网易': {}, 'soho': {}, 'google': {}}, '中关村': {'youku': {}, '汽车之家': {}, '爱奇艺': {}}}
+	上地
+	五道口
+	中关村
+	>>:五道口
+	最初的起点 {'网易': {}, 'soho': {}, 'google': {}}
+	网易
+	soho
+	google
+	
+	
+	'''
+	
+	
+集合
+	集合是一个无序的，不重复的数据组合，它的主要作用如下：
+	去重，把一个列表变成集合，就自动去重了
+	关系测试，测试两组数据之前的交集、差集、并集等关系
+	s = set([3,5,9,10])      #创建一个数值集合  
+	t = set("Hello")         #创建一个唯一字符的集合  
+	a = t | s          # t 和 s的并集  
+	b = t & s          # t 和 s的交集  
+	c = t – s          # 求差集（项在t中，但不在s中）    
+	d = t ^ s          # 对称差集（项在t或s中，但不会同时出现在二者中）  
+	t.add('x')            # 添加一项  
+	s.update([10,37,42])  # 在s中添加多项  
+	t.remove('H')  			#使用remove()可以删除一项
+	len(s)  			#set 的长度  
+	x in s  			#测试 x 是否是 s 的成员  
+	x not in s  		#测试 x 是否不是 s 的成员  
+	s.issubset(t) 	/ 	s <= t 	#测试是否 s 中的每一个元素都在 t 中  
+	s.issuperset(t) / 	s >= t  #测试是否 t 中的每一个元素都在 s 中 
+	s.union(t) 	/ 	s | t   	#返回一个新的 set 包含 s 和 t 中的每一个元素
+	s.intersection(t)  /	s & t  #返回一个新的 set 包含 s 和 t 中的公共元素  
+	s.difference(t)  /	s - t  	#返回一个新的 set 包含 s 中有但是 t 中没有的元素  
+	s.symmetric_difference(t)  / s ^ t  #返回一个新的 set 包含 s 和 t 中不重复的元素    
+	s.copy()  			#返回 set “s”的一个浅复制
+
+文件
+	r，只读模式（默认）。
+	w，只写模式。【不可读；不存在则创建；存在则删除内容；】
+	a，追加模式。【可读；   不存在则创建；存在则只追加内容；】
+	"+" 表示可以同时读写某个文件
+		r+，可读写文件。【可读；可写；可追加】
+		w+，写读
+		a+，同a
+	"U"表示在读取时，可以将 \r \n \r\n自动转换成 \n （与 r 或 r+ 模式同使用）
+		rU
+		r+U
+	"b"表示处理二进制文件（如：FTP发送上传ISO镜像文件，linux可忽略，windows处理二进制文件时需标注）
+		rb
+		wb
+		ab
+	1.打开文件，得到一个文件句柄并赋值给一个变量
+	2.通过句柄对文件进行操作
+	3.关闭文件
+	f = open('fly')
+	first_line = f.readline()
+	print(first_line)
+	data = f.read()
+	print(data)
+	f.close()
+	with语句：（为了避免打开文件后忘记关闭，当with代码块执行完毕时，内部会自动关闭并释放文件资源）
+	with open('fly','r') as f:
+		line = f.readline()
+		print(line)
+	with open('log1') as obj1, open('log2') as obj2:	#在Python 2.7 后，with又支持同时对多个文件的上下文进行管理
+		pass
+	程序练习　　
+	程序1: 实现简单的shell sed替换功能	（sed替换啥样来着，看一眼照着做）
+	程序2:修改haproxy配置文件 
+	1)查
+		输入：www.oldboy.org
+		获取当前backend下的所有记录
+	2)新建
+		输入：
+        arg = {
+            'bakend': 'www.oldboy.org',
+            'record':{
+                'server': '100.1.7.9',
+                'weight': 20,
+                'maxconn': 30
+            }
+        }
+	3)删除
+		输入：
+        arg = {
+            'bakend': 'www.oldboy.org',
+            'record':{
+                'server': '100.1.7.9',
+                'weight': 20,
+                'maxconn': 30
+            }
+        }
+		
+字符编码
+	python3默认是encode，变成utf-8和gbk encode就行了
+	http://www.cnblogs.com/alex3714/articles/5740985.html
+
+	import sys
+	print(sys.getdefaultencoding())
+	msg = "我爱北京天安门"
+	#msg_gb2312 = msg.decode("utf-8").encode("gb2312")
+	msg_gb2312 = msg.encode("gb2312") #默认就是unicode,不用再decode,喜大普奔
+	gb2312_to_unicode = msg_gb2312.decode("gb2312")
+	gb2312_to_utf8 = msg_gb2312.decode("gb2312").encode("utf-8")
+	print(msg)
+	print(msg_gb2312)
+	print(gb2312_to_unicode)
+	print(gb2312_to_utf8)
+	
+	先说python2
+
+	py2里默认编码是ascii
+	文件开头那个编码声明是告诉解释这个代码的程序 以什么编码格式 把这段代码读入到内存，因为到了内存里，这段代码其实是以bytes二进制格式存的，不过即使是2进制流，也可以按不同的编码格式转成2进制流，你懂么？
+	如果在文件头声明了#_*_coding:utf-8*_，就可以写中文了， 不声明的话，python在处理这段代码时按ascii，显然会出错， 加了这个声明后，里面的代码就全是utf-8格式了
+	在有#_*_coding:utf-8*_的情况下，你在声明变量如果写成name=u"大保健"，那这个字符就是unicode格式，不加这个u,那你声明的字符串就是utf-8格式
+	utf-8 to gbk怎么转，utf8先decode成unicode,再encode成gbk
+	再说python3
+
+	py3里默认文件编码就是utf-8,所以可以直接写中文，也不需要文件头声明编码了，干的漂亮
+	你声明的变量默认是unicode编码，不是utf-8, 因为默认即是unicode了（不像在py2里，你想直接声明成unicode还得在变量前加个u）, 此时你想转成gbk的话，直接your_str.encode("gbk")即可以
+	但py3里，你在your_str.encode("gbk")时，感觉好像还加了一个动作，就是就是encode的数据变成了bytes里，我擦，这是怎么个情况，因为在py3里，str and bytes做了明确的区分，你可以理解为bytes就是2进制流，你会说，我看到的不是010101这样的2进制呀， 那是因为python为了让你能对数据进行操作而在内存级别又帮你做了一层封装，否则让你直接看到一堆2进制，你能看出哪个字符对应哪段2进制么？什么？自己换算，得了吧，你连超过2位数的数字加减运算都费劲，还还是省省心吧。　　
+	那你说，在py2里好像也有bytes呀，是的，不过py2里的bytes只是对str做了个别名(python2里的str就是bytes, py3里的str是unicode)，没有像py3一样给你显示的多出来一层封装，但其实其内部还是封装了的。 这么讲吧， 无论是2还是三， 从硬盘到内存，数据格式都是 010101二进制到-->b'\xe4\xbd\xa0\xe5\xa5\xbd' bytes类型－－>按照指定编码转成你能看懂的文字
+	编码应用比较多的场景应该是爬虫了，互联网上很多网站用的编码格式很杂，虽然整体趋向都变成utf-8，但现在还是很杂，所以爬网页时就需要你进行各种编码的转换，不过生活正在变美好，期待一个不需要转码的世界。
+	
