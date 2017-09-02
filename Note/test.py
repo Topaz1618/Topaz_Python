@@ -1,7 +1,7 @@
     if a != 0
         print("test")
 https://github.com/riku/Markdown-Syntax-CN/blob/master/syntax.md#precode
-[id]: http://example.com/  "Test"
+    [http://example.com/]: http://example.com/  "Test"
 链接内容定义的形式为：
 
 方括号（前面可以选择性地加上至多三个空格来缩进），里面输入链接文字
