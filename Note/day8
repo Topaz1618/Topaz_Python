@@ -1,0 +1,223 @@
+
+socket编程：http://www.cnblogs.com/wupeiqi/articles/5040823.html
+
+socket概念
+	socket本质上就是在2台网络互通的电脑之间，架设一个通道，两台电脑通过这个通道来实现数据的互相传递
+	建立一个socket必须至少有2端：服务端，客户端， 服务端被动等待并接收请求，客户端主动发起请求， 连接建立之后，双方可以互发数据。 
+Socket Families(地址簇)
+	socket.AF_UNIX unix本机进程间通信 
+	socket.AF_INET　IPV4　
+	socket.AF_INET6  IPV6
+Socket Types
+	socket.SOCK_STREAM  #for tcp	
+	socket.SOCK_DGRAM   #for udp 
+	socket.SOCK_RAW     #原始套接字，普通的套接字无法处理ICMP、IGMP等网络报文，而SOCK_RAW可以；其次，SOCK_RAW也可以处理特殊的IPv4报文；此外，利用原始套接字，可以通过IP_HDRINCL套接字选项由用户构造IP头。
+	socket.SOCK_RDM  	#是一种可靠的UDP形式，即保证交付数据报但不保证顺序。SOCK_RAM用来提供对原始协议的低级访问，在需要执行某些特殊操作时使用，如发送ICMP报文。SOCK_RAM通常仅限于高级用户或管理员运行的程序使用。
+	socket.SOCK_SEQPACKET #废弃了
+Socket 方法
+	socket.socket(family=AF_INET, type=SOCK_STREAM, proto=0, fileno=None)
+	socket.socketpair([family[, type[, proto]]])
+	socket.create_connection(address[, timeout[, source_address]])
+	socket.getaddrinfo(host, port, family=0, type=0, proto=0, flags=0) #获取要连接的对端主机地址
+	sk.bind(address)
+	s.bind(address) 		#将套接字绑定到地址。address地址的格式取决于地址族。在AF_INET下，以元组（host,port）的形式表示地址
+	sk.listen(backlog)
+		#开始监听传入连接。backlog指定在拒绝连接之前，可以挂起的最大连接数量。
+		#backlog等于5，表示内核已经接到了连接请求，但服务器还没有调用accept进行处理的连接个数最大为5
+		#这个值不能无限大，因为要在内核中维护连接队列
+	sk.setblocking(bool) 	#是否阻塞（默认True），如果设置False，那么accept和recv时一旦无数据，则报错
+	sk.accept()				#接受连接并返回（conn,address）,其中conn是新的套接字对象，可以用来接收和发送数据，address是连接客户端的地址。接收TCP 客户的连接（阻塞式）等待连接的到来
+	sk.connect(address)		#连接到address处的套接字。一般，address的格式为元组（hostname,port）,如果连接出错，返回socket.error错误
+	sk.connect_ex(address)	#同上，只不过会有返回值，连接成功时返回 0 ，连接失败时候返回编码，例如：10061
+	sk.close() 				#关闭套接字
+	sk.recv(bufsize[,flag])		#接受套接字的数据。数据以字符串形式返回，bufsize指定最多可以接收的数量。flag提供有关消息的其他信息，通常可以忽略
+	sk.recvfrom(bufsize[.flag])	#与recv()类似，但返回值是（data,address）。其中data是包含接收数据的字符串，address是发送数据的套接字地址
+	sk.send(string[,flag])		#将string中的数据发送到连接的套接字。返回值是要发送的字节数量，该数量可能小于string的字节大小。即：可能未将指定内容全部发送
+	sk.sendall(string[,flag])	#将string中的数据发送到连接的套接字，但在返回之前会尝试发送所有数据。成功返回None，失败则抛出异常，内部通过递归调用send，将所有内容发送出去
+	sk.sendto(string[,flag],address)	#将数据发送到套接字，address是形式为（ipaddr，port）的元组，指定远程地址。返回值是发送的字节数。该函数主要用于UDP协议
+	sk.settimeout(timeout)	#设置套接字操作的超时期，timeout是一个浮点数，单位是秒。值为None表示没有超时期。一般，超时期应该在刚创建套接字时设置，因为它们可能用于连接的操作（如 client 连接最多等待5s ）
+	sk.getpeername()		#返回连接套接字的远程地址。返回值通常是元组（ipaddr,port）
+	sk.getsockname()		#返回套接字自己的地址。通常是一个元组(ipaddr,port)
+	sk.fileno()				#套接字的文件描述符
+	socket.sendfile(file, offset=0, count=None) #发送文件 ，但目前多数情况下并无什么卵用
+
+实例1：
+	服务端：
+		import socket
+		server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)	#指定ipv4，tcp协议
+		server.bind(('localhost',9999))	#绑定ip端口
+	
+		server.listen()         #开始监听
+		while True:
+			conn,addr = server.accept()    #接受一个新连接，每进来一个连接都会生成一个实例conn，赋值给两个变量，开始阻塞
+			while True:
+				print("new conn",addr)
+				data = conn.recv(1024)     #不建议超过8192,8k
+				if  not data:
+					break   #客户端已断开，conn.recv收到的就是空数据，防止死循环
+				conn.send(data.upper())
+	客户端：
+		client = socket.socket()    #声明实例
+		client.connect('serverip',999)  #连接
+		client.send(data)           #发数据
+		client.recv(data)
+	PS：有个问题，只能为一个客户端服务，下面应该会有的解决方法的~~
+
+实例2：通过socket实现简单ssh
+	服务端：
+		import socket
+		import os
+		server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+		server.bind(('localhost',9999))
+		server.listen()
+		while True:
+			conn,addr = server.accept()
+			while True:
+				data = conn.recv(1024)
+				if not data:
+					break
+				print("收到命令",data)
+				res = os.popen(data.decode()).read()
+				print(len(res))
+				conn.send(res.encode("utf-8"))
+		server.close()
+	客户端：
+		import socket
+		client = socket.socket()
+		client.connect(('localhost',9999))
+		while True:
+			msg = input(">>>").strip()
+			if len(msg) == 0:continue
+			client.send(msg.encode("utf-8"))
+			data = client.recv(1024)
+			print(data.decode())
+		client.close()
+
+实例3：自己写着玩
+	服务端：
+		import socket
+		import os
+		server = socket.socket()
+		server.bind(('localhost',9999))
+		server.listen()
+		while True:
+			conn,addr = server.accept()
+			while True:
+				data = conn.recv(1024)
+				if not data:
+					print("客户端断开")
+					break
+				res = os.popen(data.decode()).read()
+				if len(res) ==0:
+					res = "没返回"
+				res_size = str(len(res.encode("utf-8"))).encode("utf-8")
+				conn.send(res_size)
+				conn.send(res.encode("utf-8"))
+		server.close()	
+	客户端：
+		import socket
+		client = socket.socket()
+		client.connect(('localhost',9999))
+		while True:
+			comm = input("输入命令>>>").strip()
+			if len(comm) == 0:continue
+			client.send(comm.encode('utf-8'))
+			res_size = client.recv(1024)
+			size = 0
+			all_data = b''
+			while size != int(res_size.decode()):
+				res = client.recv(1024)
+				size += len(res)
+				all_data += res
+			else:
+				print(all_data.decode())
+		client.close()
+		
+粘包：
+	send调用时，数据其实并没有立刻被发送给客户端，而是放到了系统的socket发送缓冲区里，等缓冲区满了、或者数据等待超时了，数据才会被send到客户端，这样就把好几次的小数据拼成一个大数据，统一发送到客户端了，这么做的目地是为了提高io利用效率，一次性发送总比连发好几次效率高嘛。 但也带来一个问题，就是“粘包”，即2次或多次的数据粘在了一起统一发送了
+	解决：http://www.cnblogs.com/alex3714/articles/5830365.html
+
+ftp server 
+	实现步骤：
+		1.读取文件名
+		2.检测文件名是否存在
+		3.打开文件
+		4.检测文件大小
+		5.发送文件大小给客户端
+		6.等客户端确认
+		7.开始边读边发
+		8.md5验证
+	代码：
+	服务端：
+		import socket
+		import os
+		import hashlib
+		server = socket.socket()
+		server.bind(('localhost',9999))
+		server.listen()
+		while True:
+			conn,addr = server.accept()
+			while True:
+				data = conn.recv(1024)
+				if not data:
+					print("客户端断开")
+					break
+				comm,filename = data.decode().split()
+				if os.path.isfile(filename):
+					f = open(filename, 'rb')
+					m = hashlib.md5()
+					f_size =  os.stat(filename).st_size
+					conn.send(str(f_size).encode("utf-8"))
+					for line in f:
+						m.update(line)
+						conn.send(line)
+					f.close()
+					print(m.hexdigest())
+					conn.send(m.hexdigest().encode())
+		server.close()
+	客户端：
+		import socket
+		import hashlib
+		client = socket.socket()
+		client.connect(('localhost',9999))
+		while True:
+			comm = input("输入命令>>>").strip()
+			if len(comm) == 0:continue
+			if comm.startswith("get"):
+				client.send(comm.encode('utf-8'))
+				res_size = client.recv(1024)
+				size = 0
+				all_data = b''
+				f = open('test','wb')
+				m = hashlib.md5()
+				while size < int(res_size.decode()):
+					res = client.recv(1024)
+					size += len(res)
+					m.update(res)
+					f.write(res)
+				else:
+					new_md5 = m.hexdigest()
+					print("快，快去检查新文件")
+					f.close()
+				file_md5 = client.recv(1024)
+				print(1,file_md5)
+				print(2,new_md5)
+		client.close()
+
+SocketServer:
+	对socket的封装，更简单，支持多并发
+	类型：
+		1）class socketserver.TCPServer(server_address, RequestHandlerClass, bind_and_activate=True)	#tcp的socket server
+		2）class socketserver.UDPServer(server_address, RequestHandlerClass, bind_and_activate=True)	#udp的socket server
+		3）class socketserver.UnixStreamServer(server_address, RequestHandlerClass, bind_and_activate=True)	#unix本机进程间tcp通信，不常用
+		4）class socketserver.UnixDatagramServer(server_address, RequestHandlerClass,bind_and_activate=True)	#unix本机进程udp间通信，不常用
+	创建过程：
+		1）创建一个请求处理类(上面四个)
+		2）实例化请求处理类
+		3）按需求调用以下两个方法
+			server.handle_request()	#只处理一个请求
+			server.serve_forever()	#处理多个请求
+		4）关闭
+	例子：http://www.cnblogs.com/alex3714/articles/5830365.html
+
+还有个例子:用socketserver写的ftp（第八天视频，最后一个）
