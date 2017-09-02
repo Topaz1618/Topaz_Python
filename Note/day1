@@ -50,7 +50,7 @@ python的解释器
 	pyc是pycodeobject的持久化保存方式
 
 用户输入：
-`tests.py
+tests.py
 	import getpass
 	name = input("输入名字>>>")
 	print(name)
@@ -60,7 +60,7 @@ G:\Topaz\MyMonitor2\monitor>python tests.py
 输入名字>>>topaz
 	topaz
 Password:
-	aa`
+	aa
 
 模块:
 【sys】
