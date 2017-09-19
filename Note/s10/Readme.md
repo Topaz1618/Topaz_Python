@@ -9,4 +9,4 @@
 <h6>1.work queue实例</h6>
 <h6>2.Publish\Subscribe(消息发布\订阅)介绍</h6>
 <h6>3.exchange三种类型(fanout/direct/topic)</h6>
-<h6>6.Remote procedure call (RPC)</h6>
+<h6>4.Remote procedure call (RPC)</h6>
