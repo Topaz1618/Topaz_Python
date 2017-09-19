@@ -1,5 +1,4 @@
-和 threading queue 的区别：
-	进程QUEUE：父进程和子进程进行交互，或者同一父进程下的多个子进程进行交互
+和 threading queue 的区别：threding queue是父进程和子进程进行交互，或者同一父进程下的多个子进程进行交互
 work queue实例：	#在这种模式下，RabbitMQ会默认把p发的消息依次分发给各个消费者(c),跟负载均衡差不多
 	生产者：
 		import pika
