@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <input id="t1" type="text"/>
+    <input id="a1" type="button" value="添加"/>
+    <input id="a2" type="button" value="删除"/>
+    <input id="a3" type="button" value="复制"/>
+    <ul id="u1">
+        <li>1</li>
+        <li>2</li>
+    </ul>
+    <script src="../jquery-1.12.4.js"></script>
+    <script>
+        $('#a1').click(function () {
+            var v=$('#t1').val();
+            var temp="<li>" + v+ "</li>";
+//      在最下边加
+            $('#u1').append(temp);
+//      在最上边加
+//            $('#u1').prepend(temp)
+//      在u1的后边加
+//            $('#u1').after(temp)
+//      在u1的前边加
+//            $('#u1').before(temp)
+        })
+
+        $('#a2').click(function () {
+            var index=$('#t1').val();
+//       删除
+            $('#u1 li').eq(index).remove()
+//            只清空内容
+//            $('#u1 li').eq(index).empty()
+        })
+        $('#a3').click(function () {
+            var index=$('#t1').val();
+            var c=$('#u1 li').eq(index).clone()
+             $('#u1').append(c);
+        })
+
+
+    </script>
+
+</body>
+</html>

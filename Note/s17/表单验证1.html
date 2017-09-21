@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- Dom方式 -->
+    <a onclick="return ClickOn()" href="http://www.baidu.com">百度</a>
+    <!-- JQuery方式 -->
+    <a id="i1" href="http://www.baidu.com">百度2</a>
+    <script src="../jquery-1.12.4.js"></script>
+    <script>
+        <!-- Dom方式 -->
+        function ClickOn() {
+            alert(123);
+            return false;
+        }
+//        JQuery方式
+        $('#i1').click(function () {
+            alert(456);
+            return false;
+        })
+    </script>
+
+</body>
+</html>

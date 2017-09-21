@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #tb{
+            color: #2459a2;
+        }
+    </style>
+</head>
+<body>
+<input type="button" value="多选" onclick="checkAll()"/>
+<input type="button" value="反选" onclick="reverseAll()"/>
+<input type="button" value="取消" onclick="cancleAll()"/>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Check</th>
+        <th>平子的衣服</th>
+        <th>平子的胖次</th>
+        <th>平子的抓/动漫</th>
+    </tr>
+    </thead>
+    <tbody id="tb">
+    <tr>
+        <td><input type="checkbox"/></td>
+        <td>西装</td>
+        <td>黑色</td>
+        <td>JOJO</td>
+    </tr>
+    <tr>
+        <td><input type="checkbox"/></td>
+        <td>浴衣</td>
+        <td>灰色</td>
+        <td>女王蜂</td>
+    </tr>
+    <tr>
+        <td><input type="checkbox"/></td>
+        <td>帽衫</td>
+        <td>花纹</td>
+        <td>鬼畜眼镜</td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    function checkAll(){
+        $('#tb :checkbox').prop('checked',true)
+    }
+    function cancleAll(){
+        $('#tb :checkbox').prop('checked',false)
+    }
+    function reverseAll(){
+        $('#tb :checkbox').each(function () {
+            var tag = this.checked ? false:true
+            this.checked = tag
+        })
+    }
+</script>
+<script src="../jquery-1.12.4.js"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+        <style>
+        .modal{
+            position: fixed;
+            top: 50%;
+            left:50%;
+            width: 500px;
+            height: 400px;
+            margin-left: -250px;
+            margin-top: -250px;
+            background-color: #eeeeee;
+            z-index: 10;
+        }
+        .shadow{
+            position: fixed;
+            background-color: black;
+            opacity: 0.6;
+            top:0;
+            left:0;
+            bottom: 0;
+            right:0;
+            z-index:9;
+        }
+        .hide{
+            display: none;
+
+        }
+    </style>
+
+</head>
+<body>
+<a onclick="addElement();">添加</a>
+<table border="1">
+    <div class="modal hide">
+        <div>
+            <input name="hostname" type="text"/>
+            <input name="port" type="text"/>
+            <input name="city" type="text"/>
+        </div>
+        <div>
+            <input type="button" value="取消" onclick="cancelModal();"/>
+            <input type="button" value="确定" onclick="confirmModal();"/>
+        </div>
+    </div>
+    <div class="shadow hide"></div>
+    <tr>
+        <td target="hostname">1.1.1.1</td>
+        <td target="port">80</td>
+        <td target="city">shanghai</td>
+        <td>
+            <a class="edit">编辑</a>|<a class="del">删除</a>
+        </td>
+    </tr>
+     <tr>
+        <td target="hostname">1.1.1.2</td>
+        <td target="port">80</td>
+        <td target="city">shanghai</td>
+         <td>
+            <a class="edit">编辑</a>|<a class="del">删除</a>
+        </td>
+    </tr>
+        <tr>
+        <td target="hostname">1.1.1.3</td>
+        <td target="port">80</td>
+            <td target="city">shanghai</td>
+        <td>
+            <a class="edit">编辑</a>|<a class="del">删除</a>
+        </td>
+    </tr>
+     <tr>
+        <td target="hostname">1.1.1.4</td>
+        <td target="port">80</td>
+        <td target="city">shanghai</td>
+         <td>
+            <a class="edit">编辑</a>|<a class="del">删除</a>
+        </td>
+    </tr>
+</table>
+<script src="../jquery-1.12.4.js"></script>
+<script>
+
+    function addElement() {
+        $(".modal,.shadow").removeClass('hide');
+    }
+
+//    取消弹出框
+    function cancelModal(){
+        $(".modal,.shadow").addClass('hide');
+         $('.modal input[type="text"]').val("");
+    }
+
+//    编辑自动获取数据
+    $('.edit').click(function(){
+        $(".modal,.shadow").removeClass('hide');
+        var tds=$(this).parent().prevAll();
+        tds.each(function () {
+            var n=$(this).attr('target');
+            var text=$(this).text()
+            var a1='.modal input[name="';
+            var a2='"]';
+            var temp=a1+n+a2;
+            $(temp).val(text)
+        })
+
+//        var port=$(tds[0]).text();
+//        var host=$(tds[1]).text();
+//        console.log(host,port);
+//        $('.modal input[name="hostname"]').val(host)
+//        $('.modal input[name="port"]').val(port)
+    })
+
+//    删除
+    $('.del').click(function(){
+        $(this).parent().parent().remove();
+    })
+
+//
+    function confirmModal() {
+        var trs=[];
+        $('.modal input[type="text"]').each(function () {
+
+        })
+    }
+
+
+</script>
+
+</body>
+</html>

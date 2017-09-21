@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #tb{
+            color: #2459a2;
+        }
+    </style>
+</head>
+<body>
+<input type="button" value="checkall" onclick="checkAll()"/>
+<input type="button" value="reverse" onclick="reverseAll()"/>
+<input type="button" value="cancle" onclick="cancleAll()"/>
+<table border="1">
+    <thead>
+        <tr>
+            <th>check</th>
+            <th>Ip</th>
+            <th>Port</th>
+        </tr>
+    </thead>
+    <tbody id="tb">
+    <tr>
+        <td><input type="checkbox"/></td>
+        <td>1.1.1.1</td>
+        <td>80</td>
+    </tr>
+        <tr>
+        <td><input type="checkbox"/></td>
+        <td>1.1.1.1</td>
+        <td>80</td>
+    </tr>
+        <tr>
+        <td><input type="checkbox"/></td>
+        <td>1.1.1.1</td>
+        <td>80</td>
+    </tr>
+
+    </tbody>
+</table>
+<script src="../jquery-1.12.4.js"></script>
+<script>
+    function checkAll() {
+        $('#tb :checkbox').prop('checked',true)
+    }
+    function cancleAll() {
+        $('#tb :checkbox').prop('checked',false)
+    }
+    function reverseAll() {
+        $('#tb :checkbox').each(function () {
+//            console.log(this)
+//            方法一
+//            if(this.checked){
+//                this.checked = false;
+//            }
+//            else {
+//                this.checked = true;
+//            }
+//            方法二
+//            if($(this).prop('checked')){
+//                $(this).prop('checked',false);
+//            }else{
+//                $(this).prop('checked',true);
+//            }
+//            方法三
+            var v = this.checked ?false:true
+            console.log(v)
+            this.checked= v;
+
+        }
+        )
+    }
+
+
+</script>
+</body>
+</html>

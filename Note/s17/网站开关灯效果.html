@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .c1{
+            position: fixed;
+            width: 500px;
+            height: 300px;
+            margin-left: 20px;
+            margin-top: 50px;
+            background-color: black;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <input style="z-index: 9;position: absolute" id="i1" type="button" value="开关"/>
+    <div class="c1 hide"></div>
+
+    <script src="../jquery-1.12.4.js"></script>
+    <script>
+        $('#i1').click(function () {
+//            if($('.c1').hasClass('hide')) {
+//                console.log(1)
+//                $('.c1').removeClass('hide');
+//            } else{
+//                console.log(2)
+//                $('.c1').addClass('hide');
+//                }
+//  以上判断过程，用一句话就行
+            $('.c1').toggleClass('hide')
+        })
+
+    </script>
+</body>
+</html>

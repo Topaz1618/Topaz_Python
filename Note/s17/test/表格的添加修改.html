@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .a1 {
+            position: fixed;
+            background-color: #eeeeee;
+            top: 50%;
+            left: 50%;
+            margin-left: -250px;
+            margin-top: -250px;
+            width: 500px;
+            height: 400px;
+            z-index: 11;
+        }
+        .a1 .hi:hover{
+            background-color: red;
+        }
+
+        .a2 {
+            position: fixed;
+            background-color: black;
+            opacity: 0.6;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 10;
+        }
+
+        .hide {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+<input type="button" value="添加" onclick="addElement()">
+<div class="a1 hide">
+    <!--<h2 style="color: #2459a2">请在文本框内输入内容</h2>-->
+    <div style="position:absolute;margin-top: 0px;right: 0px ">
+        <input class="hi" type="button" value="x" onclick="cancle()">
+    </div>
+    <div style="margin-top:50px;margin-left:20px;height: 50px;">
+        <input name="hostname" type="text"/>
+        <input name="port" type="text"/>
+    </div>
+
+    <div style="margin-top:10px;margin-left:20px;height: 50px;">
+        <input type="button" value="确定" onclick="">
+    </div>
+</div>
+<div class="a2 hide"></div>
+<table border="1">
+    <tr>
+        <td>10.0.0.1</td>
+        <td>80</td>
+        <td>
+            <input class="edit" style="border: 0;background-color: white;" type="button" value="编辑"/>|
+            <input style="border:0;background-color: white;color: red" type="button" value="删除"/>
+        </td>
+    </tr>
+    <tr>
+        <td>10.0.0.2</td>
+        <td>80</td>
+        <td>
+            <input class="edit" style="border: 0;background-color: white;" type="button" value="编辑"/>|
+            <input style="border:0;background-color: white;color: red" type="button" value="删除"/>
+        </td>
+
+    </tr>
+    <tr>
+        <td>10.0.0.3</td>
+        <td>80</td>
+        <td>
+            <input class="edit" style="border: 0;background-color: white;" type="button" value="编辑"/>|
+            <input style="border:0;background-color: white;color: red" type="button" value="删除"/>
+        </td>
+
+    </tr>
+    <tr>
+        <td>10.0.0.4</td>
+        <td>80</td>
+        <td>
+            <input class="edit" style="border: 0;background-color: white;" type="button" value="编辑"/>|
+            <input style="border:0;background-color: white;color: red" type="button" value="删除"/>
+        </td>
+    </tr>
+</table>
+<script src="../jquery-1.12.4.js"></script>
+<script>
+    function addElement(){
+        $('.a1,.a2').removeClass('hide')
+    }
+    function cancle() {
+        $('.a1,.a2').addClass('hide')
+    }
+    $('.edit').click(function(){
+        $('.a1,.a2').removeClass('hide')
+        var tds=$(this).parent().prevAll()
+        port=$(tds[0]).text()
+        host=$(tds[1]).text()
+        console.log(port,host)
+        $('.a1 input[name="port"]').val(port)
+        $('.a1 input[name="hostname"]').val(host)
+    })
+
+</script>
+
+
+</body>
+</html>

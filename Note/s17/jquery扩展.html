@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="../jquery-1.12.4.js"></script>
+<script src="topaz.js"></script>
+<script>
+    <!---->
+//    jquery默认提供的方法
+//    $('#i1').css()
+//    $.ajax()
+//    jquery的扩展
+//    第一种方式。两种方式调用有区别
+//    $.fn.extend({
+//        "cat": function () {
+//            return '悟空';
+//        }
+//    })
+//    var v=$('#i1').cat();
+//    alert(v)
+
+
+
+//      第二种方式
+//    $.extend({
+//        'Topaz':function () {
+//            return '喵喵喵~';
+//        }
+//    });
+//    var v = $.Topaz();
+//    alert(v)
+
+
+//      引入js扩展
+    var v = $.Topaz()
+    console.log(v)
+    alert(v)
+
+
+</script>
+
+
+</body>
+</html>

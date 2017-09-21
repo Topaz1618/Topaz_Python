@@ -1,0 +1,185 @@
+jQuery
+    http://jquery.cuishifeng.cn/source.html
+    对dom进行封装
+    在python中叫模块，在其他语言中叫类库
+
+引入jquery：
+    css文件的引用：<link rel="stylesheet" href="">
+    jQuery的引用：<script src="../jquery-1.12.4.js"></script>
+
+jquery和dom的关系（jQuery包含dom）：
+eg：
+    》$('#i1')       #jQuery获取标签
+    <- Object { length: 1, context: HTMLDocument → 1.html, selector: "#i1", 等 1 项… }
+    》document.getElementById('i1')  #dom获取标签
+    <- <div id="i1">
+    》$('#i1')[0]    #jQuery加索引0获取的标签和dom获取的一样
+    <- <div id="i1">
+    》d=document.getElementById('i1')
+    <- <div id="i1">
+    》$(d)
+    <- Object { context: <div#i1>, length: 1, 等 1 项… }
+转换：
+    jquery对象[0] =>Dom对象
+    $(Dom对象)    =>jquery对象
+
+一、查找元素
+    jquery：
+    选择器
+    1.id
+        $('#id')
+    2.class
+        $('.c1')
+    3.标签
+        $('a')          #找到所有a标签
+        $('a','.c1')    #找到所有a标签和class是c1的标签
+    4.层级：
+        $('#i1 a')      #找到所有id为i1下的所有a标签(子子孙孙)
+        $('#i1>a')      #找到所有id为i1下的儿子a标签(只找到儿子)
+    5.基本：
+        $('.c1>a:first')    #找到下a的第一个（起码有俩a标签能匹配上）
+        $('#i1>a:eq(0)')    #索引方式（起码有两个a标签）
+    6.属性
+        $('[alex]')         #具有alex属性的所有标签
+        $('[alex="123"]')   #alex属性等于123的标签
+    7.表单
+        $(':text')          #找到text属性的标签，使用$('[type="text"]')也能找到
+    eg:表格的添加修改.html
+    实例：多选，反选，全选
+        - 专门select和checkbox做操作：
+        $('#tb :checkbox').prop('checked')      #获取值
+        $('#tb :checkbox').prop('checked',true) #设置值
+        - jquery方法内置循环
+        $('#tb :checkbox').each(function(k){
+            //k 当前索引位置
+            //this,dom对象 代指当前循环的元素
+        })
+        - 三元运算
+        var v = this.checked ?false:true
+        eg:多选反选取消(jquery版).html
+ps：jquery有些方法的索引位置从0开始有些从1开始，所以先测一测再用
+
+筛选器：
+    $(this).next()      下一个
+    $(this).prev()      上一个
+    $(this).parent()    父标签
+    $(this).parents()    能找到祖宗
+    $(this).parentsUntil('#i1')    能找到i1之前的所有祖宗
+    $(this).children()  孩子
+    $('#i1').siblings() 兄弟标签
+    $(this).find('.content')    在子子孙孙中找content类
+    $(this).eq(索引)
+    $(this).first()
+    $(this).last()
+    $(this).hasClass()
+
+二、操作元素
+    eg: jquery内容操作.html
+    文本操作
+        查看元素内容
+            a1=document.getElementById('i1')
+            a2=document.getElementById('i2')
+            $('#i1').html() <==> a1.innerText   (dom方式)
+            $('#i1').text() <==> a1.innerText   (dom方式)
+            $('#i2').val()  <==> a.value        (dom方式)
+        赋值：
+            文本   $('#i1').text('prprpr')    #这个有a标签也会是文本
+            html   $('#i1').html('<a>hanghang</a>')
+            input框  $('#i2').val('嘿嘿')
+    样式操作
+        hasClass
+        addClass
+        removeClass
+        toggleClass
+    属性操作
+        $(..).attr  #自定义属性
+            $(..).attr('n')         #获取值
+            $(..).attr('n','v')     #设置值
+            $(..).removeAttr('n')   #删除属性
+            eg：
+            <- $('#i1').attr('type')
+            >>"button"
+            <- $('#i1').attr('name','topaz')
+            >>$('#i1').attr('name')
+            <- "topaz"
+            <- $('#i1').removeAttr('name')
+            >>Object { length: 1, context: HTMLDocument → ss.html, selector: "#i1", 等 1 项… }
+            <- $('#i1').attr('name')
+            >>undefined
+        $(..).prop  #专门用于checkbox，radio
+            $(..).prop('checked')
+            $(..).prop('checked',true)
+        $(this).index()     #获取索引位置
+            eg：tab菜单（索引方式）.html
+    文档处理
+        $('#u1').append();
+        $('#u1').prepend()
+        $('#u1').after()
+        $('#u1').before()
+        $('#u1 li').remove()
+        $('#u1 li').empty()
+        clone
+    css处理
+        $('t1').css('样式名式','样式')
+
+    位置：
+    $(window).scrollTop()       获取window滚轮位置
+    $(window).scrollTop(100)    设置滚轮位置
+    $('div').scrollTop()        获取div滚轮位置
+
+    offset                      指定当前标签在html中的坐标
+    $('#i1').offset()
+    $('#i1').offset().top
+    $('#i1').offset().left
+
+    $('#i1').height()           获取标签纯高度
+    $('#i1').innerheight()      获取边框+纯高度 + ？（内边距还是外边距）
+    $('#i1').outerheight()      获取边框+纯高度 + ？
+    $('#i1').outerHeight(true)  获取边框+纯高度 + ？
+
+    事件：
+        Dom：三种绑定方式
+        jQuery:
+        第一种：
+            $('.c1').click()
+        第二种：
+            $('.c1').bind('click',function(){
+                #绑定事件
+            })
+            $('.c1').unbind('click',function(){
+                #去掉绑定事件
+            })
+        第三种：
+            $('.c1').delegate('a','click',function(){
+                #c1 class下的所有a标签绑定事件
+            })
+            $('.c1').undelegate('a','click',function(){
+                #解除绑定
+            })
+        第四种：
+            $('.c1').on('click',function(){
+
+            })
+            $('.c1').off('click',function(){
+
+            })
+    阻止事件发生
+        return false
+        #当页面框架加载之后自动执行
+    jquery扩展：
+        -$.extend       $.方法
+        -$.fn.extend    $(..).方法
+        (function(){
+            //封装全局变量
+            var a=1
+
+        })()
+
+
+
+
+
+
+
+
+19

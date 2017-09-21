@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .error{
+            color: red;
+        }
+
+
+    </style>
+</head>
+<body>
+    <form id="f1" action="位置.html" method="POST">
+        <div><input name="n1" type="text" /></div>
+        <div><input name="n2" type="password" /></div>
+        <div><input name="n3" type="text" /></div>
+        <div><input name="n4" type="text" /></div>
+        <div><input name="n5" type="text" /></div>
+        <input type="submit" value="提交" />
+    </form>
+
+    <script src="../jquery-1.12.4.js"></script>
+    <script>
+//        当页面框架加载完毕后,自动执行
+//        $(function () {
+//
+//        })
+
+$(function () {
+//      当页面所有元素完全加载完毕后，执行,，在外边加个function函数加载的更快
+        $(':submit').click(function () {
+            var flag=true;
+            $('.error').remove()
+            $('#f1').find('input[type="text"],input[type="password"]').each(function () {
+                var v=$(this).val();
+                if(v.length <=0) {
+                    flag=false;
+                    var tag = document.createElement('span');
+                    tag.className='error'
+                    tag.innerHTML = "必填";
+                    $(this).after(tag)
+                }
+            })
+            return flag
+        })
+})
+
+    </script>
+</body>
+</html>
+
+
+
+
+

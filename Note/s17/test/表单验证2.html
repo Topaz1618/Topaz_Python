@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<form id="f1" action="多选反选取消.html" method="post" >
+    <div><input type="text"/></div>
+    <div><input type="password"/></div>
+    <div><input type="text"/></div>
+    <div><input type="text"/></div>
+    <div><input type="text"/></div>
+    <input type="submit" value="提交"/>
+</form>
+<script src="../jquery-1.12.4.js"></script>
+<script>
+    $(':submit').click(function () {
+        var flag=true
+        $('.error').remove()
+        $('#f1').find('input[type="text"],input[type="password"]').each(function () {
+            var v=$(this).val()
+            if (v.length<=0){
+                flag=false
+                var tag = document.createElement('span')
+                tag.className="error"
+                tag.innerHTML="必填"
+                $(this).after(tag)
+            }
+        })
+        return flag
+    })
+
+
+</script>
+</body>
+</html>
