@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .left {
+            float: left;
+        }
+
+        .right {
+            float: right;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .pg-header {
+            background-color: #2459a2;
+            color: white;
+            height: 48px;
+            position: fixed;
+            width: 100%;
+        }
+
+        .pg-content .menu {
+            position: absolute;
+            width: 200px;
+            left: 0;
+            bottom: 0;
+            background-color: antiquewhite;
+            top: 48px;
+            /*min-width: 100px;*/
+            /*页面大于200px时，宽度都按照页面20%，保证不会比200px小*/
+        }
+
+        .pg-content .content {
+            position: absolute;
+            left: 200px;
+            right: 0;
+            bottom: 0;
+            top: 48px;
+            min-width: 400px;
+            /*min-width: 400px;
+            小于400px时左右出现滚动条
+            */
+            /*overflow: auto; 修改这个就可以完成两类布局
+            布局a：左侧菜单跟随滚动条
+            布局b：左侧以及上下不动（只有右侧自己动*****）
+            b类布局用的更多
+            */
+        }
+    </style>
+</head>
+<body>
+<div class="pg-header">
+    <div style=" width: 980px;margin:0 auto;">
+        <a class="logo ">LOGO</a>
+        <a class="menu">全部</a>
+        <a class="menu">42区</a>
+        <a class="menu">段子</a>
+        <a class="menu">1024</a>
+    </div>
+</div>
+<div class="pg-content">
+    <div class="menu left">
+        <div style="width: 900px">
+            <div class="item">
+                <div id="i1" class="header " onclick="ChangeMenu('i1');">菜单一</div>
+                <div class="content">
+                    <h2 style="color: antiquewhite">可爱的平子1</h2>
+                    <img src="1.jpg" style="height: 300px;width: 500px;"/>
+                </div>
+            </div>
+            <div class="item ">
+                <div id="i2" class="header" onclick="ChangeMenu('i2');">菜单二</div>
+                <div class="content hide">
+                    <h2 style="color: antiquewhite">可爱的平子2</h2>
+                    <img src="2.png" style="height: 300px;width: 500px;"/>
+                </div>
+            </div>
+            <div class="item">
+                <div id="i3" class="header" onclick="ChangeMenu('i3');">菜单三</div>
+                <div class="content  hide">
+                    <h2 style="color: antiquewhite">可爱的平子3</h2>
+                    <<img src="3.jpg" style="height: 300px;width: 500px;"/>
+                </div>
+            </div>
+        </div>
+        <script>
+            function ChangeMenu(nid) {
+                var a = document.getElementById(nid);
+                var item_list = a.parentElement.parentElement.children;
+                for (var i = 0; i < item_list.length; i++) {
+                    var current_item = item_list[i];
+                    current_item.children[1].classList.add('hide');
+                }
+                a.nextElementSibling.classList.remove('hide');
+            }
+
+
+        </script>
+    </div>
+    <div class="content left">
+        <div style="background-color: cadetblue;">
+            <p style="margin-top: 0">asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+            <p>asdf</p>
+        </div>
+    </div>
+</div>
+<div onclick="GoTop();" style="height: 50px;width: 50px;background-color: black;color: white;
+    position: fixed;
+    bottom:20px;
+    right:20px;
+">顶部
+</div>
+<div class="pg-footer"></div>
+</body>
+</html>

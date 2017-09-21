@@ -1,0 +1,106 @@
+1.JS正则
+    1.1
+    test  - 判断字符串是否符合规定的正则表达式
+        eg:
+         默认情况下：
+            >> rep = /\d+/;
+            >> rep.test('aaaa')
+            <- false
+            >> rep.test("sss999")
+            <- true
+        修改正则表达式：
+            >> rep=/^\d+$/;
+            >> rep.test("123")
+            <- true
+            >> rep.test("sss999")
+            <- false
+            >> rep.test("aaa")
+            <- false
+    exec  - 获取匹配的数据
+    eg1:
+        >> rep = /\d+/;
+        >> str = "tt_22_hhh_33"
+        <- "tt_22_hhh_33"
+        >> rep.exec(str)
+        <- Array [ "22" ]
+    eg2:
+    >> text = "topaz1 topaz2 topaz2333 ttlvelve3"
+        >> var pattarm= /\btopaz\w*\b/g;    #定义正则表达式，g：全局
+        >> pattarm.exec(text)
+        <- Array [ "topaz1" ]
+        >> pattarm.exec(text)
+        <- Array [ "topaz2" ]
+        >> pattarm.exec(text)
+        <- Array [ "topaz2333" ]    #w后边不加*拿不到这个
+        >> var pattarm= /\btopaz(\w*)\b/g;
+        <- pattarm.exec(text)
+        <- Array [ "topaz1", "1" ]
+
+    1.2 创建正则表达式
+    python中：   rep= "\d+"
+    js中:   rep=/\d+/;
+            /../    用于定义正则表达式
+            /../g   表示全局匹配
+            /../i   表示不区分大小写
+            /../m   表示多行匹配
+
+    - 登陆注册验证
+        js：验证
+        后端：python实现
+        业务处理
+
+2.组件
+    bootstrap
+        - css
+        - js
+    一、响应式
+        @media
+    二、图标、字体
+        @font-face
+    三、基本使用
+
+    地址：http://v3.bootcss.com/css/
+
+    jQueryUI    *
+        - css
+        - js
+    下载地址：http://jqueryui.com/
+    EasyUI（不推荐）
+        - css
+        -js
+    下载地址：http://www.jeasyui.com/download/index.php
+
+
+
+3.web框架
+    web框架本质socket
+    MVC
+        Model   View    Controller
+        数据库 模板文件    业务处理
+    MTV
+        Model   Template    View
+        数据库 模板文件    业务处理
+    #MVC和MTV的区别是目录名不同
+
+#创建django工程
+
+mysite  #django工程同名目录,对整个程序进行配置
+    - init
+    - setting   配置文件
+    - url       url对应关系
+    - wsgi      遵循wsgi规范(创建socket), uwsgi+nginx
+manage.py       管理django程序：
+                    python manage.py
+                    python manage.py startapp xx
+                    #自动生成数据库
+                    python manage.py makemigrations
+                    python manage.py migrate
+
+
+
+
+
+
+
+
+
