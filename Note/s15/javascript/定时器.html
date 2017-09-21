@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    /*
+     例1：
+     创建一个定时器,第一个参数执行的动作，第二个参数时间毫秒
+     setInterval("alert(123)",5000)
+     */
+
+    /*
+     例2：
+     function f1() {
+     console.log(1)
+     }
+     setInterval("f1()",5000)
+     */
+</script>
+<!--例3-->
+<!--
+Console
+tag=document.getElementById('i1')
+tag.innerText
+"开车了，大家快上车~"
+content=tag.innerText
+"开车了，大家快上车~"
+content.charAt(0)
+"开"
+f=content.charAt(0)
+"开"
+content.substring(1,content.length)
+"车了，大家快上车~"
+l=content.substring(1,content.length)
+"车了，大家快上车~"
+new_content=l+f
+"车了，大家快上车~开"
+tag.innerText=new_content
+"车了，大家快上车~开"
+-->
+<div id="i1">开车了，大家快上车~</div>
+<script>
+    function f1() {
+        //根据id获取指定标签的内容
+        var tag = document.getElementById('i1');
+        //获取标签内部内容
+        var content = tag.innerText;
+        var f = content.charAt(0);
+        var l = content.substring(1, content.length);
+        var new_content = l + f;
+        tag.innerText = new_content;
+    }
+    //函数和定时器结合
+    setInterval("f1()", 800)
+
+
+</script>
+</body>
+</html>

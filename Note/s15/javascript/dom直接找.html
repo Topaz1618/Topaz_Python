@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="i1">Topaz</div>
+<a>110</a>
+<a>119</a>
+<a>999</a>
+<script>
+    function Topaz() {
+        tag=document.getElementsByTagName('a')
+        for (var i = 0; i < tag.length; i++) {
+            tag[i].innerText = 777;
+        }
+    }
+    setInterval('Topaz()',800)
+</script>
+</body>
+</html>

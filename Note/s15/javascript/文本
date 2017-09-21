@@ -1,0 +1,232 @@
+JavaScript
+独立的语言，浏览器具有js解释器
+引用js文件
+    <script src="弹出123.js"></script>
+ps：js代码需要放置在<body>标签内部最下方
+
+注释
+当行注释 //
+多行注释 /* */
+
+变量：
+python：
+    name='alex
+JavaScripts:
+    name='alex'     #全局变量
+    var name='eric' #局部变量
+
+定时器：
+setInterval("执行的代码",间隔时间)
+
+函数：
+function 函数名() {
+        //根据id获取指定标签的内容
+            var tag=document.getElementById('id');
+        //获取标签内部内容
+            var content=tag.innerText;
+            var f=content.charAt(0)
+            var l=content.substring(1,content.length)
+            var new_content=l+f 做字符串的拼接
+            tag.innerText=new_content
+        }
+        //函数和定时器结合
+        setInterval("f1()",5000)
+
+
+基本数据类型：
+    数字
+    JS中不区分整数值和浮点数值，JS中所有数字均用浮点数值表示
+    转换：
+    parseInt(..) 将字符串转换成数字
+    parseFloat()
+    字符串
+    a='Topaz'
+        a.charAt(1)  #索引位置
+        "o"
+        a.charAt(2)
+        "p"
+        a.substring(1,4) #切片
+        "opa"
+        a.length    #获取字符串长度
+        5
+        a.concat('嘻嘻')  #拼接
+        "Topaz嘻嘻"
+        a.indexOf('T')      #子序列位置
+        0
+        a.split('a')        #切片
+        ["Top", "z"]
+        a.split('a',(1))
+        ["Top"]
+    布尔类型：
+    true和false小写
+   列表(数组)：
+   a=[11,22,33,44]
+        a.length
+        4
+        a.push('55')    #尾部追加内容
+        [11, 22, 33, 44, "55"]
+        a.pop('55')     #尾部删除
+        [11, 22, 33, 44]
+        a.splice(1,0,'99')  #起始位置，删除几个，插入内容
+        这个例子就是，从第二个元素开始，不删除，在第二位插入99
+    字典：
+    a={'k1':'v1','k2':'v2'}
+    a['k1']     #获取值
+    for循环
+   1.循环时，循环的元素是索引，支持字典
+        a=[11,22,33,44]
+        for(var item in a){
+            console.log(item)
+        }
+        console.log(item) --> console.log(a[item]) #改成这样，拿到的是值
+   2.第二种循环方式,不支持字典,，字典没有length方法
+        for(var i=0;i<a1.length;i++){
+            console.log(a1[i])
+        }
+    条件语句：
+        a=[1,2,3,4]
+        if (1>a.length){
+            alert(1)
+        }
+        else if(1<a.length){
+            alert(2)
+        }
+        else{
+            alert(3)
+        }
+
+        name='1';
+        switch(name){
+            case '1':
+                console.log(123);
+                break;
+            case '2'
+                console.log(456);
+                break;
+            default:
+                console.log('topaz')
+        }
+
+    ==  值相等
+    === 不仅值相等，类型也要相等
+        1=="1"
+        true
+        1==="1"
+        false
+    && and
+    || or
+    函数：
+   普通函数：
+        function 函数名(a,b,c){
+
+        }
+         #函数名(1,2,3) #给函数的形参传参数
+   匿名函数：
+        先介绍一下定时器的普通函数用法：
+        setInterval("函数名",5000);
+        匿名函数的用法
+        setInterval(function(){
+            console.log(123);
+        },5000);
+   自执行函数:
+   创建函数并且自动执行
+   场景：网上下载别人的jquery插件
+    (function(arg){
+        console.log(arg);
+    })(1)
+Dom:
+a.直接找
+    1.找到标签
+        获取单个元素 document.getElementById('id');
+        获取多个元素（列表）
+            根据标签名获取属性 document.getElementsByTagName('i1');
+            根据name属性获取标签集合 document.getElementsByName('i1');
+            根据标签名获取标签集合 document.getElementsByClassName('i1');
+
+b.间接找
+        document.parentElemen   //父节点标签元素
+        document.children       //所有子标签
+        firstElementChild       //第一个子标签元素
+        lastElementChild        //最后一个子标签元素
+        nextElementSibling      //下一个兄弟标签
+        previousElementSibling  //上一个兄弟标签
+**就jQuery有进行封装，查找的时候只需要用下面的方式写：
+           直接找 $('#id') $(.'c1')
+           间接找
+
+
+
+    2.操作标签
+     a.innerText
+        获取标签中的文本内容
+        标签.innerText
+        对标签内部文本进行重新赋值
+        标签.innerText=""
+     b.className
+        tag.className //直接整体做操作
+        tag.classList.add('样式名') //添加指定样式
+        tag.classList.remove('样式名') //删除指定样式
+        PS:
+            <div onclick='func();'></div>
+            <script>
+                function func(){
+
+                }
+            </script>
+     c.checkbox
+        获取值
+        checkbox对象.checked
+        设置值
+        checkbox对象.checked =true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

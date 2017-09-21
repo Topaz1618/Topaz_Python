@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="i1">我们家悟空美美哒</div>
+    <script>
+        function Topaz() {
+            var tag=document.getElementById('i1')
+            var content=tag.innerText
+            var a=content.charAt(0)
+            var b=content.substring(1,content.length)
+            new_content=b+a
+            tag.innerText=new_content
+        }
+        setInterval('Topaz()',800)
+    </script>
+</body>
+</html>

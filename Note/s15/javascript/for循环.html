@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        a1=[11,22,33,44]
+        a2={'k1':'v1','k2':'v2'}
+        /*第一种循环方式，支持字典
+        for(var item in a2){
+            console.log(a2[item])
+        }
+        */
+
+        //第二种循环方式,不支持字典,，没有length方法
+        for(var i=0;i<a1.length;i++){
+            console.log(a1[i])
+        }
+
+    </script>
+</body>
+</html>

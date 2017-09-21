@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <div></div>
+        <div>c1</div>
+    </div>
+    <div>
+        <div></div>
+        <div id="i1">c2</div>
+    </div>
+    <div>
+        <div></div>
+        <div>c3</div>
+    </div>
+<script>
+    function Topaz() {
+        tag=document.getElementById('i1')
+        a=tag.parentElement.previousElementSibling.lastElementChild
+        //通过父级标签找兄弟标签的最后一个子标签
+        a.innerText = 777;
+    }
+    setInterval('Topaz()',800)
+</script>
+
+</body>
+</html>
