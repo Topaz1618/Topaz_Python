@@ -1,876 +1,756 @@
-zhihu-python：获取知乎信息
-===============================
+<< [访问 Wow!Ubuntu](http://wowubuntu.com)
 
-**注意: 本项目不再维护更新！**
+**NOTE:** This is Simplelified  Chinese Edition Document of Markdown Syntax. If you are seeking for English Edition Document. Please refer to [Markdown: Syntax][eng-doc].
 
-.. contents::
+[eng-doc]:http://daringfireball.net/projects/markdown/syntax
 
+**声明：** 这份文档派生(fork)于[繁体中文版](http://markdown.tw/)，在此基础上进行了繁体转简体工作，并进行了适当的润色。此文档用 Markdown 语法编写，你可以到这里[查看它的源文件][src1]。「繁体中文版的原始文件可以[查看这里][src] 。」--By @[riku][t]
 
-介绍
-----
+**注：** 本项目托管于 [GitCafe][]上，请通过"派生"和"合并请求"来帮忙改进本项目。
 
-zhihu-python 采用 Python2.7 编写，用来方便地获取知乎上各种内容的信息，并且可以方便地将答案备份导出为 txt 或 markdown 文件。由于知乎官方目前没有提供 api，所以有了此项目的存在。
+  [src1]: http://gitcafe.com/riku/Markdown-Syntax-CN/blob/master/syntax.md
+  [src]: https://github.com/othree/markdown-syntax-zhtw/blob/master/syntax.md
+  [t]: http://twitter.com/riku
+  [g]: http://gitcafe.com/riku/Markdown-Syntax-CN
+  [Github]: https://github.com/riku/Markdown-Syntax-CN
+  [GitCafe]: http://gitcafe.com/riku/Markdown-Syntax-CN/
 
-使用 Python3 的类似项目可以参见：`zhihu-py3 <https://github.com/7sDream/zhihu-py3>`_ 。使用 PHP 的类似项目可以参见：`zhihu-php <https://github.com/ahonn/zhihu-php>`_ 。使用 Go 的类似项目可以参见：`zhihu-go <https://github.com/DeanThompson/zhihu-go>`_ 。
+Markdown 语法说明 (简体中文版) / ([点击查看快速入门](./basic.html))
+================
 
-**注: 本项目代码均在 Ubuntu14.04 上使用 python2.7.6 编写和测试通过，其他环境可能存在一定问题。**
+*   [概述](#overview)
+    *   [宗旨](#philosophy)
+    *   [兼容 HTML](#html)
+    *   [特殊字符自动转换](#autoescape)
+*   [区块元素](#block)
+    *   [段落和换行](#p)
+    *   [标题](#header)
+    *   [区块引用](#blockquote)
+    *   [列表](#list)
+    *   [代码区块](#precode)
+    *   [分隔线](#hr)
+*   [区段元素](#span)
+    *   [链接](#link)
+    *   [强调](#em)
+    *   [代码](#code)
+    *   [图片](#img)
+*   [其它](#misc)
+    *   [反斜杠](#backslash)
+    *   [自动链接](#autolink)
+*   [感谢](#acknowledgement)
+*	[Markdown 免费编辑器](#editor)
 
-获取某个问题下的全部回答并导出，很简单：
+* * *
 
-.. code-block:: python
+<h2 id="overview">概述</h2>
 
-    from zhihu import Question
-    
-    url = "http://www.zhihu.com/question/24269892"
-    question = Question(url)
-    answers = question.get_all_answers()
-    for answer in answers:
-        answer.to_txt()
-        answer.to_md()
- 
-会在当前目录下新建text，markdown两个文件夹，并将所有txt文件保存到text文件夹，所有markdown文件保存到markdown文件夹。
+<h3 id="philosophy">宗旨</h3>
 
-备份某大V的全部回答，也很简单：
+Markdown 的目标是实现「易读易写」。
 
-.. code-block:: python
-    
-    from zhihu import User
-    
-    user_url = "http://www.zhihu.com/people/jixin"
-    user = User(user_url)
-    answers = user.get_answers()
-    for answer in answers:
-        answer.to_txt()
-        answer.to_md()
-        
-导出的markdown，txt文件示例请见该项目的markdown，text文件夹。当然，想要知道某大V关注了那些人，提了什么问题也不在话下，详情请见：快速开始。        
+可读性，无论如何，都是最重要的。一份使用 Markdown 格式撰写的文件应该可以直接以纯文本发布，并且看起来不会像是由许多标签或是格式指令所构成。Markdown 语法受到一些既有 text-to-HTML 格式的影响，包括 [Setext] [1]、[atx] [2]、[Textile] [3]、[reStructuredText] [4]、[Grutatext] [5] 和 [EtText] [6]，而最大灵感来源其实是纯文本电子邮件的格式。
 
+  [1]: http://docutils.sourceforge.net/mirror/setext.html
+  [2]: http://www.aaronsw.com/2002/atx/
+  [3]: http://textism.com/tools/textile/
+  [4]: http://docutils.sourceforge.net/rst.html
+  [5]: http://www.triptico.com/software/grutatxt.html
+  [6]: http://ettext.taint.org/doc/
 
+总之， Markdown 的语法全由一些符号所组成，这些符号经过精挑细选，其作用一目了然。比如：在文字两旁加上星号，看起来就像\*强调\*。Markdown 的列表看起来，嗯，就是列表。Markdown 的区块引用看起来就真的像是引用一段文字，就像你曾在电子邮件中见过的那样。
 
-快速开始
----------
+<h3 id="html">兼容 HTML</h3>
 
-准备
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Markdown 语法的目标是：成为一种适用于网络的*书写*语言。
 
-**Tips** :
+Markdown 不是想要取代 HTML，甚至也没有要和它相近，它的语法种类很少，只对应 HTML 标记的一小部分。Markdown 的构想*不是*要使得 HTML 文档更容易书写。在我看来， HTML 已经很容易写了。Markdown 的理念是，能让文档更容易读、写和随意改。HTML 是一种*发布*的格式，Markdown 是一种*书写*的格式。就这样，Markdown 的格式语法只涵盖纯文本可以涵盖的范围。
 
-1.  确保你的系统里面已经安装了 `Python2.7 <https://www.python.org/>`_ ，不同作业系统如何安装不再赘述。
-2.  检查你系统中 `python` 和 `pip` 的版本, 如果不属于 `python2.7` , 请在执行代码范例时，自行将 `python` 和 `pip` 分别替换成 `python2.7` 和 `pip2` 。
-3.  确保你的系统中安装了 `git` 程序 以及 `python-pip` 。
+不在 Markdown 涵盖范围之内的标签，都可以直接在文档里面用 HTML 撰写。不需要额外标注这是 HTML 或是 Markdown；只要直接加标签就可以了。
 
+要制约的只有一些 HTML 区块元素――比如 `<div>`、`<table>`、`<pre>`、`<p>` 等标签，必须在前后加上空行与其它内容区隔开，还要求它们的开始标签与结尾标签不能用制表符或空格来缩进。Markdown 的生成器有足够智能，不会在 HTML 区块标签外加上不必要的 `<p>` 标签。
 
-**克隆本项目**
+例子如下，在 Markdown 文件里加上一段 HTML 表格：
 
+    这是一个普通段落。
 
-.. code:: bash
+    <table>
+        <tr>
+            <td>Foo</td>
+        </tr>
+    </table>
 
-  git clone git@github.com:egrcc/zhihu-python.git
-  cd zhihu-python
+    这是另一个普通段落。
 
+请注意，在 HTML 区块标签间的 Markdown 格式语法将不会被处理。比如，你在 HTML 区块内使用 Markdown 样式的`*强调*`会没有效果。
 
-**解决依赖**
+HTML 的区段（行内）标签如 `<span>`、`<cite>`、`<del>` 可以在 Markdown 的段落、列表或是标题里随意使用。依照个人习惯，甚至可以不用 Markdown 格式，而直接采用 HTML 标签来格式化。举例说明：如果比较喜欢 HTML 的 `<a>` 或 `<img>` 标签，可以直接使用这些标签，而不用 Markdown 提供的链接或是图像标签语法。
 
-* `Beautiful Soup 4 <http://www.crummy.com/software/BeautifulSoup/>`_
-* `requests <https://github.com/kennethreitz/requests>`_
-* `html2text <https://github.com/aaronsw/html2text>`_
-* `termcolor <https://pypi.python.org/pypi/termcolor>`_
-* `lxml <https://github.com/lxml/lxml>`_
+和处在 HTML 区块标签间不同，Markdown 语法在 HTML 区段标签间是有效的。
 
-.. code:: bash
+<h3 id="autoescape">特殊字符自动转换</h3>
 
-  sudo pip install -r requirements.txt
+在 HTML 文件中，有两个字符需要特殊处理： `<` 和 `&` 。 `<` 符号用于起始标签，`&` 符号则用于标记 HTML 实体，如果你只是想要显示这些字符的原型，你必须要使用实体的形式，像是 `&lt;` 和 `&amp;`。
 
+`&` 字符尤其让网络文档编写者受折磨，如果你要打「`AT&T`」 ，你必须要写成「`AT&amp;T`」。而网址中的 `&` 字符也要转换。比如你要链接到：
 
-or
+    http://images.google.com/images?num=30&q=larry+bird
 
-.. code:: bash
+你必须要把网址转换写为：
 
-  sudo pip2 install -r requirements.txt
+    http://images.google.com/images?num=30&amp;q=larry+bird
 
+才能放到链接标签的 `href` 属性里。不用说也知道这很容易忽略，这也可能是 HTML 标准检验所检查到的错误中，数量最多的。
 
+Markdown 让你可以自然地书写字符，需要转换的由它来处理好了。如果你使用的 `&` 字符是 HTML 字符实体的一部分，它会保留原状，否则它会被转换成 `&amp`;。
 
-**登录知乎**
+所以你如果要在文档中插入一个版权符号 `©`，你可以这样写：
 
+    &copy;
 
-登录 `知乎` 生成身份信息, 保存在当前目录的 `cookies` 文件中。
+Markdown 会保留它不动。而若你写：
 
-.. code:: bash
-  
-  python auth.py
+    AT&T
 
+Markdown 就会将它转为：
 
-**执行测试**
-
-
-.. code:: bash
-
-  python test.py
-
-不出意外，一切应该完美运行 :))
-
-
-
-Question：获取问题信息
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Question 代表一个问题，处理知乎问题相关操作。创建一个 Question 对象需传入该问题的 url ，如：
-
-.. code-block:: python
-
-    from zhihu import Question
-    
-    url = "http://www.zhihu.com/question/24269892"
-    question = Question(url)
-
-得到 Question 对象后，可以获取该问题的一些信息：
-
-.. code-block:: python
-
-    # -*- coding: utf-8 -*-
-    from zhihu import Question
-    
-    url = "http://www.zhihu.com/question/24269892"
-    question = Question(url)
-
-    # 获取该问题的标题
-    title = question.get_title()
-    # 获取该问题的详细描述
-    detail = question.get_detail()
-    # 获取回答个数
-    answers_num = question.get_answers_num()
-    # 获取关注该问题的人数
-    followers_num = question.get_followers_num()
-    # 获取该问题所属话题
-    topics = question.get_topics()
-    # 获取该问题被浏览次数
-    visit_times = question.get_visit_times()
-    # 获取排名第一的回答
-    top_answer = question.get_top_answer()
-    # 获取排名前十的十个回答
-    top_answers = question.get_top_i_answers(10)
-    # 获取所有回答
-    answers = question.get_all_answers()
-
-    print title  # 输出：现实可以有多美好？
-    print detail
-    # 输出：
-    # 本问题相对于“现实可以多残酷？传送门：现实可以有多残酷？
-    # 题主：       昨天看了“现实可以有多残酷“。感觉不太好，所以我
-    # 开了这个问题以相对应，希望能够“中和一下“。和那个问题题主不想
-    # 把它变成“比惨大会“一样，我也不想把这个变成“鸡汤故事会“，或者
-    # 是“晒幸福“比赛。所以大家从“现实，实际”的角度出发，讲述自己的
-    # 美好故事，让大家看看社会的冷和暖，能更加辨证地看待世界，是此
-    # 题和彼题共同的“心愿“吧。
-    print answers_num  # 输出：2441
-    print followers_num  # 输出：26910
-    for topic in topics:
-        print topic,  # 输出：情感克制 现实 社会 个人经历
-    print visit_times  # 输出: 该问题当前被浏览的次数
-    print top_answer  
-    # 输出：<zhihu.Answer instance at 0x7f8b6582d0e0>
-    # Answer类对象
-    print top_answers  
-    # 输出：<generator object get_top_i_answers at 0x7fed676eb320>
-    # 代表前十的Answer的生成器
-    print answers  
-    # 输出：<generator object get_all_answer at 0x7f8b66ba30a0>
-    # 代表所有Answer的生成器
-
-   
-Answer：获取答案信息
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Answer 代表了一个答案，处理知乎答案相关操作。创建一个 Answer 对象需传入该答案的 url ，如：
-
-.. code-block:: python
-
-    from zhihu import Answer
-    
-    answer_url = "http://www.zhihu.com/question/24269892/answer/29960616"
-    answer = Answer(answer_url)
-
-得到 Answer 对象后，可以获取该答案的一些信息：
-
-.. code-block:: python
-    
-    # -*- coding: utf-8 -*-
-    from zhihu import Answer
-    
-    answer_url = "http://www.zhihu.com/question/24269892/answer/29960616"
-    answer = Answer(answer_url)
-    # 获取该答案回答的问题
-    question = answer.get_question()
-    # 获取该答案的作者
-    author = answer.get_author()
-    # 获取该答案获得的赞同数
-    upvote = answer.get_upvote()
-    # 获取该答案所属问题被浏览次数
-    visit_times = answer.get_visit_times()
-    # 获取所有给该答案点赞的用户信息
-    voters = answer.get_voters()
-    # 把答案输出为txt文件
-    answer.to_txt()
-    # 把答案输出为markdown文件
-    answer.to_md()
-
-    print question
-    # <zhihu.Question instance at 0x7f0b25d13f80>
-    # 一个Question对象
-    print question.get_title()  # 输出：现实可以有多美好？
-    print author
-    # <zhihu.User instance at 0x7f0b25425b90>
-    # 一个User对象
-    print voters 
-    # <generator object get_voters at 0x7f32fbe55730>
-    # 代表所有该答案点赞的用户的生成器
-    print author.get_user_id()  # 输出：田浩
-    print upvote  # 输出：9320
-    print visit_times  # 输出: 改答案所属问题被浏览次数
-
-
-User：获取用户信息
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-User 代表一个用户，处理用户相关操作。创建一个 User 对象需传入该用户的 url ，如：
-
-.. code-block:: python
-    
-    from zhihu import User
-    
-    user_url = "http://www.zhihu.com/people/jixin"
-    user = User(user_url)
-
-得到 User 对象后，可以获取该用户的一些信息：
-
-.. code-block:: python
-    
-    # -*- coding: utf-8 -*-
-    from zhihu import User
-    
-    user_url = "http://www.zhihu.com/people/jixin"
-    user = User(user_url)
-    # 获取用户ID
-    user_id = user.get_user_id()
-    # 获取用户性别
-    user_gender = user.get_gender()
-    # 获取该用户的关注者人数
-    followers_num = user.get_followers_num()
-    # 获取该用户关注的人数
-    followees_num =user.get_followees_num()
-    # 获取该用户提问的个数
-    asks_num = user.get_asks_num()
-    # 获取该用户回答的个数
-    answers_num = user.get_answers_num()
-    # 获取该用户收藏夹个数
-    collections_num = user.get_collections_num()
-    # 获取该用户获得的赞同数
-    agree_num = user.get_agree_num()
-    # 获取该用户获得的感谢数
-    thanks_num = user.get_thanks_num()
-    # 获取该用户的头像url
-    head_img_url = user.get_head_img_url()
-    
-    # 获取该用户关注的人
-    followees = user.get_followees()
-    # 获取关注该用户的人
-    followers = user.get_followers()
-    # 获取该用户提的问题
-    asks = user.get_asks()
-    # 获取该用户回答的问题的答案
-    answers = user.get_answers()
-    # 获取该用户的收藏夹
-    collections = user.get_collections()
-    
-    print user_id # 黄继新
-    print followers_num # 614840
-    print followees_num # 8408
-    print asks_num # 1323
-    print answers_num # 786
-    print collections_num # 44
-    print agree_num # 46387
-    print thanks_num # 11477
-    print head_img_url  # https://pic2.zhimg.com/0626f4164009f291b26a79d96c6962c5_l.jpg
-    
-    print followees
-    # <generator object get_followee at 0x7ffcac3af050>
-    # 代表所有该用户关注的人的生成器对象
-    print followers
-    # <generator object get_follower at 0x7ffcac3af0f0>
-    # 代表所有关注该用户的人的生成器对象
-    print asks
-    # <generator object get_ask at 0x7ffcab9db780>
-    # 代表该用户提的所有问题的生成器对象
-    print answers
-    # <generator object get_answer at 0x7ffcab9db7d0>
-    # 代表该用户回答的所有问题的答案的生成器对象
-    print collections
-    # <generator object get_collection at 0x7ffcab9db820>
-    # 代表该用户收藏夹的生成器对象
-
-
-Collection：获取收藏夹信息
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Collection 代表一个收藏夹，处理收藏夹相关操作。创建一个 Collection 对象需传入该收藏夹的 url ，如：
-
-.. code-block:: python
-
-    from zhihu import Collection
-    
-    collection_url = "http://www.zhihu.com/collection/36750683"
-    collection = Collection(collection_url)
-
-得到 Collection 对象后，可以获取该收藏夹的一些信息：
-
-.. code-block:: python
-    
-    # -*- coding: utf-8 -*-
-    from zhihu import Collection
-    
-    collection_url = "http://www.zhihu.com/collection/36750683"
-    collection = Collection(collection_url)
-    
-    # 获取该收藏夹的创建者
-    creator = collection.get_creator()
-    # 获取该收藏夹的名字
-    name = collection.get_name()
-    # 获取该收藏夹下的前十个答案
-    top_answers = collection.get_top_i_answers(10)
-    # 获取该收藏夹下的所有答案
-    answers = collection.get_all_answers()
-    
-    print creator 
-    # <zhihu.User instance at 0x7fe1296f29e0>
-    # 一个User对象
-    print creator.get_user_id() # 稷黍
-    print name # 给你一个不同的视角
-    print top_answers
-    # <generator object get_top_i_answers at 0x7f378465dc80>
-    # 代表前十个答案的生成器对象
-    print answers 
-    # <generator object get_all_answer at 0x7fe12a29b280>
-    # 代表所有答案的生成器对象
-
-
-Column：获取专栏信息
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Column 代表一个专栏，处理专栏相关操作。创建一个 Column 对象需传入该专栏的 url ，如：
-
-.. code-block:: python
-
-    from zhihu import Column
-    
-    url = "http://zhuanlan.zhihu.com/daily"
-    column = Column(url)
-
-得到 Column 对象后，可以获取该专栏的一些信息：
-
-.. code-block:: python
-
-    # -*- coding: utf-8 -*-
-    from zhihu import Column
-    
-    url = "http://zhuanlan.zhihu.com/daily"
-    column = Column(url)
-
-    # 获取该专栏的标题
-    title = column.get_title()
-    # 获取该专栏的描述
-    description = column.get_description()
-    # 获取该专栏的作者
-    creator = column.get_creator()
-    # 获取该专栏的文章数
-    posts_num = column.get_posts_num()
-    # 获取该专栏的所有文章
-    posts = column.get_all_posts()
-
-    print title  # 输出：知乎日报
-    print description
-    # 输出：
-    # 知乎日报启动画面接受所有摄影师朋友们的投稿，将作品链接
-    #（如 Flickr、LOFTER 等等），发至邮箱 qidong (at) zhihu.com，
-    # 并附上您的知乎个人页面地址即可。
-    # 
-    # 详细投稿要求: http://t.cn/zQyEpN5
-
-    print creator  
-    # 输出：<zhihu.User instance at 0x75e33eb8>
-    # User类对象
-    print posts_num # 150 
-    print posts
-    # 输出：<generator object get_all_posts at 0x75e33bc0>
-    # Post类对象
-
-
-Post：获取专栏文章信息
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Post 代表一个专栏文章，处理专栏文章相关操作。创建一个 Post 对象需传入该文章的 url ，如：
-
-.. code-block:: python
-
-    from zhihu import Post
-    
-    url = "http://zhuanlan.zhihu.com/p/20235601"
-    post = Post(url)
-
-得到 Post 对象后，可以获取该文章的一些信息：
-
-.. code-block:: python
-
-    # -*- coding: utf-8 -*-
-    from zhihu import Post
-    
-    url = "http://zhuanlan.zhihu.com/p/20770968"
-    post = Post(url)
-
-    # 获取该文章的标题
-    title = post.get_title()
-    # 获取该文章的内容
-    content = post.get_content()
-    # 获取该文章的作者
-    author = post.get_author()
-    # 获取该文章的所属专栏
-    column = post.get_column()
-    # 获取该文章所属话题
-    topics = post.get_topics()
-
-    print title  # 输出：夜读书|四月十九日
-    print content
-    # 输出：
-    # <p>各位，晚上好。<br> ...
-    # ......
-    print author
-    # 输出： <zhihu.User instance at 0x75ec0fd0>
-    for topic in topics:
-        print topic,  # 输出：阅读
-    print column  
-    # 输出：<zhihu.Column instance at 0x75eb3eb8>
-    # Column类对象
-    
-
-综合实例
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-将 Question ， Answer ， User ， Collection 结合起来使用。实例如下：
-
-.. code-block:: python
-
-    # -*- coding: utf-8 -*-
-    from zhihu import Question
-    from zhihu import Answer
-    from zhihu import User
-    from zhihu import Collection
-    
-    url = "http://www.zhihu.com/question/24269892"
-    question = Question(url)
-    # 得到排名第一的答案
-    answer = question.get_top_answer()
-    # 得到排名第一的答案的作者
-    user = answer.get_author()
-    # 得到该作者回答过的所有问题的答案
-    user_answers = user.get_answers()
-    # 输出该作者回答过的所有问题的标题
-    for answer in user_answers:
-        print answer.get_question().get_title()
-    # 得到该用户的所有收藏夹
-    user_collections = user.get_collections()
-    for collection in user_collections:
-	# 输出每一个收藏夹的名字
-        print collection.get_name()
-	# 得到该收藏夹下的前十个回答
-        top_answers = collection.get_top_i_answers(10)
-	# 把答案内容转成txt，markdown
-        for answer in top_answers:
-            answer.to_txt()
-            answer.to_md()
-
-以上示例均可以在test.py文件中找到。
-
-虽然是单线程，但速度不算太慢。抓取 `哪些东西买了之后，会让人因生活质量和幸福感提升而感觉相见恨晚？ <http://www.zhihu.com/question/20840874>`_ 下前200个回答，91秒；抓取 `有哪些 100 元以下，很少见但高大上的物件？ <http://www.zhihu.com/question/23054572>`_ 下前50个回答，48秒；抓取 `现实可以有多美好？ <http://www.zhihu.com/question/24269892>`_ 下前200个回答，69秒。生成的文件请见markdown，text文件夹。所有匿名用户的回答放在一个文件里面。
-
-
-API
--------
-
-zhihu.Question ---- 知乎问题操作类
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-*class* zhihu. **Question** (*url, title = None*)
-
- Question 以 url 为唯一标识，创建一个 Question 对象实例必须传入一个代表知乎问题的 url （如：         http://www.zhihu.com/question/26611428），需包含“http://”。如果传入的不是代表问题的 url ，程序会报错。通过调用 Question 类的一系列方法，获得该问题的一些信息。
- 
- **Parameters**：
-  * **url** -- 该问题的链接，字符串
-  * **title** -- 该问题的标题，字符串，可选
- 
- **Returns**： 一个 Question 实例对象
- 
- **get_title** ()
- 
-  得到该问题的标题。
-  
-  **Returns**： 代表标题的字符串
- 
- **get_detail** ()
- 
-  得到该问题的详细描述。原问题的描述可能带有图片或视频，这里得到的是纯文字。
-  
-  **Returns**： 代表详细描述的字符串
- 
- **get_answers_num** ()
- 
-  得到该问题的回答个数。
-  
-  **Returns**： 代表回答个数的 int 型整数
- 
- **get_followers_num** ()
- 
-  得到关注该问题的人数。
-  
-  **Returns**： 代表人数的 int 型整数
- 
- **get_topics** ()
- 
-  得到该问题所属的话题。
-  
-  **Returns**： 一个 list ，每一个元素为代表一个话题的字符串
-  
-  注：以后可能会添加一个 Topic 类，到时候每一个元素为代表一个话题的 Topic 类对象。
- 
- **get_all_answers** ()
- 
-  得到该问题的所有回答。
-  
-  **Returns**： 包含所有答案的 generator 对象。其中每一个元素为代表一个答案的 Answer 对象 
- 
- **get_top_i_answers** (n)
- 
-  得到该问题的前 n 个回答。
-  
-  **Parameters**： **n** -- int 型整数
-  
-  **Returns**： 包含前 n 个答案的 generator 对象。其中每一个元素为代表一个答案的 Answer 对象
- 
- **get_top_answer** ()
- 
-  得到目前排名第一的回答。
- 
-  **Returns**： 代表该答案的 Answer 对象
-  
- **get_visit_times** ()
- 
-  得到该问题被浏览次数。该方法由 `@lufo816 <https://github.com/lufo816>`_ 添加。
- 
-  **Returns**： 代表浏览次数的 int 型整数
- 
-
-zhihu.User ---- 知乎用户操作类
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-*class* zhihu. **User** (*user_url, user_id = None*)
-
- User 以 url 为唯一标识，创建一个 User 对象实例必须传入一个代表知乎用户的 url （如：         http://www.zhihu.com/people/egrcc），需包含“http://”。如果传入的不是代表用户的 url ，程序会报错。通过调用 User 类的一系列方法，获得该用户的一些信息。
- 
- **Parameters**：
-  * **user_url** -- 该用户的链接，字符串
-  * **user_id** -- 该用户的 ID ，字符串，可选
-  
- **Returns**： 一个 User 实例对象
-
- **get_user_id** ()
- 
-  得到该用户的ID。
-  
-  **Returns**： 代表 ID 的字符串
-
- **get_gender** ()
- 
-  得到该用户的性别。
-  
- **Returns**： 代表 性别 的字符串(male/female)  
-  
- **get_followees_num** ()
- 
-  得到该用户关注的人的个数。
-  
-  **Returns**： 代表人数的 int 型整数
- 
- **get_followers_num** ()
- 
-  得到关注该用户的人的个数。
-  
-  **Returns**： 代表人数的 int 型整数
- 
- **get_agree_num** ()
- 
-  得到该用户获得的赞同数。
-  
-  **Returns**： 代表赞同数的 int 型整数
- 
- **get_thanks_num** ()
- 
-  得到该用户获得的感谢数。
-  
-  **Returns**： 代表感谢数的 int 型整数
-
- **get_head_img_url** (scale)
-
-  获取用户头像url。该方法由 `@liuwons <https://github.com/liuwons>`_ 添加。
-
-  **Parameters**： **scale** int 型整数，代表尺寸: 1(25×25), 3(75×75), 4(100×100), 6(150×150), 10(250×250)
-
-  **Returns**： 对应尺寸头像的图片链接, 字符串
- 
- **get_asks_num** ()
- 
-  得到该用户提问题的个数。
-  
-  **Returns**： 代表问题数的 int 型整数 
- 
- **get_answers_num** ()
- 
-  得到该用户回答问题的个数。
-  
-  **Returns**： 代表问题数的 int 型整数 
- 
- **get_collections_num** ()
- 
-  得到该用户收藏夹的个数。
-  
-  **Returns**： 代表收藏夹数的 int 型整数 
- 
- **get_followees** ()
- 
-  得到该用户关注的人。
-  
-  **Returns**： 包含所有该用户关注的人的 generator 对象。其中每一个元素为代表一个用户的 User 对象
- 
- **get_followers** ()
- 
-  得到关注该用户的人。
-  
-  **Returns**： 包含所有关注该用户的人的 generator 对象。其中每一个元素为代表一个用户的 User 对象
- 
- **get_asks** ()
- 
-  得到该用户提的所有问题。
-  
-  **Returns**： 包含所有问题的 generator 对象。其中每一个元素为代表一个问题的 Question 对象
- 
- **get_answers** ()
- 
-  得到该用户回答的所有问题的答案。
-  
-  **Returns**： 包含所有回答的 generator 对象。其中每一个元素为代表一个回答的 Answer 对象
- 
- **get_collections** ()
- 
-  得到该用户的所有收藏夹。
-  
-  **Returns**： 包含所有收藏夹的 generator 对象。其中每一个元素为代表一个收藏夹的 Collection 对象
- 
-
-zhihu.Answer ---- 知乎回答操作类
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-*class* zhihu. **Answer** (*answer_url, question = None, author = None, upvote = None, content = None*)
-
- Answer 以 url 为唯一标识，创建一个 Answer 对象实例必须传入一个代表知乎回答的 url （如：         http://www.zhihu.com/question/19878575/answer/14776495），需包含“http://”。如果传入的不是代表回答的 url ，程序会报错。通过调用 Answer 类的一系列方法，获得该回答的一些信息。一般不自己创建Answer对象。
- 
- **Parameters**：
-  * **answer_url** -- 该答案的链接，字符串
-  * **question** -- 该答案回答的问题， Question 对象，可选
-  * **author** -- 该答案的作者， User 对象，可选
-  * **upvote** -- 该答案获得的赞同数， int 型整数，可选
-  * **content** -- 该答案的内容， BeautifulSoup 对象，可选
-  
- **Returns**： 一个 Answer 实例对象
-
- **get_question** ()
- 
-  得到该答案回答的问题。
-  
-  **Returns**： 一个 Question 对象
- 
- **get_author** ()
- 
-  得到该答案的作者 。
-  
-  **Returns**： 一个 User 对象
- 
- **get_upvote** ()
- 
-  得到该答案获得的赞同数。
-  
-  **Returns**： 一个 int 型整数
- 
- **get_content** ()
- 
-  得到该答案的内容。
-  
-  **Returns**： 一个 BeautifulSoup 对象
-  
- **get_visit_times** ()
- 
-  得到该答案所属问题被浏览次数。该方法由 `@lufo816 <https://github.com/lufo816>`_ 添加。
- 
-  **Returns**： 代表浏览次数的 int 型整数
-  
- **get_voters** ()
- 
-  得到给该答案点赞的用户。该方法由 `@lufo816 <https://github.com/lufo816>`_ 添加。
- 
-  **Returns**： 包含所有给该答案点赞的用户的 generator 对象。其中每一个元素为代表一个用户的 User 对象
- 
- **to_txt** ()
-  
-  将该答案转成txt文件，并会在当前目录下创建一个text文件夹，所生成的txt文件均保存在该文件夹。
- 
- **to_md** ()
- 
-  将该答案转成markdown文件，并会在当前目录下创建一个markdown文件夹，所生成的markdown文件均保存在该文件夹。
-
-
-zhihu.Collection ---- 知乎收藏夹操作类
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-*class* zhihu. **Collection** (*url, name = None, creator = None*)
-
- Collection 以 url 为唯一标识，创建一个 Collection 对象实例必须传入一个代表知乎收藏夹的 url （如：         http://www.zhihu.com/collection/27053469），需包含“http://”。如果传入的不是代表收藏夹的 url ，程序会报错。通过调用 Collection 类的一系列方法，获得该收藏夹的一些信息。
- 
- **Parameters**：
-  * **url** -- 该收藏夹的链接，字符串
-  * **name** -- 该收藏夹的名字，字符串，可选
-  * **creator** -- 该收藏夹的创建者，User 对象，可选
-  
- **Returns**： 一个 Collection 实例对象
-
- **get_name** ()
- 
-  得到该收藏夹的名字。
-  
-  **Returns**： 代表名字的字符串
- 
- **get_creator** ()
- 
-  得到该收藏夹的创建者。
-  
-  **Returns**：代表创建者 User 对象
- 
- **get_all_answers** ()
- 
-  得到该收藏夹收藏的所有回答。
-  
-  **Returns**： 包含该收藏夹下所有回答的 generator 对象。其中每一个元素为代表一个回答的 Answer 对象
- 
- **get_top_i_answers** (n)
- 
-  得到该收藏夹收藏的前 n 个回答。
-  
-  **Parameters**： **n** -- int 型整数
-  
-  **Returns**： 包含该收藏夹下前 n 个回答的 generator 对象。其中每一个元素为代表一个回答的 Answer 对象
-
-
-zhihu.Column ---- 知乎专栏操作类
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-*class* zhihu. **Column** (*Column_url*)
-
- Column 以 url 为唯一标识，创建一个 Column 对象实例必须传入一个代表知乎专栏的 url （如：http://zhuanlan.zhihu.com/daily），需包含“http(s)://”。如果传入的不是代表专栏的 url ，程序会报错。通过调用 Column 类的一系列方法，获得该专栏的一些信息。该类由 `@johnnyluck <https://github.com/johnnyluck>`_ 添加。
- 
- **Parameters**：
-  * **column_url** -- 该专栏的链接，字符串
-  
- **Returns**： 一个 Column 实例对象
-
- **get_title** ()
- 
-  得到该专栏的题目。
-  
-  **Returns**： 一个代表题目的字符串 
- 
- **get_creator** ()
- 
-  得到该专栏的创建者。
-  
-  **Returns**： 一个 User 对象
- 
- **get_description** ()
- 
-  得到该专栏的描述。
-  
-  **Returns**： 一个专栏描述的字符串
-
- **get_followers_num** ()
-
-  得到该专栏的关注人数。
-
-  **Returns**： 一个 int 型的整数
- 
- **get_posts_num** ()
-
-  得到该专栏的所有文章数。
-
-  **Returns**： 一个 int 型的整数
- 
- **get_content** ()
- 
-  得到该答案的内容。
-  
-  **Returns**： 一个字符串
-
- **get_posts** ()
-
-  得到该专栏的所有文章。
-
-  **Returns**：包含所有文章的 generator 对象。其中每一个元素为代表一个文章 Post 对象
- 
-
-zhihu.Post ---- 知乎专栏文章操作类
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-*class* zhihu. **Post** (*Post_url*)
-
- Post 以 url 为唯一标识，创建一个 Post 对象实例必须传入一个代表知乎文章的 url （如：http://zhuanlan.zhihu.com/p/20235601），需包含“http(s)://”。如果传入的不是代表文章的 url ，程序会报错。通过调用 Post 类的一系列方法，获得该文章的一些信息。该类由 `@johnnyluck <https://github.com/johnnyluck>`_ 添加。
- 
- **Parameters**：
-  * **post_url** -- 该文章的链接，字符串
-  
- **Returns**： 一个 Post 实例对象
-
- **get_title** ()
- 
-  得到该文章的题目。
-  
-  **Returns**： 一个代表题目的字符串 
- 
- **get_author** ()
- 
-  得到该文章的作者。
-  
-  **Returns**： 一个 User 对象
- 
- **get_content** ()
- 
-  得到该文章的内容。
-  
-  **Returns**： 一个文章描述的字符串
-
- **get_topics** ()
- 
-  得到该文章的话题。
-  
-  **Returns**： 一个列表
-
- **get_column** ()
-
-  得到该文章的所属专栏。
-
-  **Returns**：一个 Column 的实例对象
- 
+    AT&amp;T
 
+类似的状况也会发生在 `<` 符号上，因为 Markdown 允许 [兼容 HTML](#html) ，如果你是把 `<` 符号作为 HTML 标签的定界符使用，那 Markdown 也不会对它做任何转换，但是如果你写：
 
+    4 < 5
+
+Markdown 将会把它转换为：
+
+    4 &lt; 5
+
+不过需要注意的是，code 范围内，不论是行内还是区块， `<` 和 `&` 两个符号都*一定*会被转换成 HTML 实体，这项特性让你可以很容易地用 Markdown 写 HTML code （和 HTML 相对而言， HTML 语法中，你要把所有的 `<` 和 `&` 都转换为 HTML 实体，才能在 HTML 文件里面写出 HTML code。）
+
+* * *
+
+<h2 id="block">区块元素</h2>
+
+
+<h3 id="p">段落和换行</h3>
+
+一个 Markdown 段落是由一个或多个连续的文本行组成，它的前后要有一个以上的空行（空行的定义是显示上看起来像是空的，便会被视为空行。比方说，若某一行只包含空格和制表符，则该行也会被视为空行）。普通段落不该用空格或制表符来缩进。
+
+「由一个或多个连续的文本行组成」这句话其实暗示了 Markdown 允许段落内的强迫换行（插入换行符），这个特性和其他大部分的 text-to-HTML 格式不一样（包括 Movable Type 的「Convert Line Breaks」选项），其它的格式会把每个换行符都转成 `<br />` 标签。
+
+如果你*确实*想要依赖 Markdown 来插入 `<br />` 标签的话，在插入处先按入两个以上的空格然后回车。
+
+的确，需要多费点事（多加空格）来产生 `<br />` ，但是简单地「每个换行都转换为 `<br />`」的方法在 Markdown 中并不适合， Markdown 中 email 式的 [区块引用][bq] 和多段落的 [列表][l] 在使用换行来排版的时候，不但更好用，还更方便阅读。
+
+  [bq]: #blockquote
+  [l]:  #list
+
+<h3 id="header">标题</h3>
+
+Markdown 支持两种标题的语法，类 [Setext] [1] 和类 [atx] [2] 形式。
+
+类 Setext 形式是用底线的形式，利用 `=` （最高阶标题）和 `-` （第二阶标题），例如：
+
+    This is an H1
+    =============
+
+    This is an H2
+    -------------
+
+任何数量的 `=` 和 `-` 都可以有效果。
+
+类 Atx 形式则是在行首插入 1 到 6 个 `#` ，对应到标题 1 到 6 阶，例如：
+
+    # 这是 H1
+
+    ## 这是 H2
+
+    ###### 这是 H6
+
+你可以选择性地「闭合」类 atx 样式的标题，这纯粹只是美观用的，若是觉得这样看起来比较舒适，你就可以在行尾加上 `#`，而行尾的 `#` 数量也不用和开头一样（行首的井字符数量决定标题的阶数）：
+
+    # 这是 H1 #
+
+    ## 这是 H2 ##
+
+    ### 这是 H3 ######
+
+
+<h3 id="blockquote">区块引用 Blockquotes</h3>
+
+Markdown 标记区块引用是使用类似 email 中用 `>` 的引用方式。如果你还熟悉在 email 信件中的引言部分，你就知道怎么在 Markdown 文件中建立一个区块引用，那会看起来像是你自己先断好行，然后在每行的最前面加上 `>` ：
+
+    > This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
+    > consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
+    > Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
+    > 
+    > Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
+    > id sem consectetuer libero luctus adipiscing.
+
+Markdown 也允许你偷懒只在整个段落的第一行最前面加上 `>` ：
+
+    > This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
+    consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
+    Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
+
+    > Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
+    id sem consectetuer libero luctus adipiscing.
+
+区块引用可以嵌套（例如：引用内的引用），只要根据层次加上不同数量的 `>` ：
+
+    > This is the first level of quoting.
+    >
+    > > This is nested blockquote.
+    >
+    > Back to the first level.
+
+引用的区块内也可以使用其他的 Markdown 语法，包括标题、列表、代码区块等：
+
+	> ## 这是一个标题。
+	> 
+	> 1.   这是第一行列表项。
+	> 2.   这是第二行列表项。
+	> 
+	> 给出一些例子代码：
+	> 
+	>     return shell_exec("echo $input | $markdown_script");
+
+任何像样的文本编辑器都能轻松地建立 email 型的引用。例如在 BBEdit 中，你可以选取文字后然后从选单中选择*增加引用阶层*。
+
+<h3 id="list">列表</h3>
+
+Markdown 支持有序列表和无序列表。
+
+无序列表使用星号、加号或是减号作为列表标记：
+
+    *   Red
+    *   Green
+    *   Blue
+
+等同于：
+
+    +   Red
+    +   Green
+    +   Blue
+
+也等同于：
+
+    -   Red
+    -   Green
+    -   Blue
+
+有序列表则使用数字接着一个英文句点：
+
+    1.  Bird
+    2.  McHale
+    3.  Parish
+
+很重要的一点是，你在列表标记上使用的数字并不会影响输出的 HTML 结果，上面的列表所产生的 HTML 标记为：
+
+    <ol>
+    <li>Bird</li>
+    <li>McHale</li>
+    <li>Parish</li>
+    </ol>
+
+如果你的列表标记写成：
+
+    1.  Bird
+    1.  McHale
+    1.  Parish
+
+或甚至是：
+
+    3. Bird
+    1. McHale
+    8. Parish
+
+你都会得到完全相同的 HTML 输出。重点在于，你可以让 Markdown 文件的列表数字和输出的结果相同，或是你懒一点，你可以完全不用在意数字的正确性。
+
+如果你使用懒惰的写法，建议第一个项目最好还是从 1. 开始，因为 Markdown 未来可能会支持有序列表的 start 属性。
+
+列表项目标记通常是放在最左边，但是其实也可以缩进，最多 3 个空格，项目标记后面则一定要接着至少一个空格或制表符。
+
+要让列表看起来更漂亮，你可以把内容用固定的缩进整理好：
+
+    *   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
+        viverra nec, fringilla in, laoreet vitae, risus.
+    *   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
+        Suspendisse id sem consectetuer libero luctus adipiscing.
+
+但是如果你懒，那也行：
+
+    *   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+    Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
+    viverra nec, fringilla in, laoreet vitae, risus.
+    *   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
+    Suspendisse id sem consectetuer libero luctus adipiscing.
+
+如果列表项目间用空行分开，在输出 HTML 时 Markdown 就会将项目内容用 `<p>` 
+标签包起来，举例来说：
+
+    *   Bird
+    *   Magic
+
+会被转换为：
+
+    <ul>
+    <li>Bird</li>
+    <li>Magic</li>
+    </ul>
+
+但是这个：
+
+    *   Bird
+
+    *   Magic
+
+会被转换为：
+
+    <ul>
+    <li><p>Bird</p></li>
+    <li><p>Magic</p></li>
+    </ul>
+
+列表项目可以包含多个段落，每个项目下的段落都必须缩进 4 个空格或是 1 个制表符：
+
+    1.  This is a list item with two paragraphs. Lorem ipsum dolor
+        sit amet, consectetuer adipiscing elit. Aliquam hendrerit
+        mi posuere lectus.
+
+        Vestibulum enim wisi, viverra nec, fringilla in, laoreet
+        vitae, risus. Donec sit amet nisl. Aliquam semper ipsum
+        sit amet velit.
+
+    2.  Suspendisse id sem consectetuer libero luctus adipiscing.
+
+如果你每行都有缩进，看起来会看好很多，当然，再次地，如果你很懒惰，Markdown 也允许：
+
+    *   This is a list item with two paragraphs.
+
+        This is the second paragraph in the list item. You're
+    only required to indent the first line. Lorem ipsum dolor
+    sit amet, consectetuer adipiscing elit.
+
+    *   Another item in the same list.
+
+如果要在列表项目内放进引用，那 `>` 就需要缩进：
+
+    *   A list item with a blockquote:
+
+        > This is a blockquote
+        > inside a list item.
+
+如果要放代码区块的话，该区块就需要缩进*两次*，也就是 8 个空格或是 2 个制表符：
+
+    *   一列表项包含一个列表区块：
+
+            <代码写在这>
+
+
+当然，项目列表很可能会不小心产生，像是下面这样的写法：
+
+    1986. What a great season.
+
+换句话说，也就是在行首出现*数字-句点-空白*，要避免这样的状况，你可以在句点前面加上反斜杠。
+
+    1986\. What a great season.
+
+<h3 id="precode">代码区块</h3>
+
+和程序相关的写作或是标签语言原始码通常会有已经排版好的代码区块，通常这些区块我们并不希望它以一般段落文件的方式去排版，而是照原来的样子显示，Markdown 会用 `<pre>` 和 `<code>` 标签来把代码区块包起来。
+
+要在 Markdown 中建立代码区块很简单，只要简单地缩进 4 个空格或是 1 个制表符就可以，例如，下面的输入：
+
+    这是一个普通段落：
+
+        这是一个代码区块。
+
+Markdown 会转换成：
+
+    <p>这是一个普通段落：</p>
+
+    <pre><code>这是一个代码区块。
+    </code></pre>
+
+这个每行一阶的缩进（4 个空格或是 1 个制表符），都会被移除，例如：
+
+    Here is an example of AppleScript:
+
+        tell application "Foo"
+            beep
+        end tell
+
+会被转换为：
+
+    <p>Here is an example of AppleScript:</p>
+
+    <pre><code>tell application "Foo"
+        beep
+    end tell
+    </code></pre>
+
+一个代码区块会一直持续到没有缩进的那一行（或是文件结尾）。
+
+在代码区块里面， `&` 、 `<` 和 `>` 会自动转成 HTML 实体，这样的方式让你非常容易使用 Markdown 插入范例用的 HTML 原始码，只需要复制贴上，再加上缩进就可以了，剩下的 Markdown 都会帮你处理，例如：
+
+        <div class="footer">
+            &copy; 2004 Foo Corporation
+        </div>
+
+会被转换为：
+
+    <pre><code>&lt;div class="footer"&gt;
+        &amp;copy; 2004 Foo Corporation
+    &lt;/div&gt;
+    </code></pre>
+
+代码区块中，一般的 Markdown 语法不会被转换，像是星号便只是星号，这表示你可以很容易地以 Markdown 语法撰写 Markdown 语法相关的文件。
+
+<h3 id="hr">分隔线</h3>
+
+你可以在一行中用三个以上的星号、减号、底线来建立一个分隔线，行内不能有其他东西。你也可以在星号或是减号中间插入空格。下面每种写法都可以建立分隔线：
+
+    * * *
+
+    ***
+
+    *****
+
+    - - -
+
+    ---------------------------------------
+
+
+* * *
+
+<h2 id="span">区段元素</h2>
+
+<h3 id="link">链接</h3>
+
+Markdown 支持两种形式的链接语法： *行内式*和*参考式*两种形式。
+
+不管是哪一种，链接文字都是用 [方括号] 来标记。
+
+要建立一个*行内式*的链接，只要在方块括号后面紧接着圆括号并插入网址链接即可，如果你还想要加上链接的 title 文字，只要在网址后面，用双引号把 title 文字包起来即可，例如：
+
+    This is [an example](http://example.com/ "Title") inline link.
+
+    [This link](http://example.net/) has no title attribute.
+
+会产生：
+
+    <p>This is <a href="http://example.com/" title="Title">
+    an example</a> inline link.</p>
+
+    <p><a href="http://example.net/">This link</a> has no
+    title attribute.</p>
+
+如果你是要链接到同样主机的资源，你可以使用相对路径：
+
+    See my [About](/about/) page for details.   
+
+*参考式*的链接是在链接文字的括号后面再接上另一个方括号，而在第二个方括号里面要填入用以辨识链接的标记：
+
+    This is [an example][id] reference-style link.
+
+你也可以选择性地在两个方括号中间加上一个空格：
+
+    This is [an example] [id] reference-style link.
+
+接着，在文件的任意处，你可以把这个标记的链接内容定义出来：
+
+    [id]: http://example.com/  "Optional Title Here"
+
+链接内容定义的形式为：
+
+*   方括号（前面可以选择性地加上至多三个空格来缩进），里面输入链接文字
+*   接着一个冒号
+*   接着一个以上的空格或制表符
+*   接着链接的网址
+*   选择性地接着 title 内容，可以用单引号、双引号或是括弧包着
+
+下面这三种链接的定义都是相同：
+
+	[foo]: http://example.com/  "Optional Title Here"
+	[foo]: http://example.com/  'Optional Title Here'
+	[foo]: http://example.com/  (Optional Title Here)
+
+**请注意：**有一个已知的问题是 Markdown.pl 1.0.1 会忽略单引号包起来的链接 title。
+
+链接网址也可以用尖括号包起来：
+
+    [id]: <http://example.com/>  "Optional Title Here"
+
+你也可以把 title 属性放到下一行，也可以加一些缩进，若网址太长的话，这样会比较好看：
+
+    [id]: http://example.com/longish/path/to/resource/here
+        "Optional Title Here"
+
+网址定义只有在产生链接的时候用到，并不会直接出现在文件之中。
+
+链接辨别标签可以有字母、数字、空白和标点符号，但是并*不*区分大小写，因此下面两个链接是一样的：
+
+	[link text][a]
+	[link text][A]
+
+*隐式链接标记*功能让你可以省略指定链接标记，这种情形下，链接标记会视为等同于链接文字，要用隐式链接标记只要在链接文字后面加上一个空的方括号，如果你要让 "Google" 链接到 google.com，你可以简化成：
+
+	[Google][]
+
+然后定义链接内容：
+
+	[Google]: http://google.com/
+
+由于链接文字可能包含空白，所以这种简化型的标记内也许包含多个单词：
+
+	Visit [Daring Fireball][] for more information.
+
+然后接着定义链接：
+
+	[Daring Fireball]: http://daringfireball.net/
+
+链接的定义可以放在文件中的任何一个地方，我比较偏好直接放在链接出现段落的后面，你也可以把它放在文件最后面，就像是注解一样。
+
+下面是一个参考式链接的范例：
+
+    I get 10 times more traffic from [Google] [1] than from
+    [Yahoo] [2] or [MSN] [3].
+
+      [1]: http://google.com/        "Google"
+      [2]: http://search.yahoo.com/  "Yahoo Search"
+      [3]: http://search.msn.com/    "MSN Search"
+
+如果改成用链接名称的方式写：
+
+    I get 10 times more traffic from [Google][] than from
+    [Yahoo][] or [MSN][].
+
+      [google]: http://google.com/        "Google"
+      [yahoo]:  http://search.yahoo.com/  "Yahoo Search"
+      [msn]:    http://search.msn.com/    "MSN Search"
+
+上面两种写法都会产生下面的 HTML。
+
+    <p>I get 10 times more traffic from <a href="http://google.com/"
+    title="Google">Google</a> than from
+    <a href="http://search.yahoo.com/" title="Yahoo Search">Yahoo</a>
+    or <a href="http://search.msn.com/" title="MSN Search">MSN</a>.</p>
+
+下面是用行内式写的同样一段内容的 Markdown 文件，提供作为比较之用：
+
+    I get 10 times more traffic from [Google](http://google.com/ "Google")
+    than from [Yahoo](http://search.yahoo.com/ "Yahoo Search") or
+    [MSN](http://search.msn.com/ "MSN Search").
+
+参考式的链接其实重点不在于它比较好写，而是它比较好读，比较一下上面的范例，使用参考式的文章本身只有 81 个字符，但是用行内形式的却会增加到 176 个字元，如果是用纯 HTML 格式来写，会有 234 个字元，在 HTML 格式中，标签比文本还要多。
+
+使用 Markdown 的参考式链接，可以让文件更像是浏览器最后产生的结果，让你可以把一些标记相关的元数据移到段落文字之外，你就可以增加链接而不让文章的阅读感觉被打断。
+
+<h3 id="em">强调</h3>
+
+Markdown 使用星号（`*`）和底线（`_`）作为标记强调字词的符号，被 `*` 或 `_` 包围的字词会被转成用 `<em>` 标签包围，用两个 `*` 或 `_` 包起来的话，则会被转成 `<strong>`，例如：
+
+    *single asterisks*
+
+    _single underscores_
+
+    **double asterisks**
+
+    __double underscores__
+
+会转成：
+
+    <em>single asterisks</em>
+
+    <em>single underscores</em>
+
+    <strong>double asterisks</strong>
+
+    <strong>double underscores</strong>
+
+你可以随便用你喜欢的样式，唯一的限制是，你用什么符号开启标签，就要用什么符号结束。
+
+强调也可以直接插在文字中间：
+
+    un*frigging*believable
+
+但是**如果你的 `*` 和 `_` 两边都有空白的话，它们就只会被当成普通的符号**。
+
+如果要在文字前后直接插入普通的星号或底线，你可以用反斜线：
+
+    \*this text is surrounded by literal asterisks\*
+
+<h3 id="code">代码</h3>
+
+如果要标记一小段行内代码，你可以用反引号把它包起来（`` ` ``），例如：
+
+    Use the `printf()` function.
+
+会产生：
+
+    <p>Use the <code>printf()</code> function.</p>
+
+如果要在代码区段内插入反引号，你可以用多个反引号来开启和结束代码区段：
+
+    ``There is a literal backtick (`) here.``
+
+这段语法会产生：
+
+    <p><code>There is a literal backtick (`) here.</code></p>
+
+代码区段的起始和结束端都可以放入一个空白，起始端后面一个，结束端前面一个，这样你就可以在区段的一开始就插入反引号：
+
+	A single backtick in a code span: `` ` ``
+	
+	A backtick-delimited string in a code span: `` `foo` ``
+
+会产生：
+
+	<p>A single backtick in a code span: <code>`</code></p>
+	
+	<p>A backtick-delimited string in a code span: <code>`foo`</code></p>
+
+在代码区段内，`&` 和尖括号**都**会被自动地转成 HTML 实体，这使得插入 HTML 原始码变得很容易，Markdown 会把下面这段：
+
+    Please don't use any `<blink>` tags.
+
+转为：
+
+    <p>Please don't use any <code>&lt;blink&gt;</code> tags.</p>
+
+你也可以这样写：
+
+    `&#8212;` is the decimal-encoded equivalent of `&mdash;`.
+
+以产生：
+
+    <p><code>&amp;#8212;</code> is the decimal-encoded
+    equivalent of <code>&amp;mdash;</code>.</p>
+
+
+
+<h3 id="img">图片</h3>
+
+很明显地，要在纯文字应用中设计一个「自然」的语法来插入图片是有一定难度的。
+
+Markdown 使用一种和链接很相似的语法来标记图片，同样也允许两种样式： *行内式*和*参考式*。
+
+行内式的图片语法看起来像是：
+
+    ![Alt text](/path/to/img.jpg)
+
+    ![Alt text](/path/to/img.jpg "Optional title")
+
+详细叙述如下：
+
+*   一个惊叹号 `!`
+*   接着一个方括号，里面放上图片的替代文字
+*   接着一个普通括号，里面放上图片的网址，最后还可以用引号包住并加上
+    选择性的 'title' 文字。
+
+参考式的图片语法则长得像这样：
+
+    ![Alt text][id]
+
+「id」是图片参考的名称，图片参考的定义方式则和连结参考一样：
+
+    [id]: url/to/image  "Optional title attribute"
+
+到目前为止， Markdown 还没有办法指定图片的宽高，如果你需要的话，你可以使用普通的 `<img>` 标签。
+
+* * *
+
+<h2 id="misc">其它</h2>
+
+<h3 id="autolink">自动链接</h3>
+
+Markdown 支持以比较简短的自动链接形式来处理网址和电子邮件信箱，只要是用尖括号包起来， Markdown 就会自动把它转成链接。一般网址的链接文字就和链接地址一样，例如：
+
+    <http://example.com/>
+
+Markdown 会转为：
+
+    <a href="http://example.com/">http://example.com/</a>
+
+邮址的自动链接也很类似，只是 Markdown 会先做一个编码转换的过程，把文字字符转成 16 进位码的 HTML 实体，这样的格式可以糊弄一些不好的邮址收集机器人，例如：
+
+    <address@example.com>
+
+Markdown 会转成：
+
+    <a href="&#x6D;&#x61;i&#x6C;&#x74;&#x6F;:&#x61;&#x64;&#x64;&#x72;&#x65;
+    &#115;&#115;&#64;&#101;&#120;&#x61;&#109;&#x70;&#x6C;e&#x2E;&#99;&#111;
+    &#109;">&#x61;&#x64;&#x64;&#x72;&#x65;&#115;&#115;&#64;&#101;&#120;&#x61;
+    &#109;&#x70;&#x6C;e&#x2E;&#99;&#111;&#109;</a>
+
+在浏览器里面，这段字串（其实是 `<a href="mailto:address@example.com">address@example.com</a>`）会变成一个可以点击的「address@example.com」链接。
+
+（这种作法虽然可以糊弄不少的机器人，但并不能全部挡下来，不过总比什么都不做好些。不管怎样，公开你的信箱终究会引来广告信件的。）
+
+<h3 id="backslash">反斜杠</h3>
+
+Markdown 可以利用反斜杠来插入一些在语法中有其它意义的符号，例如：如果你想要用星号加在文字旁边的方式来做出强调效果（但不用 `<em>` 标签），你可以在星号的前面加上反斜杠：
+
+    \*literal asterisks\*
+
+Markdown 支持以下这些符号前面加上反斜杠来帮助插入普通的符号：
+
+    \   反斜线
+    `   反引号
+    *   星号
+    _   底线
+    {}  花括号
+    []  方括号
+    ()  括弧
+    #   井字号
+    +   加号
+    -   减号
+    .   英文句点
+    !   惊叹号
+
+<h2 id="acknowledgement">感谢</h2>
+
+感谢 [leafy7382][] 协助翻译，[hlb][]、[Randylien][] 帮忙润稿，[ethantw][] 的[汉字标准格式・CSS Reset][]， [WM][] 回报文字错误。
+
+[leafy7382]:https://twitter.com/#!/leafy7382
+[hlb]:http://iamhlb.com/
+[Randylien]:http://twitter.com/randylien
+[ethantw]:https://twitter.com/#!/ethantw
+[汉字标准格式・CSS Reset]:http://ethantw.net/projects/han/
+[WM]:http://kidwm.net/
+
+感谢 [fenprace][]，[addv][]。
+
+[fenprace]:https://github.com/fenprace
+[addv]:https://github.com/addv
+
+----------
+<h2 id="editor">Markdown 免费编辑器</h2>
+
+Windows 平台
+
+* [MarkdownPad](http://markdownpad.com/)
+* [MarkPad](http://code52.org/DownmarkerWPF/)
+
+Linux 平台
+
+* [ReText](http://sourceforge.net/p/retext/home/ReText/)
+
+Mac 平台
+
+* [Mou](http://mouapp.com/)
+
+在线编辑器
+
+* [Markable.in](http://markable.in/)
+* [Dillinger.io](http://dillinger.io/)
+
+浏览器插件
+
+* [MaDe](https://chrome.google.com/webstore/detail/oknndfeeopgpibecfjljjfanledpbkog) (Chrome)
+
+高级应用
+
+* [Sublime Text 2](http://www.sublimetext.com/2) + [MarkdownEditing](http://ttscoff.github.com/MarkdownEditing/) / [教程](http://lucifr.com/2012/07/12/markdownediting-for-sublime-text-2/)
+
+\*** 如有更好的 Markdown 免费编辑器推荐，请到[这里反馈](https://gitcafe.com/riku/Markdown-Syntax-CN/tickets/1)，谢谢！
