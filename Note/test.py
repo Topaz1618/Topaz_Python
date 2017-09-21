@@ -19,5 +19,6 @@ https://github.com/riku/Markdown-Syntax-CN/blob/master/syntax.md#precode
     answer = Answer(answer_url) 
 </code></pre>
     
-    
+<pre><code>这是一个代码区块。
+</code></pre>
     
