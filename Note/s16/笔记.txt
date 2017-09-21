@@ -1,0 +1,374 @@
+回顾：
+javascripts：
+在body标签里写最下面
+没有字典类型（看起来是字典实际上是对象）
+
+上节作业：
+网上找html模板：
+模板之家，bootstrap
+
+回顾：
+position
+background
+text-align
+marign
+padding
+font-size
+z-index
+over-flow
+:hover
+opacity
+float(clear:both)
+line-height
+border
+color
+display
+补充：
+min-width: 100px;       页面大于200px时，宽度都按照页面20%，保证不会比200px小
+overflow: auto;         出现滚动条
+position:fixed;         永远固定在窗口的某个位置
+position:relative;      单独没意义，和absolute结合固定在标签中某个位置
+position:
+absolute;      第一次定位可以在指定位置，滚动的时候就不在了
+
+
+1.序列化
+JSON.stringify()    列表转换成字符串
+JSON.parse()        字符串转换成列表
+eg:
+    li=[1, 2, 3, 4]
+    s=JSON.stringify(li)
+    "[1,2,3,4]"
+    newli= JSON.parse(s)
+    [1, 2, 3, 4]
+
+2.转义
+针对URL
+    encodeURI       转义URl
+    encodeURIComponent  全部转义
+    decodeURI       解码
+    decodeURIComponent
+针对字符
+    escape
+    unescape
+    URIError
+eg:
+    URL：
+    url="https://www.sogou.com/web?query=李杰"
+    newurl1=encodeURI(url)
+    "https://www.sogou.com/web?query=%E6%9D%8E%E6%9D%B0"
+    newurl2=encodeURIComponent(url)
+    "https%3A%2F%2Fwww.sogou.com%2Fweb%3Fquery%3D%E6%9D%8E%E6%9D%B0"
+    decodeURI(newurl1)
+    "https://www.sogou.com/web?query=李杰"
+    字符：
+    cookie：客户端请求服务器端，会在本地保存cookie，数据拿到必须转义再保存
+
+3.evel
+python:
+    val=eval(表达式)
+        exec（执行代码）
+JavaScript:
+    eval
+4.时间
+Date类
+d.get 获取
+d.set 设置
+eg:
+    var d=new Date()
+    >d
+    <Wed Dec 14 2016 18:32:02 GMT+0800 (中国标准时间)
+    >d.getMinutes()
+    <32
+    >n= d.getMinutes() +4
+    <36
+    >d.setMinutes(n)
+    >d
+    >Wed Dec 14 2016 18:36:02 GMT+0800 (中国标准时间)
+
+5.作用域
+其他语言：以代码块作为作用域
+eg:
+    public void Func(){
+        if(1==1){
+            string name ='java';
+        }
+        console.writeline(name);
+    }
+    Func()
+    不能运行：一个花括号就是一个代码块，console.writeline(name);找不到name会报错，放到定义name的同一个代码块里可以。
+
+Python:
+以函数为作用域
+    eg1：
+    def func():
+        if 1==1:
+            name='alex';
+        print(name)
+    func()
+    可以运行
+    eg2：
+    def func():
+        if 1==1:
+            name='alex'
+        print(name)
+    func()
+    print(name)
+    不能运行：在python里面是以函数作为作用域，第二个print(name)拿不到值，会报错
+
+JavaScript：
+1.以函数为作用域
+2.函数的作用域在函数未被调用之前，已被创建
+3.函数的作用域存在作用域链（一个作用域套一个作用域），并且也是在被调用之前创建
+4.函数内局域内部变量提前声明
+
+    eg:
+    function func(){
+        if(1==1){
+            var name='a1ex';
+        }
+    console.log(name)
+    }
+    func()
+    可以执行
+
+作用域链
+eg1:
+    xo="alex";      #前两个都没有找这个
+    function func(){
+        var xo='eric';  #第一个没有找这个
+        function inner(){
+            var xo='tony';  #先找tony
+            console.log(xo);
+        }
+        inner()
+    }
+    func()
+
+eg2:
+    xo="alex";
+    function func(){
+        var xo='eric';
+        function inner(){
+            var xo='tony';
+            console.log(xo);
+        }
+        #inner没有执行放到了内存里
+        return inner      #执行 func() 会得到结果：return一整个inner函数
+    }
+    var ret=func() # ret = func() = inner()
+    ret() #结果是tony
+
+eg3:
+   xo="alex";
+    function func(){
+        var xo='eric';
+        function inner(){
+            console.log(xo);
+        }
+        var xo='tony';
+        return inner;
+    }
+    var ret=func()
+    ret()   #结果是tony
+    #   func 调用的结果(执行了两次赋值，第二次覆盖第一次的值，有个函数不执行只return 一整个inner)
+        也就是func=inner=ret
+        ret()=inner() #按照作用域链来找，自己没有在func里找，由于func已经执行完了，得到的xo值是覆盖后的tony
+eg4:
+    function func(){
+        console.log(xxoo);
+    }
+    func()  #程序直接报错
+
+    function func(){
+        console.log(xxoo);
+        var xxoo='alex';
+    }
+    func()  #输出undefined
+
+    #你要的解释
+    打开console
+    >var topaz  #定义一个topaz，不赋值
+    <undefined  #默认值会是undefined
+    函数调用前会先解释的，解释过程中，定义作用域链的同时还会做一件事，函数内局域内部变量提前声明
+    他会找到所有的局域变量，然后执行一句var xxoo，就是xxoo=undefinded了，调用时因为console.log(xxoo);
+    之前并没有给xxoo赋值，所以得到结果unfind，例1程序报错的原因，就是解释时没找到一个局域变量，
+    连个给unfinished的机会都没有，执行的时候程序报错
+
+6.JavaScript面向对象
+function foo(){
+    var xo='alex';
+}
+foo()
+
+function Foo(n){
+    this.name=n ==> python: self.name='alex'
+}
+var obj=new Foo('we');  #创建个对象,传个we
+obj.name #是we
+
+1.this代指对象（python self），可以当做一个类了
+2.创建对象时,new 函数()
+
+原型：
+    function Foo(n){
+        this.name=n;
+#   不要像注释里这样定义，要使用原型，因为这样对象调用一次就会保存一次，浪费内存资源
+#   this.sayName=function{
+#       console.log(this.name)
+#       }
+    }
+    #FOO的原型，把上面注释的地方放到这里单独定义
+    FOO.prototype = {
+        'sayName':function{
+        console.log(this.name)
+    }
+    }
+    obj1=new Foo('we');
+    obj1.sayName()
+    obj2=new Foo('wee')
+    obj2.sayName()
+
+#使用原型，每个对象里只封装了个name，调用obj1.sayName，会通过obj1先找到类，类在原型里找sayName，有的话执行。这样就类似于python了，不用在每个对象里保存方法。
+
+
+Dom
+把一整个html当做一个对象
+查找（复习）
+    直接查找
+        var obj = document.getElementsByTagName('i1'); #这就是一个对象
+    间接查找
+        innerText   仅处理文本
+        innerHTML   处理全部内容
+            innerText和innerHTML的区别（dom间接操作.html）
+            eg1：
+            obj=document.getElementById('i1')
+            obj.innerText
+                "Topaz Google"
+            obj.innerHTML
+                "
+                Topaz
+                <a>Google</a>
+                "
+            eg2:
+                obj.innerText = "<a href='http://www.jd.com'>京东</a>";   #点不了，是文本
+                obj.innerHTML = "<a href='http://www.jd.com'>京东</a>";   @可以点
+        value（dom间接操作.html）
+            input框eg：
+            obj=document.getElementById('i2')
+                <input id="i2" type="text">
+            obj.value       #获取值
+                ""          #当前为空
+            obj.value       #在页面输入框输入python后，再次获取值
+                "python"    #拿到了输入框里的值
+            obj.value="topaz"   #给输入框赋值topaz
+                "topaz"         #页面输入框中变成了topaz
+            select eg:
+            obj=document.getElementById('i3')
+                <select id="i3">
+            obj.value   #获取当前多选框的值
+                "11"
+            obj.value=12    #设置多选框目前选项
+                12
+            select特有多选框
+            obj.selectedIndex=0
+                0       #多选框被设置成topaz1
+        textarea
+        obj=document.getElementById('i4')
+        obj.value
+            "fuck!"
+        obj.value="吹泡泡"
+            "吹泡泡"
+操作
+    文本操作
+       onfocus=""   当这个标签获取焦点的时候自动执行一个函数
+       onblur=""    当这个标签移出焦点的时候自动执行一个函数
+       placeholder="请输入关键字" 一条实现搜索框
+    样式操作
+        以class为单位设置样式
+        className
+        classList
+            classList.add
+            classList.remove
+        单独设置一个样式
+        obj.style.backgroundColor   #设置个style
+    eg：
+        obj=document.getElementById('i1')
+            <input id="i1" onfocus="Focus();" onblur="Blur()" value="请输入关键字" type="text">
+        obj.className="c1 c2"
+        obj.className
+            "c1 c2"
+        obj.classList.add('c3')
+        obj.classList
+            DOMTokenList [ "c1", "c2", "c3" ]
+        obj.classList.remove('c1')
+        obj.classList
+            DOMTokenList [ "c2", "c3" ]
+        obj.style.backgroundColor='red' #对话框背景色变成红色
+    属性操作;
+        setAttribute    #添加覆盖属性
+        removeAttribute #删除属性
+        attributes      #显示全部属性
+        eg：
+        obj
+            <input id="i1"  value="请输入关键字" class="c2 c3"  type="text">
+        obj.setAttribute('id','i2')
+        obj
+            <input id="i2"  value="请输入关键字" class="c2 c3"  type="text">
+        obj.removeAttribute('value')
+            <input id="i2"  class="c2 c3"  type="text">
+        obj.attributes
+            NamedNodeMap [ id="i2", class="c2 c3",  type="text" ]
+    创建标签，并添加到HTML中:
+    insertAdjacentHTML
+    createElement
+    appendChild
+    eg:插入标签.html
+
+    提交表单：
+        任何标签通过DOM都可以提交表单
+        document.getElementById('f1').submit()
+        eg:表单提交.html
+
+    其他：
+        console.log()
+        alert
+        confirm
+        eg:表单提交.html
+
+        location.href       获取当前的url
+        location.href = ""  重定向，跳转
+        location.href = location.href   页面刷新
+        location.reload()   页面刷新
+        clearInterval       删除定时器
+        setTimeout          只执行一次的定时器
+        eg:表单提交.html QQ邮箱删除案例.html
+        21
+    事件：
+    onclick,onblur,onfocus,onmouseover(鼠标移到),onmouseout（鼠标移出）
+    更多事件（http://www.cnblogs.com/wupeiqi/articles/5643298.html）
+    绑定事件的两种方式：
+        a.直接绑定标签 onclick='xxx()'
+        b.先获取Dom对象，然后进行绑定
+            docment.getElementById('xx').onclick
+            eg：test/58面试题.html
+    特殊的变量：this    当前触发事件的标签
+        a.第一种绑定方式
+        <input type='button' onclick='ClickOn(self)'>
+        function ClickOn(self){
+            //self 当前点击的标签
+        }
+        eg:test/11.html test/垂直菜单this.html
+        b.第二种绑定方式
+        <input  id="i1" type="button"/>
+        document.getElementsByTagName('tr').onclick=function(){
+            //this 代指当前点击的标签
+        }
+        c.第三种绑定方式
+        eg:事件冒泡.html
+
+
+
+
+
+

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <form  id="f1" action="http://www.jd.com">
+        <input  type="text"/>
+        <!--方式一-->
+        <input  type="submit" value="提交"/>
+
+        <!--方式二-->
+        <a onclick="submitForm();">提交</a>
+    </form>
+
+        <a onclick="conFirm()">删除</a>
+
+    <script>
+        function submitForm() {
+            document.getElementById('f1').submit()
+        }
+
+        function conFirm(){
+        //点确认时返回true，取消返回false
+            var v= confirm('真的要删除吗？');
+            console.log(v);
+        }
+        //定时器（默认一直执行），clearInterval一次之后删除定时器
+        var obj=setInterval(function(){
+            console.log(1);
+            clearInterval(obj)
+        },1000);
+        // 定时器（只执行一次）
+        setTimeout(function () {
+            console.log(2);
+        },3000)
+    </script>
+
+</body>
+</html>

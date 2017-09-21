@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .item{
+            background-color: #dddddd;
+        }
+        .item:hover{
+            color: red;
+        }
+        /*触发item下的hover时，b就发生变化*/
+        .item:hover .b{
+            background-color: #2459a2;
+        }
+
+        /*
+        为b标签加上这个hover：
+        没有点在b标签时，只显示item标签的设置
+        .item .b:hover{
+            background-color: #2459a2;
+        }
+
+        */
+    </style>
+</head>
+<body>
+    <div class="item">
+        <div class="a">123</div>
+        <div class="b">456</div>
+    </div>
+</body>
+</html>
+
+
+

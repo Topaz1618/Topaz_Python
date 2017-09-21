@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Title</title>
+    <style>
+        #main{
+            background-color: #2459a2;
+            width: 300px;
+            height: 400px;
+        }
+        #content{
+            background-color: bisque;
+            width: 150px;
+            height: 200px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="main">
+        <div id="content"></div>
+    </div>
+    <script>
+        var main1=document.getElementById('main');
+        var content1=document.getElementById('content');
+        main1.addEventListener('click',function(){console.log('main'),false})
+        content1.addEventListener('click',function(){console.log('content'),false})
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <input type="button" value="+" onclick="add2()"/>
+    <div id="i1">
+        <input type="text"/>
+    </div>
+    <script>
+        <!--第一种添加方式(字符串)-->
+        function add1() {
+            var tag="<input type='text'/><hr/>";
+            //<hr/>换行用，用p标签包裹也行
+            document.getElementById('i1').insertAdjacentHTML("beforeEnd",tag);
+            //注意：第一个参数只能是"beforeBegin"，"afterbegin"
+        }
+
+        //第二种添加方式(对象)
+        function add2() {
+            var tag=document.createElement('input');
+            tag.setAttribute('type','text');
+            tag.style.backgroundColor='red'
+            var p=document.createElement('p')
+            p.appendChild(tag)
+            document.getElementById('i1').appendChild(p)
+        }
+
+    </script>
+</body>
+</html>

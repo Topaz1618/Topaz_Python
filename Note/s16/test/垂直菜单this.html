@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .hide{
+            display: none;
+        }
+        .item .header{
+            height: 35px;
+            background-color: lightskyblue;
+            color: white;
+            line-height: 35px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div style="height: 48px;"></div>
+    <div style="width: 900px">
+    <div class="item">
+        <div  class="header " onclick="ChangeMenu(this);">菜单一</div>
+        <div class="content">
+            <h2 style="color: antiquewhite">可爱的平子1</h2>
+            <img src="1.jpg" style="height: 300px;width: 500px;" />
+        </div>
+    </div>
+    <div class="item ">
+        <div class="header" onclick="ChangeMenu(this);">菜单二</div>
+        <div class="content hide">
+            <h2 style="color: antiquewhite">可爱的平子2</h2>
+            <img src="2.png" style="height: 300px;width: 500px;" />
+        </div>
+    </div>
+    <div class="item">
+        <div class="header" onclick="ChangeMenu(this);">菜单三</div>
+        <div class="content  hide">
+            <h2 style="color: antiquewhite">可爱的平子3</h2>
+            <<img src="3.jpg" style="height: 300px;width: 500px;" />
+        </div>
+    </div>
+    </div>
+    <script>
+        function ChangeMenu(self){
+            var item_list=self.parentElement.parentElement.children;
+            console.log(item_list)
+            for (var i=0;i<item_list.length;i++){
+                var current_item=item_list[i];
+                current_item.children[1].classList.add('hide');
+            }
+            self.nextElementSibling.classList.remove('hide');
+      }
+
+    </script>
+</body>
+</html>
