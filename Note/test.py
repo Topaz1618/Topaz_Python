@@ -11,7 +11,12 @@ https://github.com/riku/Markdown-Syntax-CN/blob/master/syntax.md#precode
 选择性地接着 title 内容，可以用单引号、双引号或是括弧包着
  
     
-   
+  .. code-block:: python
+
+    from zhihu import Answer
+    
+    answer_url = "http://www.zhihu.com/question/24269892/answer/29960616"
+    answer = Answer(answer_url) 
     
     
     
