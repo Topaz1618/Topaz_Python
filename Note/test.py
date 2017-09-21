@@ -1,3 +1,4 @@
+ .. contents::
     if a != 0
         print("test")
 https://github.com/riku/Markdown-Syntax-CN/blob/master/syntax.md#precode
