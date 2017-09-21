@@ -1,0 +1,28 @@
+css补充
+    position:
+        fixed => 固定在页面的某个位置
+        relative+absolute 根据父级标签来设定自己的位置
+        <div style='position:relative'>
+            <div style='position:absolute;'></div>
+        </div>
+    opcity:0.5:透明度
+    z-index:层级的顺序，谁大谁在上面
+    overflow: hidden 超过设定的大小就隐藏
+    overflow: auto  超过设定的大小就出现滚动条
+     .pg-header .menu:hover{        当鼠标移动到当前标签上时，应用以下属性
+            background-color: cadetblue;
+     }
+     hover:菜单栏变色
+    背景图片：
+     <div style="background-image: url('2.png');height: 180px;background-repeat: repeat"></div>\
+    background-image: url('2.png')：默认div大，图片重复访问
+    background-repeat: repeat #横向纵向都重复
+                        no-repeat #不重复
+                        repeat-x  #横向重复
+                        repeat      #纵向重复
+    图片移动：
+    background-position-x: 0;
+    background-position-y:-54px;
+    background-position:10px 10px; 上面的两个可以写成这一个，前面是x轴，后边是y轴
+    background: 10px 11px; 也可以在background后边直接加
+
