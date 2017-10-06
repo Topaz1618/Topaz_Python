@@ -1,0 +1,601 @@
+http://www.cnblogs.com/wupeiqi/articles/5702910.html
+http://www.cnblogs.com/wupeiqi/articles/6536518.html
+
+Tornado
+	Tornado 是 FriendFeed 使用的可扩展的非阻塞式 web 服务器及其相关工具的开源版本。这个 Web 框架看起来有些像web.py 或者 Google 的 webapp，不过为了能有效利用非阻塞式服务器环境，这个 Web 框架还包含了一些相关的有用工具 和优化。
+	Tornado 和现在的主流 Web 服务器框架（包括大多数 Python 的框架）有着明显的区别：它是非阻塞式服务器，而且速度相当快。得利于其 非阻塞的方式和对 epoll 的运用，Tornado 每秒可以处理数以千计的连接，这意味着对于实时 Web 服务来说，Tornado 是一个理想的 Web 框架。我们开发这个 Web 服务器的主要目的就是为了处理 FriendFeed 的实时功能 ——在 FriendFeed 的应用里每一个活动用户都会保持着一个服务器连接。
+
+路由系统
+	路由系统其实就是 url 和 类 的对应关系，这里不同于其他框架，其他很多框架均是 url 对应 函数，Tornado中每个url对应的是一个类
+	例子
+		import tornado.ioloop
+		import tornado.web  
+		class MainHandler(tornado.web.RequestHandler):
+			def get(self):
+				self.write("Hello, world")  
+		class StoryHandler(tornado.web.RequestHandler):
+			def get(self, story_id):
+				self.write("You requested the story " + story_id)    
+		application = tornado.web.Application([
+			(r"/index", MainHandler),
+			(r"/story/([0-9]+)", StoryHandler),
+		])
+	Tornado中原生支持二级域名的路由
+		主机头	url正则			Handler
+		safe	/index/\d*		IndexHandler
+				/admin/\w*		AdminHandler
+				/car/\w* 		CarHandler
+		.*		/index/w*		HomeHandler
+				/pro/\w*		ProHandler
+				/.*				AllHandler
+
+来个实例练练手，暂且叫它app.py			
+	import tornado.ioloop
+	import tornado.web
+	from tornado import gen
+	from tornado.concurrent import Future
+	class LoginHandler(tornado.web.RequestHandler):
+		'''访问  http://127.0.0.1:8888/login  ==> 输出 name = username 的input标签里输入的内容，并弹窗666'''
+		def get(self):
+			self.render('son.html')
+			'''
+			获取URL中以GET形式传递的数据
+			self.get_query_argument()
+			self.get_query_arguments()
+			获取请求体中获取传递的数据
+			self.get_body_argument()
+			self.get_body_arguments()
+			self.cookies
+			self.set_cookie()
+			self._headers
+			self.get_secure_cookie()
+			时间戳|加密至|value
+			self.set_header()
+			file_metas = self.request.files["fff"]
+			self.redirect('http://www.baidu.com') '''
+		def post(self, *args, **kwargs):
+			user = self.get_argument('username')
+			print(user)
+			self.write('弹~~')       #这个就是弹窗内容啦
+	#零落成泥碾作尘 settings到了tronado这儿连个配置文件都捞不着了 
+	settings = {
+		'template_path': 'tpl',     #配置模板,也就是html文件的地儿
+	}
+	# Tronado的路由系统，看了感觉真可怜
+	application = tornado.web.Application([
+			(r"/login", LoginHandler),  # http://127.0.0.1:8887/login 去找 LoginHandler 处理
+	], **settings)
+	if __name__ == "__main__":
+		application.listen(8887)        #监听8887
+		tornado.ioloop.IOLoop.instance().start()      #一直监听，看loop就知道了，不信邪就注释一下
+
+模板引擎
+	Tornao中的模板语言和django中类似，模板引擎将模板文件载入内存，然后将数据嵌入其中，最终获取到一个完整的字符串，再将字符串返回给请求者
+	Tornado模板支持控制语句和表达语句:
+		控制语句
+			和Python语句的格式基本相同，支持if，for，while，try，结束位置用{% end %} 做标记，还通过 extends 和 block 语句实现了模板继承，这些在 template 模块 的代码文档中有着详细的描述。
+			语法{%  %}	 #{% if len(items) > 2%}
+		表达语句
+			语法{{  }}  #{{ items[0] }}
+		PS：使用模板前需要在setting中设置模板路径："template_path" : "tpl"
+	在模板中默认提供了一些函数、字段、类：
+		escape: tornado.escape.xhtml_escape 的別名
+		xhtml_escape: tornado.escape.xhtml_escape 的別名
+		url_escape: tornado.escape.url_escape 的別名
+		json_encode: tornado.escape.json_encode 的別名
+		squeeze: tornado.escape.squeeze 的別名
+		linkify: tornado.escape.linkify 的別名
+		datetime: Python 的 datetime 模组
+		handler: 当前的 RequestHandler 对象
+		request: handler.request 的別名
+		current_user: handler.current_user 的別名
+		locale: handler.locale 的別名
+		_: handler.locale.translate 的別名
+		static_url: for handler.static_url 的別名
+		xsrf_form_html: handler.xsrf_form_html 的別名	
+	1.{% extends 'index.html' %}  && {% block %}{% end %}	#用上面的练手实例app.py就可以看到效果哦~
+		懵懂无知的daddy.html
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+				<title>{% block title %}default{% end %}</title>
+			</head>
+			<body>
+				{% block test %}default{% end %}
+			</body>
+			</html>
+		son.html 
+			{% extends 'daddy.html'%}
+			{% block title %} topaz {% end %}
+			{% block  test %}
+				<form id="my_form" method="POST" action="/login" target='my_iframe'>
+					{% raw xsrf_form_html() %}
+					<iframe id="my_iframe" name='my_iframe' src=""  style="display: none"></iframe>
+					<input type="text" name="username" />
+					<input type="button" value="提交" onclick="redirect();" />
+				</form>
+				<script>
+					function redirect(){
+						document.getElementById('my_iframe').onload = Testt;
+						document.getElementById('my_form').submit();
+					}
+					function Testt(ths){
+						var iframeContents = this.contentWindow.document.body.innerText;
+						alert(iframeContents)
+					}
+				</script>
+			{% end %}
+	2.导入 {% include 'header.html' %}
+		被导入的模板，暂且称它为'header.html'吧
+			<div>
+				<ul>
+					<li>1024</li>
+					<li>42区</li>
+				</ul>
+			</div>
+		还用上面的son.html，方便看效果
+			{% extends 'daddy.html'%}
+			{% block title %} topaz {% end %}
+			{% block  test %}
+				<div class="pg-header">
+					{% include 'header.html' %}
+				</div>
+			{% end %}
+	3.自定义UIMethod以UIModule	
+		"""
+		帮你机翻好了，贴心不贴心，想不想给我转账，支付宝是邮箱 (≧?≦)ゞ
+		# 页面上可重复使用的模块化UI单元
+		A re-usable, modular UI unit on a page
+		# UI模块通常执行其他查询
+		UI modules often execute additional queries
+		#可以把额外的CSS和JavaScript自动插入输出页面里
+		they can include additional CSS and JavaScript that will be included in the outputpage, which is automatically inserted on page render.
+		#UIModule的子类必须覆盖`render`方法
+		Subclasses of UIModule must override the `render` method.	
+		"""
+		Step1.定义 
+			uimethods.py
+				def tab(self):
+					return 'UIMethod'
+			uimodules.py
+				from tornado.web import UIModule
+				from tornado import escape
+				class custom(UIModule):
+				def render(self, *args, **kwargs):
+					return escape.xhtml_escape('<h1>Topaz</h1>')
+				def javascript_files(self):
+					'''在页面生成<script src="c1.js"></script>
+					<script src="c2.js"></script>'''
+					'''return ['c1.js','c2.js']'''
+				def embedded_javascript(self):
+					'''在页面生成<script>alert(123)</script>'''
+					'''return "alert(123)"'''
+				def css_files(self):
+					'''生成<link href="c1.css" rel="stylesheet">'''
+					'''return ['c1.css','c2.css']'''
+				def embedded_css(self):
+					'''在页面生成<style> c1.{color:red;}（return的内容） </style>'''
+					'''return "c1.{color:red;}" '''
+		Step2.注册（在练手实例里做如下添加）
+			import uimodules as md
+			import uimethods as mt
+			settings = {
+			'template_path': 'tpl',     #配置模板,也就是html文件的地儿
+			'ui_methods': mt,
+			'ui_modules': md,
+			}
+		Step3.使用(还是熟悉的son.html)
+			{% extends 'daddy.html'%}			#继承它爹
+			{% block title %} topaz {% end %}	#继承爹之后做些改变
+			{% block  test %}					#继续改
+				<div class="pg-header">
+					{% include 'header.html' %}
+				</div>
+				<h1> ui_methods and ui_modules </h1>	#打个标签方便看啦
+				{% module custom(123) %}				#调用
+				{{ tab() }}								#调用
+			{% end %}	
+	4.静态文件		
+		a. app.py做settings添加
+			settings = {
+				'template_path': 'tpl',     #配置模板,也就是html文件的地儿
+				'static_path': 'static',    #设置静态文件路径
+				'static_url_prefix': '/static/', #设置前端前缀 <img src="/static/a.png?v=39b39f17e9f93251e9423fbe52651899">
+			}
+		b. son.html		#这个每次都演全套，因为怕未来的自己骂自己
+		{% extends 'daddy.html'%}			#继承爹模板，代码在上面
+		{% block title %} topaz {% end %}
+		{% block  test %}
+			<div class="pg-header">
+				{% include 'header.html' %}	#包含header.html，代码在上面
+			</div>
+			<h1>hello</h1>
+			{% module custom(123) %}
+			{{ tab() }}
+			<img  src="{{static_url("a.png")}}"  />	#从静态文件路径找a.png,这句就是这一段的精髓了
+		{% end %}
+		c.静态文件缓存
+			settings 添加下面一行，效果还没测试，一会上传一下看看ok不ok
+			(r"/static", tornado.web.StaticFileHandler, {"path": settings["static_path"]}),
+			参考：http://www.ttlsa.com/docs/tornado/#_8
+			tornado.web.type.get_content_version()		#这个找了资料说的都不太详细
+			源码：https://tornado-zh.readthedocs.io/zh/latest/_modules/tornado/web.html?highlight=get_content_version
+	5.cookie
+		基本操作：
+			class MainHandler(tornado.web.RequestHandler):
+				def get(self):
+					print('ok')
+					if not self.get_cookie("mycookie"):     		#获取cookie内容
+						self.set_cookie("mycookie", "myvalue")      # cookie 添加 mycookie=myvalue
+						self.write("Your cookie was not set yet!")	
+					else:
+						self.write("Your cookie was set!")
+			#settings 做如下添加
+				(r"/", MainHandler),
+		加密cookie（签名）
+			1. application里创建应用时，提供一个名为cookie_secret的密钥（可作为关键词参数传入应用的设置中，也可以放到settings里，然后**settings一起传过去）
+			2. 使用Tornado的set_secure_cookie和get_secure_cookie签名（没有cookie_secret不行哦~）
+			举个例子：
+				application = tornado.web.Application([
+				(r"/", MainHandler),
+				], cookie_secret="61oETzKXQAGaYdkL5gEmGeJJFuYh7EQnp2XdTP1o/Vo=")
+			内部算法：
+				http://www.cnblogs.com/wupeiqi/articles/5702910.html
+		签名Cookie的本质是：
+			写cookie过程		
+				将值进行base64加密
+				对除值以外的内容进行签名，哈希算法（无法逆向解析）
+				拼接签名 + 加密值
+			读cookie过程
+				读取 签名 + 加密值
+				对签名进行验证
+				base64解密，获取值内容
+		实例1：基于Cookie实现用户验证-Demo
+			import tornado.ioloop
+			import tornado.web
+			from tornado import gen
+			from tornado.concurrent import Future
+			from MyTornado import uimethods as mt
+			from MyTornado import uimodules as md
+			class LoginHandler(tornado.web.RequestHandler):
+				'''访问  http://127.0.0.1:8888/login  ==> 输出 name = username 的input标签里输入的内容，并弹窗666'''
+				def get(self):
+					self.render('son.html')
+				def post(self, *args, **kwargs):
+					user = self.get_argument('username')
+					if user == "topaz":
+						self.set_secure_cookie('login_user', 'Topaz')	#签名
+						self.redirect('/')
+					else:
+						self.write('<div style="background-color: red;width: 100px;height: 20px">用户名或密码错误</div>')       #这个就是弹窗内容啦
+						self.render('son.html')
+			class MainHandler(tornado.web.RequestHandler):
+				def get(self):
+					login_user = self.get_secure_cookie('login_user',None)	#验证
+					if login_user:
+						self.write(login_user)
+					else:
+						self.redirect('/login')
+			settings = {
+				'template_path': 'tpl',     #配置模板,也就是html文件的地儿
+				'ui_methods': mt,            #注册ui方法
+				'ui_modules': md,            #注册ui模块
+				'static_path': 'static',    #设置静态文件位置
+				'static_url_prefix': '/static/', #设置前端前缀 <img src="/static/a.png?v=39b39f17e9f93251e9423fbe52651899">
+				'cookie_secret':'t114uXSkw1SZ6xlWOCASQWYKkIuW7Wl2bTnbsLzsJyoOI7EqnnaT8HDzFNbB9Ryw',
+			}
+			
+			# Tronado的路由系统，看了感觉真可怜
+			application = tornado.web.Application([
+				(r"/login", LoginHandler),      # http://127.0.0.1:8887/login 去找 LoginHandler 处理
+				(r"/", MainHandler),
+			],**settings)
+			
+			if __name__ == "__main__":
+				application.listen(8887)        #监听8887
+				tornado.ioloop.IOLoop.instance().start()      #一直监听，看loop就知道了，不信邪就注释一下
+				tornado.web.type.get_content_version()	
+		实例2：基于签名Cookie实现用户验证-Demo
+			import tornado.ioloop
+			import tornado.web
+			from tornado import gen
+			from tornado.concurrent import Future
+			from MyTornado import uimethods as mt
+			from MyTornado import uimodules as md	
+			class BaseHandler(tornado.web.RequestHandler):
+				'''验证的'''
+				def get_current_user(self):
+					return self.get_secure_cookie("login_user")
+			class LoginHandler(tornado.web.RequestHandler):
+				'''访问  http://127.0.0.1:8888/login  ==> 输出 name = username 的input标签里输入的内容，并弹窗666'''
+				def get(self):
+					self.render('son.html')
+				def post(self, *args, **kwargs):
+					user = self.get_argument('username')
+					if user == "topaz":
+						self.set_secure_cookie('login_user', 'Topaz')
+						self.redirect('/')
+					else:
+						self.render('son.html', **{'status': '用户名或密码错误'})
+			class MainHandler(BaseHandler):
+				@tornado.web.authenticated	#使用这个装饰器，不成功帮你返回login页面
+				def get(self):
+					login_user = self.current_user	#当前已经通过认证的用户在每个请求处理函数中都可以通过 self.current_user 得到,
+					self.write(login_user)			
+			settings = {
+				'template_path': 'tpl',     #配置模板,也就是html文件的地儿
+				'ui_methods': mt,            #注册ui方法
+				'ui_modules': md,            #注册ui模块
+				'static_path': 'static',    #设置静态文件位置
+				'static_url_prefix': '/static/', #设置前端前缀 <img src="/static/a.png?v=39b39f17e9f93251e9423fbe52651899">
+				'cookie_secret':'t114uXSkw1SZ6xlWOCASQWYKkIuW7Wl2bTnbsLzsJyoOI7EqnnaT8HDzFNbB9Ryw',
+			}			
+			# Tronado的路由系统，看了感觉真可怜
+			application = tornado.web.Application([
+				(r"/login", LoginHandler),      # http://127.0.0.1:8887/login 去找 LoginHandler 处理
+				(r"/", MainHandler),
+			],**settings)
+			
+			if __name__ == "__main__":
+				application.listen(8887)        #监听8887
+				tornado.ioloop.IOLoop.instance().start()      #一直监听，看loop就知道了，不信邪就注释一下
+				tornado.web.type.get_content_version()
+	JavaScript操作Cookie
+		由于Cookie保存在浏览器端，所以在浏览器端也可以使用JavaScript来操作Cookie
+		/*设置cookie，指定秒数过期*/
+		function setCookie(name,value,expires){
+			var temp = [];
+			var current_date = new Date();
+			current_date.setSeconds(current_date.getSeconds() + 5);
+			document.cookie = name + "= "+ value +";expires=" + current_date.toUTCString();
+		}
+		参数：
+
+			domain   指定域名下的cookie
+			path       域名下指定url中的cookie
+			secure    https使用
+		注：jQuery中也有指定的插件 jQuery Cookie 专门用于操作cookie ==>  http://plugins.jquery.com/cookie/
+	CSRF
+		Tornado中的夸张请求伪造和Django中的相似
+		这块我是真的萌比，等我查查加了csrf会发生啥？？和为啥要加它 
+		http://www.cnblogs.com/wupeiqi/articles/5702910.html
+	上传文件
+		html:
+			<form id="my_form" name="form" action="/index" method="POST"  enctype="multipart/form-data" >
+				<input name="fff" id="my_file"  type="file" />
+				<input type="submit" value="提交"  />
+			</form>
+		python:
+			file_metas = file_metas = self.request.files["fff"]	#添加这句就是获取文件，fff 就是上传<input>的name
+			for meta in file_metas:		
+				file_name = meta['filename']	#meta里的filename就是文件名
+				with open(file_name,'wb') as f:	
+					f.write(meta['body'])		#body写到本地
+
+		PS:还有一种ajax方式，想了解可以去看看
+	验证码
+		验证码原理在于后台自动创建一张带有随机内容的图片，然后将内容通过img标签输出到页面
+		Demo：http://files.cnblogs.com/files/wupeiqi/tornado_check_code.zip
+	异步非阻塞
+		装饰器 + Future 可以实现Tornado的异步非阻塞
+		装饰器：
+			当发送GET请求时，由于方法被@gen.coroutine装饰且yield 一个 Future对象，那么Tornado会等待，等待用户向future对象中放置数据或者发送信号，如果获取到数据或信号之后，就开始执行doing方法
+			异步非阻塞体现在当在Tornaod等待用户向future对象中放置数据时，还可以处理其他请求
+			它是如何工作的：https://tornado-zh.readthedocs.io/zh/latest/guide/coroutines.html?highlight=gen.coroutine#id3
+			PS：a.在等待用户向future对象中放置数据或信号时，此连接是不断开的
+				b.Python3.5引入了 async 和 await 关键字(使用这些关键字的函数被称为”原生协程”)，从Tornado 4.3开始, 你可以用它们代替 yield 为基础的协程
+				  函数定义时使用 async def foo() 代替 @gen.coroutine 
+				  例子参考：https://tornado-zh.readthedocs.io/zh/latest/guide/coroutines.html?highlight=gen.coroutine
+		Future
+			异步结果的占位符，Future封装了异步的结果，在同步中使用Future，会在线程和进程池等待结果
+			在Tronado中通常用 .IOLoop.add_future” 或 `.gen.coroutine' yielding them		#描述直接用英文是怕翻译之后不准确，下面同
+			tornado.concurrent.Future 和 concurrent.futures.Future 类似，but not thread-safe ,因此用于单线程事件循环速度更快 	
+		基本使用		
+			class AsyncHandler(tornado.web.RequestHandler):
+			@gen.coroutine
+			def get(self):
+				future = Future()
+				future.add_done_callback(self.doing)
+				yield future
+				# 或
+				# tornado.ioloop.IOLoop.current().add_future(future,self.doing)
+				# yield future
+		
+			def doing(self,*args, **kwargs):
+				self.write('async')
+				self.finish()
+		httpclient类库
+			介绍：Tornado提供了httpclient类库用于发送Http请求，其配合Tornado的异步非阻塞使用
+				1.httpclient 定义了simple_httpclient 和 curl_httpclient这俩实现类共享的公用接口，阻塞和非阻塞的http客户端接口
+				2.应用程序可以直接实例化对应的实现类，也可以选择本模块提供的AsyncHTTPClient.configure方法覆盖实现
+				3.默认的实现是 simple_httpclient, 能满足大多数用户需求，一些应用程序也可能会因为以下原因想切换到 curl_httpclient 
+					curl_httpclient 支持HTTP代理和使用指定网络接口
+					curl_httpclient更快
+					curl_httpclient 是 Tornado 2.0 之前的默认值
+					curl_httpclient 更有可能与不完全符合 HTTP 规范的网站兼容, 或者与使用很少使用 HTTP 特性的网站兼容	#这是啥理由？？
+				4.fetch(request, callback=None, raise_error=True, **kwargs) https://tornado-zh.readthedocs.io/zh/latest/_modules/tornado/httpclient.html#AsyncHTTPClient.fetch
+					执行一个请求, 并且异步的返回 HTTPResponse
+					request 参数可以是一个 URL 字符串也可以是一个 HTTPRequest 对象，如果是一个字符串, 我们将使用全部的关键字参数一起构造一个 HTTPRequest 对象: HTTPRequest(request, **kwargs)
+					这个方法返回一个结果为 HTTPResponse 的 Future 对象，默认情况下, 如果该请求返回一个非 200 的响应码, 这个 Future 将会抛出一个 HTTPError 错误. 相反, 如果 raise_error 设置为 False, 则无论响应码如何, 都将返回该 response (响应).
+					如果给定了 callback , 它将被 HTTPResponse 调用. 在回调接口中, HTTPError 不会自动抛出. 相反你必须检查该响应的 error 属性或者调用它的 rethrow 方法.		
+			实例：
+				import tornado.web
+				from tornado import gen
+				from tornado import httpclient
+				class AsyncHandler(tornado.web.RequestHandler):
+					@gen.coroutine
+					def get(self, *args, **kwargs):
+						print('进入')
+						http = httpclient.AsyncHTTPClient()
+						data = yield http.fetch("http://www.cnblogs.com")
+						print('完事',data)
+						self.finish('6666')
+			
+			
+			
+			
+			
+			
+			参考：https://tornado-zh.readthedocs.io/zh/latest/httpclient.html
+		基于异步非阻塞和Tornado-MySQL实现用户登录示例
+			import tornado.web
+			from tornado import gen
+			import tornado_mysql
+			from tornado_mysql import pools
+			"""
+			连接池的描述
+			Connection pool like Golang's database/sql.DB.		#连接池类似数据库Golang/sql.DB
+			This connection pool is based on autocommit mode.	#连接池基于自动提交模式(autocommit mode)
+			You can execute query without knowing connection.	#可以在不知道连接的情况下执行查询
+			When transaction is necessary, you can checkout transaction object.	#事务需要时，可以检出事务对象
+			"""
+			POOL = pools.Pool(
+				dict(host='10.0.0.138',port=3306,user='dog',passwd='123456',db='topaz'),
+				max_idle_connections=1,	#保持连接的最大数量
+				max_recycle_sec=3)		# 连接回收时间
+			@gen.coroutine
+			def get_user_by_conn_pool(user):
+				cur = yield POOL.execute("SELECT SLEEP(%s)", (user,))   #在pool中进行查询,返回Future产生closed光标,可以从游标中获取行，lastrowid等
+				row = cur.fetchone()    #获取下一行
+				raise gen.Return(row)  #手动引发一个异常
+			@gen.coroutine
+			def get_user(user):
+				print('get_user',user)
+				conn = yield tornado_mysql.connect(host='10.0.0.138',port=3306,passwd='123456',user='dog',db='topaz',charset='utf8')    #连接
+				cur = conn.cursor()     #获取下一行
+				print('cur',cur)
+				# yield cur.execute("SELECT name,email FROM web_models_userprofile where name=%s", (user,))
+				yield cur.execute("select sleep(10)")
+				row = cur.fetchone()
+				cur.close()
+				conn.close()
+				raise gen.Return(row)
+			class LoginHandler(tornado.web.RequestHandler):
+				def get(self, *args, **kwargs):
+					self.render('son.html')
+				@gen.coroutine
+				def post(self, *args, **kwargs ):
+					user = self.get_argument('username')    #name为username的标签
+					data = yield gen.Task(get_user, user)   #去找getuser，把user穿进去，适用于call的的异步功能
+					if data:
+						print('data',data)
+						self.redirect('http://www.cnblogs.com')
+					else:
+						self.render('son.html')
+			settings = {
+				'template_path': 'tpl',
+				'static_path': 'static',  # 设置静态文件位置
+				'static_url_prefix': '/static/',  # 设置前端前缀 <img src="/static/a.png?v=39b39f17e9f93251e9423fbe52651899">
+			
+			}
+			application = tornado.web.Application([
+				(r"/login", LoginHandler),
+			],**settings)
+			if __name__ == "__main__":
+				application.listen(8886)
+				tornado.ioloop.IOLoop.instance().start()      #一直监听，看loop就知道了，不信邪就注释一下
+				tornado.web.type.get_content_version()
+		
+			参考：https://github.com/Topaz1618/Tornado-MySQL
+
+自定义Web组件	
+	session
+		1.面向对象基础：面向对象中通过索引的方式访问对象，需要内部实现 __getitem__ 、__delitem__、__setitem__方法
+			class Foo(object):
+				def __getitem__(self, key):
+					print  '__getitem__',key
+				def __setitem__(self, key, value):
+					print '__setitem__',key,value
+				def __delitem__(self, key):
+					print '__delitem__',key
+			obj = Foo()
+			result = obj['k1']
+			#obj['k2'] = 'wupeiqi'
+			#del obj['k1']
+		2.Tornado扩展：Tornado框架中，默认执行Handler的get/post等方法之前默认会执行 initialize方法，所以可以通过自定义的方式使得所有请求在处理前执行操作
+			class BaseHandler(tornado.web.RequestHandler):
+				def initialize(self):
+					self.xxoo = "wupeiqi"
+			class MainHandler(BaseHandler):
+				def get(self):
+					print(self.xxoo)
+					self.write('index')
+			class IndexHandler(BaseHandler):
+				def get(self):
+					print(self.xxoo)
+					self.write('index')
+		3.session：session其实就是定义在服务器端用于保存用户回话的容器，其必须依赖cookie才能实现
+			import config
+			from hashlib import sha1
+			import os
+			import time
+			create_session_id = lambda: sha1(bytes('%s%s' % (os.urandom(16), time.time()), encoding='utf-8')).hexdigest()
+			class SessionFactory:
+				@staticmethod
+				def get_session_obj(handler):
+					obj = None
+					if config.SESSION_TYPE == "cache":
+						obj = CacheSession(handler)
+					elif config.SESSION_TYPE == "memcached":
+						obj = MemcachedSession(handler)
+					elif config.SESSION_TYPE == "redis":
+						obj = RedisSession(handler)
+					return obj
+			class CacheSession:
+				session_container = {}
+				session_id = "__sessionId__"
+				def __init__(self, handler):
+					self.handler = handler
+					client_random_str = handler.get_cookie(CacheSession.session_id, None)
+					if client_random_str and client_random_str in CacheSession.session_container:
+						self.random_str = client_random_str
+					else:
+						self.random_str = create_session_id()
+						CacheSession.session_container[self.random_str] = {}
+					expires_time = time.time() + config.SESSION_EXPIRES
+					handler.set_cookie(CacheSession.session_id,self.random_str,expires=expires_time)
+				def __getitem__(self, key):
+					ret = CacheSession.session_container[self.random_str].get(key, None)
+					return ret
+				def __setitem__(self, key, value):
+					CacheSession.session_container[self.random_str][key] = value
+				def __delitem__(self, key):
+					if key in CacheSession.session_container[self.random_str]:
+						del CacheSession.session_container[self.random_str][key]
+			class RedisSession:
+				def __init__(self, handler):
+					pass
+			class MemcachedSession:
+				def __init__(self, handler):
+					pass
+		4.分布性session	
+			http://www.cnblogs.com/wupeiqi/articles/5702910.html
+	表单验证
+			http://www.cnblogs.com/wupeiqi/articles/5702910.html
+	
+	参考：https://tornado-zh.readthedocs.io/zh/latest/coroutine.html?highlight=gen  #协程和并发，这一块儿的内容都能在这顺藤摸瓜找到	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+	
+	
+	
+	
+
+		
