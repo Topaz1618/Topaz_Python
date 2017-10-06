@@ -1,0 +1,25 @@
+{% extends 'daddy.html'%}
+{% block title %} topaz {% end %}
+{% block  test %}
+    <div class="pg-header">
+        {% include 'header.html' %}
+    </div>
+
+    <form id="my_form" name="form" action="/login" method="POST"  enctype="multipart/form-data" >
+            <input name="fff" id="my_file"  type="file" />
+            <input type="submit" value="提交"  />
+    </form>
+
+    <form method="POST" action="/login" >
+        {%  raw xsrf_form_html() %}
+        <input type="text" name="username" />
+        <input type="submit" value="登录"  />
+    </form>
+
+    <h1>hello</h1>
+{#    {% module custom(123) %}#}
+{#    {{ tab() }}#}
+    <img  src="{{static_url("a.png")}}"  />
+{% end %}
+
+{#<div style="background-color: hotpink;width: 30px;height: 20px">用户名或密码错误</div>#}

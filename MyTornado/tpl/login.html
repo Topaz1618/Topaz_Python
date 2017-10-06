@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <input type="text" />
+    <form id="my_form" method="POST" action="/login" target='my_iframe'>
+        {% raw xsrf_form_html() %}
+        <iframe id="my_iframe" name='my_iframe' src=""  style="display: none"></iframe>
+        <input type="text" name="username" />
+        <input type="button" value="提交" onclick="redirect();" />
+    </form>
+{#    <img src="/ccc/1.jpg">#}
+     <script>
+        function redirect(){
+            document.getElementById('my_iframe').onload = Testt;
+            document.getElementById('my_form').submit();
+        }
+
+        function Testt(ths){
+            //var t = $("#my_iframe").contents().find("body").text();
+            //console.log(t);
+            var iframeContents = this.contentWindow.document.body.innerText;
+            alert(iframeContents)
+        }
+    </script>
+</body>
+</html>
