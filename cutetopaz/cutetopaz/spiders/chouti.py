@@ -20,21 +20,15 @@ class MyLittleSpider(scrapy.Spider):
         # print(response,response.request) # request==> <200 http://dig.chouti.com/>, response.request ==> <GET http://dig.chouti.com/>
         my_cookies = CookieJar()
         my_cookies.extract_cookies(response,response.request)
-        # print('cookies!!!!',my_cookies._cookies)    # ==> 社会主义cookie，有用的cookie，想要的都有，取就是了
         for k, v in my_cookies._cookies.items():
-            # print('随意拿，不要害羞',v)  #==> 分成了两部分， 捂污吴~~
             for i,j in v.items():
-                # print('来宝贝跟稳了我们一起看jj',j)                 # ==>有包含gpsd的部分哟~
                 for m,n in j.items():
-                    # print('只是个M啦',m)              #==>gpsd等
-                    # print('n',n.value)                #==>gpsd的值等
                     self.cookie_dict[m] = n.value
-        # print('看看大字典',self.cookie_dict)   #==>{'gpsd': 'a460c7e96329f9b6257ebe805f54d9dc', 'route': '249e9500f56e96c9681c6db3bc475cbf', 'JSESSIONID': 'aaaqYBsRkE1JRa77_hH5v'}
         req = Request(
             url = 'http://dig.chouti.com/login',
             method ='POST',
             headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-            body='phone=8618310703270&password=123456',
+            body='phone=8618333333270&password=000000',
             cookies = self.cookie_dict,
             callback = self.check_login
         )
@@ -69,7 +63,6 @@ class MyLittleSpider(scrapy.Spider):
                 # print(self.has_request_set)
                 pass
             else:
-                # print('调用自己',page_url) http://dig.chouti.com/all/hot/recent/9
                 self.has_request_set[key] = page_url
                 req =  Request(
                     url=page_url,
