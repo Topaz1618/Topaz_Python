@@ -1,0 +1,150 @@
+MVC是众所周知的模式，即：将应用程序分解成三个组成部分：models，views，controller
+	M 管理应用程序的状态(通常存储到数据库中)，并约束改变状态的行为（或者叫做"业务规则"）
+	V 负责把数据格式化后呈现给用户
+	C 接受外部用户的操作，及数据存储层，并调用views显示这些数据，C是将models和views隔离，并成为二者之间的练习纽带
+Django也是一个一个MVC框架，但在django中，控制器接受用户输入的部分由框架自行处理，所有Django更关注的是，模型models，模板templates，视图views，简称MTV
+	M 代表模型(Model),即数据存储层，该层处理与数据相关的所有事务：如何存取，如何验证有效性，包含哪些行为以及数据之间的关系
+	T 表现层，该层处理与表现相关的决定：如何在页面或其他类型文档中进行显示
+	V 视图，业务逻辑层，该层包含存取模型及调取恰当模板的逻辑，你可以把它看做模型与模板之间的桥梁
+
+Django Views
+	最简单的返回一个字符串形式的view
+		from django.http import HttpResponse
+		def my_view(request):
+			if request.method == 'GET':
+				# <view logic>
+				return HttpResponse('result')
+	如果想直接返回一个html文档
+		from django.shortcuts import render,HttpResponse
+		def test_view(request):
+			return render(request,'index.html')
+
+Django Models 
+	django 本身提供了非常强大易使用的ORM组件，并且支持多种数据库，如sqllite,mysql,progressSql,Oracle等，当然最常用的搭配还是mysql,要启用orm,先要配置好连接数据 的信息
+	在你创建的project目录下编辑settings.py 
+		DATABASES = {
+		'default': {
+			'ENGINE': 'django.db.backends.mysql',
+			'NAME': 'OldboyWebsite', #确保此数据库已存在
+			'HOST':'',
+			'PORT':'',
+			'USER':'root',
+			'PASSWORD':''
+		}
+	}
+	使数据库按照模型的配置生成表结构
+		python manage.py makemigrations  #生成同步纪录
+		python manage.py migrate #开始同步
+	基本数据访问
+		一旦你创建了模型，Django自动为这些模型提供了高级的Python API。 运行 python manage.py shell 你就可以这样
+			>>> from books.models import Publisher
+			>>> p1 = Publisher(name='Apress', address='2855 Telegraph Avenue',
+			...     city='Berkeley', state_province='CA', country='U.S.A.',
+			...     website='http://www.apress.com/')
+			>>> p1.save()
+		用了save对不对，不想用save怎么办呢儿~ 看这里 ==> objects.create()
+			>>> p1 = Publisher.objects.create(name='Apress',
+			...     address='2855 Telegraph Avenue',
+			...     city='Berkeley', state_province='CA', country='U.S.A.',
+			...     website='http://www.apress.com/')
+		查看列表
+			>>> publisher_list = Publisher.objects.all()
+			>>> publisher_list
+			然后我们会得儿到 ==> [<Publisher: Publisher object>, <Publisher: Publisher object>]，竟是些没用的东西，怎么解决呢，来爸爸现在教给你
+			在models创建的模型里添加__unicode__方法，返回的一定要是unicode对象，比如返回整型数字，Python会抛出TypeError错误
+			def __unicode__(self):
+				return self.name
+		数据过滤：filter 
+			Publisher.objects.filter(country="U.S.A.",name="tom")
+		获取单个对象：get
+			Publisher.objects.get(name="Apress")
+		获取不到数据抓异常：
+			>>> Publisher.objects.get(name="Penguin")
+			Traceback (most recent call last):
+				...
+			DoesNotExist: Publisher matching query does not exist.
+			这个 DoesNotExist 异常 是 Publisher 这个 model 类的一个属性，即 Publisher.DoesNotExist
+			try:
+				p = Publisher.objects.get(name='Apress')
+			except Publisher.DoesNotExist:
+				print "Apress isn't in the database yet."
+			else:
+				print "Apress is in the database."
+		排序：order_by()
+			>>> Publisher.objects.order_by("name")	#name前价格-号就阔以逆向排序了
+		缺省排序：
+			class Meta:
+				ordering = ['name']
+			'''内嵌于 Publisher 这个类的定义中（如果 class Publisher 是顶格的，那么 class Meta 在它之下要缩进4个空格－－按 Python 的传统 ）。你可以在任意一个 模型 类中使用Meta 类，来设置一些与特定模型相关的选项。Meta 还可设置很多其它选项，现在，我们关注ordering 这个选项就够了。 如果你设置了这个选项，那么除非你检索时特意额外地使用了 order_by()，否则，当你使用 Django 的数据库 API 去检索时，Publisher对象的相关返回值默认地都会按 name 字段排序'''
+		连锁查询：同时进行过滤和排序查询的操作
+			>>> Publisher.objects.filter(country="U.S.A.").order_by("-name")
+		限制返回的数据：成千上万的name在你的数据库里，但是你只想显示第一个
+			>>> Publisher.objects.order_by('name')[0]
+		更新对象
+			>>> p = Publisher.objects.get(name='Apress')	
+			>>> p.name = 'Apress Publishing'
+			>>> p.save()
+			PS:不要用这种方法，会更新name这列id的一整列，正确的姿势在下面
+			Publisher.objects.filter(id=52).update(name='Apress Publishing')
+		更新多个对象
+			>>> Publisher.objects.all().update(country='USA')	#所有country变成USA
+		删除单条对象
+			>>> p = Publisher.objects.get(name="O'Reilly")
+			>>> p.delete()
+		删除多条对象
+			>>> Publisher.objects.filter(country='USA').delete()
+			>>> Publisher.objects.all().delete()		#删除所有的数据
+	models field字段：https://docs.djangoproject.com/en/1.9/ref/models/fields/ 
+		
+Django Template
+	http://www.cnblogs.com/alex3714/articles/5457672.html	#基础自己看嘛
+	include模板标签
+		内建模板标签{% include %} 允许在（模板中）包含其它的模板的内容。 标签的参数是所要包含的模板名称，可以是一个变量，也可以是用单/双引号硬编码的字符串。 每当在多个模板中出现相同的代码时，就应该考虑是否要使用 {% include %} 来减少重复
+			{% include 'includes/nav.html' %}
+			{% include 'nav.html' %}
+		模板继承：先构造一个基础框架模板，而后在其子模板中对它所包含站点公用部分和定义块进行重载
+			在整个网站中，减少共用页面区域（比如站点导航）所引起的重复和冗余代码，传统做法是使用 服务器端的 includes ，你可以在 HTML 页面中使用该指令将一个网页嵌入到另一个中， Django 通过刚才讲述的 {% include %} 支持了这种方法，用 Django 解决此类问题的首选方法是使用更加优雅的策略模板继承 
+			Step1：定义基础模板，该框架之后将由子模板所继承，以下是我们目前所讲述范例的基础模板
+			base.html
+				<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+				<html lang="en">
+				<head>
+					<title>{% block title %}{% endblock %}</title>
+				</head>
+				<body>
+					<h1>My helpful timestamp site</h1>
+					{% block content %}{% endblock %}
+					{% block footer %}
+					<hr>
+					<p>Thanks for visiting my site.</p>
+					{% endblock %}
+				</body>
+				</html>
+				Ps:{% block %} 标签告诉模板引擎，子模板可以重载这些部分。 每个{% block %}标签所要做的是告诉模板引擎，该模板下的这一块内容将有可能被子模板覆盖
+			Step2：使用
+			current_datetime.html
+				{% extends "base.html" %}
+				{% block title %}The current time{% endblock %} 
+				{% block content %}
+				<p>It is now {{ current_date }}.</p>
+				{% endblock %}
+			模板继承工作方式：
+				1.加载 current_datetime.html 模板时，模板引擎发现了{% extends %} 标签， 注意到该模板是一个子模板。 模板引擎立即装载其父模板，即本例中的 base.html，
+				2.模板引擎注意到 base.html 中的三个 {% block %} 标签，并用子模板的内容替换这些 block 
+				3.由于子模板并没有定义 footer 块，子模板不定义模板系统将使用在父模板中定义的值
+			模板继承使用规则：
+				1.如果在模板中使用 {% extends %} ，必须保证其为模板中的第一个模板标记。 否则，模板继承将不起作用
+				2.一般来说，基础模板中的 {% block %} 标签越多越好。 记住，子模板不必定义父模板中所有的代码块，因此你可以用合理的缺省值对一些代码块进行填充，然后只对子模板所需的代码块进行（重）定义。 俗话说，钩子越多越好
+				3.如果发觉自己在多个模板之间拷贝代码，你应该考虑将该代码段放置到父模板的某个 {% block %} 中
+				4.如果你需要访问父模板中的块的内容，使用 {{ block.super }}这个标签吧，这一个魔法变量将会表现出父模板中的内容。 如果只想在上级代码块基础上添加内容，而不是全部重载，该变量就显得非常有用了
+				5.不允许在同一个模板中定义多个同名的 {% block %} 。 存在这样的限制是因为block 标签的工作方式是双向的。 也就是说，block 标签不仅挖了一个要填的坑，也定义了在父模板中这个坑所填充的内容。如果模板中出现了两个相同名称的 {% block %} 标签，父模板将无从得知要使用哪个块的内容
+
+Django Form表单		
+	http://www.cnblogs.com/alex3714/articles/5457672.html	#乖自己看
+		
+Django Admin		
+	django amdin是django提供的一个后台管理页面，改管理页面提供完善的html和css，使得你在通过Model创建完数据库表之后，就可以对数据进行增删改查，而使用django admin 则需要以下步骤
+	python manage.py createsuperuser topaz 		#创建后台管理员
+	url(r'^admin/', include(admin.site.urls))	#配置后台管理url
+	
+	
