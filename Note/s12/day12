@@ -1,0 +1,137 @@
+redis缓存数据库:http://www.cnblogs.com/alex3714/articles/6217453.html
+Python操作RabbitMQ,Redis,Memcached,SQLAlchemy：http://www.cnblogs.com/wupeiqi/articles/5132791.html
+
+NoSql数据库（非关系型数据库）
+NoSql数据库的四大分类:
+	键值存储/key-value(Redis)
+		数据模型：Key指向Value，通常用hash表实现
+		优点：查询速度快
+		缺点：数据无结构化，通常只被当作字符串或者二进制数据、
+		应用场景：内容缓存，主要用于处理大量数据的高访问负载，也用于一些日志系统等等
+	列存储数据库(HBase)
+		数据模型：以列簇式存储，将同一列数据存在一起，键仍然存在，但是它们的特点是指向了多个列。这些列是由列家族来安排的。如：Cassandra, HBase, Riak
+		优点：查找速度快，可扩展性强，更容易进行分布式扩展
+		缺点：功能相对局限
+		应用场景：分布式的文件系统（这部分数据库通常是用来应对分布式存储的海量数据）
+	文档型数据库(MongoDb)
+		数据模型：Key-Value，允许之间嵌套键值，Value为结构化数据（版本化的文档，半结构化的文档以特定的格式存储，比如json）
+		优点：数据结构要求不严格，表结构可变，不需要像关系型数据库一样需要预先定义表结构,文档型数据库比键值数据库的查询效率更高
+		缺点：查询性能不高，而且缺乏统一的查询语法
+		应用场景：Web应用（与Key-Value类似，Value是结构化的，不同的是数据库能够了解Value的内容）
+	图形数据库(Neo4J, InfoGrid, Infinite Graph)
+		数据模型：图结构
+		优点：利用图结构相关算法。比如最短路径寻址，N度关系查找等
+		缺点：很多时候需要对整个图做计算才能得出需要的信息，而且这种结构不太好做分布式的集群方案
+		应用场景：社交网络，推荐系统等。专注于构建关系图谱
+		灵活的图形模型，能扩展到多个服务器上
+NoSql数据库适用情况：
+	1.数据模型简单
+	2.需要灵活性更高的it系统
+	3.对数据库要求更高
+	4.不需要高度的数据一致性
+	5.对于给定key，比较容易映射复杂值的环境
+Redis
+	介绍：
+		redis是业界主流的key-value nosql 数据库之一。和Memcached类似，它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sorted set --有序集合)和hash（哈希类型）。这些数据类型都支持push/pop、add/remove及取交集并集和差集及更丰富的操作，而且这些操作都是原子性的。在此基础上，redis支持各种不同方式的排序。与memcached一样，为了保证效率，数据都是缓存在内存中。区别的是redis会周期性的把更新的数据写入磁盘或者把修改操作写入追加的记录文件，并且在此基础上实现了master-slave(主从)同步
+	Redis优点
+		异常快速：Redis是非常快的，每秒可执行大约110000设置操作，81000个/每秒的读取操作
+		支持丰富的数据类型：Redis支持最大多数开发人员已经知道如列表，集合，可排序集合，哈希等数据类型，这使得在应用中很容易解决的各种问题，因为我们知道哪些问题处理使用哪种数据类型更好解决
+		操作都是原子的 : 所有 Redis 的操作都是原子，从而确保当两个客户同时访问 Redis 服务器得到的是更新后的值（最新值）
+		MultiUtility工具：Redis是一个多功能实用工具，可以在很多如：缓存，消息传递队列中使用（Redis原生支持发布/订阅），在应用程序中，如：Web应用程序会话，网站页面点击数等任何短暂的数据
+Redis API使用
+	redis-py 的API的使用可以分类为：
+		连接方式
+		连接池
+		操作
+		String 操作
+		Hash 操作
+		List 操作
+		Set 操作
+		Sort Set 操作
+		管道
+		发布订阅	
+	连接方式：
+		edis-py提供两个类Redis和StrictRedis用于实现Redis的命令，StrictRedis用于实现大部分官方的命令，并使用官方的语法和命令，Redis是StrictRedis的子类，用于向后兼容旧版本的redis-py
+	连接池:
+		redis-py使用connection pool来管理对一个redis server的所有连接，避免每次建立、释放连接的开销。默认，每个Redis实例都会维护一个自己的连接池。可以直接建立一个连接池，然后作为Redis参数，这样就可以实现多个Redis实例共享一个连接池
+	操作：
+		1.String操作:http://www.cnblogs.com/alex3714/articles/6217453.html
+		2.hash操作：http://www.cnblogs.com/alex3714/articles/6217453.html
+			增量式迭代获取，对于数据大的数据非常有用，hscan可以实现分片的获取数据，并非一次性将数据全部获取完，从而放置内存被撑爆
+				参数：
+					name，redis的name
+					cursor，游标（基于游标分批取获取数据）
+					match，匹配指定key，默认None 表示所有的key
+					count，每次分片最少获取个数，默认None表示采用Redis的默认分片个数			
+				如：
+					第一次：cursor1, data1 = r.hscan('xx', cursor=0, match=None, count=None)
+					第二次：cursor2, data1 = r.hscan('xx', cursor=cursor1, match=None, count=None)
+					直到返回值cursor的值为0时，表示数据已经通过分片获取完毕
+			利用yield封装hscan创建生成器，实现分批去redis中获取数据
+				hscan_iter(name, match=None, count=None)
+				参数：
+					match，匹配指定key，默认None 表示所有的key
+					count，每次分片最少获取个数，默认None表示采用Redis的默认分片个数			
+				如：
+					for item in r.hscan_iter('xx'):
+					print item	
+		ps:命令常用的都知道的，不常用的看看就明白，不记了
+		3.管道
+			redis-py默认在执行每次请求都会创建（连接池申请连接）和断开（归还连接池）一次连接操作，如果想要在一次请求中指定多个命令，则可以使用pipline实现一次请求指定多个命令，并且默认情况下一次pipline 是原子性操作
+			实例：
+			import redis
+			pool = redis.ConnectionPool(host='10.211.55.4', port=6379)  #创建个池，别的连接也可以用这个池哦~~
+			r = redis.Redis(connection_pool=pool)   #使用上面创建的池
+			pipe = r.pipeline(transaction=True)     #创建管道，使用管道在一次请求（创建池断开池）中指定多个命令
+			pipe.set('name', 'alex')
+			pipe.set('role', 'sb')
+			pipe.execute()
+		4.发布订阅
+			Demo:
+			import redis
+			class RedisHelper:
+				def __init__(self,w):
+					print("who am i:",w)
+					self.conn = redis.Redis(host='10.0.0.138') #创建连接
+					self.chan_sub = 'fm104.5'
+					self.chan_pub = 'fm104.5'
+				def public(self, msg):
+					self.conn.publish(self.chan_pub, msg)      #发布数据
+					return True
+				def subscribe(self):
+					pub = self.conn.pubsub()
+					pub.subscribe(self.chan_sub)        #订阅
+					pub.parse_response()
+					return pub
+			订阅者：
+			import os,sys
+			from myre import RedisHelper
+			name = os.path.abspath(__file__)
+			real_name = list(os.path.split(name))[1]
+			obj = RedisHelper(real_name)
+			redis_sub = obj.subscribe()
+			while True:
+				msg = redis_sub.parse_response()
+				print(msg)
+			发布者：
+			from myre import RedisHelper
+			import os,sys
+			from myre import RedisHelper
+			name = os.path.abspath(__file__)
+			real_name = list(os.path.split(name))[1]
+			obj = RedisHelper(real_name)
+			obj.public(u"大噶好")
+			[参考1]：https://github.com/andymccurdy/redis-py/
+			[参考2]:http://doc.redisfans.com/		
+附赠redis性能测试	
+		value 在1K以上时，1000M网卡轻松的被跑慢，而且redis-server cpu连一个核心都没占用到，可见redis高效，redis的服务也不需要太高配置，瓶颈在网卡速度整理看redis的us都在20%左右，用户层代码资源占用比例都很小。
+Memcached
+	Memcached 是一个高性能的分布式内存对象缓存系统，用于动态Web应用以减轻数据库负载。它通过在内存中缓存数据和对象来减少读取数据库的次数，从而提高动态、数据库驱动网站的速度。Memcached基于一个存储键/值对的hashmap。其守护进程（daemon ）是用C写的，但是客户端可以用任何语言来编写，并通过memcached协议与守护进程通信。
+	第一次操作：
+		import memcache
+		mc = memcache.Client(['10.211.55.4:12000'], debug=True)
+		mc.set("foo", "bar")
+		ret = mc.get('foo')
+		print ret
+	天生支持集群：
+		python-memcached模块原生支持集群操作，其原理是在内存维护一个主机列表，且集群中主机的权重值和主机在列表中重复出现的次数成正比
