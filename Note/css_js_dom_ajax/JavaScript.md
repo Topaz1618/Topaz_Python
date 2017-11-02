@@ -1,19 +1,19 @@
-1. JavaScript 是一门编程语言，浏览器内置了JavaScript语言的解释器，可以对 JavaScript 解释并做出相应的处理
-2. JavaScript存在形式
-		方式一：
-			<script type"text/javascript" src="JS文件"></script>
-		方式二：
-			<script type"text/javascript">
-				Js代码内容
-			</script>
-3. JavaScript存放位置
-	HTML的head中
-	HTML的body代码块底部(推荐) #由于Html代码是从上到下执行，如果Head中的js代码耗时严重，就会导致用户长时间无法看到页面，如果放置在body代码块底部，那么即使js代码耗时严重，也不会影响用户看到页面效果，只是js实现特效慢而已
-	代码：
-		<script src="https://www.gstatic.com/og/_/js/k=og.og2.en_US.iF4jnkQuaf0.O/rt=j/t=zcms/m=def/exm=in,fot/d=1/ed=1/rs=AA2YrTv5-POC4Ks9GtGRdY2ywUWisqz7-Q"></script>
-		<script>
-			alert('123');
-		</script>
+# JavaScript 是一门编程语言，浏览器内置了JavaScript语言的解释器，可以对 JavaScript 解释并做出相应的处理
+# JavaScript存在形式
+## 方式一：
+	<script type"text/javascript" src="JS文件"></script>
+## 方式二
+	<script type"text/javascript">
+		Js代码内容
+	</script>
+# JavaScript存放位置
+## HTML的head中
+## HTML的body代码块底部(推荐) #由于Html代码是从上到下执行，如果Head中的js代码耗时严重，就会导致用户长时间无法看到页面，如果放置在body代码块底部，那么即使js代码耗时严重，也不会影响用户看到页面效果，只是js实现特效慢而已
+## 代码
+	<script src="https://www.gstatic.com/og/js/"></script>
+	<script>
+		alert('123');
+	</script>
 4.变量
 	局部变量必须以 var 开头，如果未使用var，则默认表示声明的是全局变量
 	代码：
