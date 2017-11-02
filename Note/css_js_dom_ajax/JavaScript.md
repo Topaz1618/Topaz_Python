@@ -1,78 +1,77 @@
-# JavaScript 是一门编程语言，浏览器内置了JavaScript语言的解释器，可以对 JavaScript 解释并做出相应的处理
-# JavaScript存在形式
-## 方式一：
+## 1.JavaScript 是一门编程语言，浏览器内置了JavaScript语言的解释器，可以对 JavaScript 解释并做出相应的处理
+## 2.JavaScript存在形式
+### 方式一
 	<script type"text/javascript" src="JS文件"></script>
-## 方式二
+### 方式二
 	<script type"text/javascript">
 		Js代码内容
 	</script>
-# JavaScript存放位置
-## HTML的head中
-## HTML的body代码块底部(推荐) #由于Html代码是从上到下执行，如果Head中的js代码耗时严重，就会导致用户长时间无法看到页面，如果放置在body代码块底部，那么即使js代码耗时严重，也不会影响用户看到页面效果，只是js实现特效慢而已
-## 代码
+## 3.JavaScript存放位置
+### HTML的head中
+### HTML的body代码块底部(推荐) #由于Html代码是从上到下执行，如果Head中的js代码耗时严重，就会导致用户长时间无法看到页面，如果放置在body代码块底部，那么即使js代码耗时严重，也不会影响用户看到页面效果，只是js实现特效慢而已
+### Demo
 	<script src="https://www.gstatic.com/og/js/"></script>
 	<script>
 		alert('123');
 	</script>
-4.变量
-	局部变量必须以 var 开头，如果未使用var，则默认表示声明的是全局变量
-	代码：
-		<script type="text/javascript">
-			// 全局变量	
-			name = 'seven';
-		
-			function func(){
-				// 局部变量
-				var age = 18;
-		
-				// 全局变量
-				gender = "男"
-			}
-		</script>
-		
+## 变量
+### 局部变量必须以 var 开头，如果未使用var，则默认表示声明的是全局变量
+### Demo
+	<script type="text/javascript">
+		// 全局变量	
+		name = 'seven';
+	
+		function func(){
+			// 局部变量
+			var age = 18;
+	
+			// 全局变量
+			gender = "男"
+		}
+	</script>
+	
 	PS：JavaScript中代码注释：单行 // 多行 /*  */  此注释仅在Script块中生效	
-5.数据类型
-	原始类型：
-		数字
-		字符串
-		布尔值
-	对象类型：
-		数组
-		字典	
+## 5.数据类型
+### 原始类型
+	数字
+	字符串
+	布尔值
+### 对象类型
+	数组
+	字典	
 
 	PS：数字、布尔值、null、undefined、字符串是不可变
 		null是JavaScript语言的关键字，它表示一个特殊值，常用来描述“空值”
 		undefined是一个特殊值，表示变量未定义
-
-	1）数字
-		JavaScript所有数字均用浮点数值表示，因为不区分整数值和浮点数值
-		转换：
-			parseInt(..)    将某值转换成数字，不成功则NaN
-			parseFloat(..)  将某值转换成浮点数，不成功则NaN
-		
-		特殊值：
-			NaN，非数字。可使用 isNaN(num) 来判断。
-			Infinity，无穷大。可使用 isFinite(num) 来判断
-		数值计算:自己搜，网上一大把 http://www.cnblogs.com/wupeiqi/articles/5602773.html
-	2）字符串
-		字符串是由字符组成的数组，但在JavaScript中字符串是不可变的，可以访问字符串任意位置的文本，不过JavaScript未提供修改已知字符串内容的方法
-		常见功能：
-			obj.length                           长度
-			obj.trim()                           移除空白
-			obj.trimLeft()
-			obj.trimRight)
-			obj.charAt(n)                        返回字符串中的第n个字符
-			obj.concat(value, ...)               拼接
-			obj.indexOf(substring,start)         子序列位置
-			obj.lastIndexOf(substring,start)     子序列位置
-			obj.substring(from, to)              根据索引获取子序列
-			obj.slice(start, end)                切片
-			obj.toLowerCase()                    大写
-			obj.toUpperCase()                    小写
-			obj.split(delimiter, limit)          分割
-			obj.search(regexp)                   从头开始匹配，返回匹配成功的第一个位置(g无效)
-			obj.match(regexp)                    全局搜索，如果正则中有g表示找到全部，否则只找到第一个。
-			obj.replace(regexp, replacement)     替换，正则中有g则替换所有，否则只替换第一个匹配项，
+### 数字
+	JavaScript所有数字均用浮点数值表示，因为不区分整数值和浮点数值
+	转换：
+		parseInt(..)    将某值转换成数字，不成功则NaN
+		parseFloat(..)  将某值转换成浮点数，不成功则NaN
+	
+	特殊值：
+		NaN，非数字。可使用 isNaN(num) 来判断。
+		Infinity，无穷大。可使用 isFinite(num) 来判断
+	数值计算:自己搜，网上一大把 http://www.cnblogs.com/wupeiqi/articles/5602773.html
+### 字符串
+	字符串是由字符组成的数组，但在JavaScript中字符串是不可变的，可以访问字符串任意位置的文本，不过JavaScript未提供修改已知字符串内容的方法
+	常见功能：
+		obj.length                           长度
+		obj.trim()                           移除空白
+		obj.trimLeft()
+		obj.trimRight)
+		obj.charAt(n)                        返回字符串中的第n个字符
+		obj.concat(value, ...)               拼接
+		obj.indexOf(substring,start)         子序列位置
+		obj.lastIndexOf(substring,start)     子序列位置
+		obj.substring(from, to)              根据索引获取子序列
+		obj.slice(start, end)                切片
+		obj.toLowerCase()                    大写
+		obj.toUpperCase()                    小写
+		obj.split(delimiter, limit)          分割
+		obj.search(regexp)                   从头开始匹配，返回匹配成功的第一个位置(g无效)
+		obj.match(regexp)                    全局搜索，如果正则中有g表示找到全部，否则只找到第一个。
+		obj.replace(regexp, replacement)     替换，正则中有g则替换所有，否则只替换第一个匹配项，
 													$数字：匹配的第n个组内容；
 													$&：当前匹配的内容；
 													$`：位于匹配子串左侧的文本；
