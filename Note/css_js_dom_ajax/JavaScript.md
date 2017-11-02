@@ -8,8 +8,9 @@
 		Js代码内容
 	</script>
 ## 3.JavaScript存放位置
-### HTML的head中
-### HTML的body代码块底部(推荐) #由于Html代码是从上到下执行，如果Head中的js代码耗时严重，就会导致用户长时间无法看到页面，如果放置在body代码块底部，那么即使js代码耗时严重，也不会影响用户看到页面效果，只是js实现特效慢而已
+#### HTML的head中
+#### HTML的body代码块底部(推荐)
+	由于Html代码是从上到下执行，如果Head中的js代码耗时严重，就会导致用户长时间无法看到页面，如果放置在body代码块底部，那么即使js代码耗时严重，也不会影响用户看到页面效果，只是js实现特效慢而已
 ### Demo
 	<script src="https://www.gstatic.com/og/js/"></script>
 	<script>
@@ -185,103 +186,104 @@
 		default :
 			age = 777;
 	}
-	2）循环语句：JavaScript中支持三种循环语句
-		方式一：
-			var names = ["alex", "tony", "rain"];
-			for(var i=0;i<names.length;i++){
-				console.log(i);
-				console.log(names[i]);
-			}
-		方式二：
-			var names = ["alex", "tony", "rain"];
-			for(var index in names){
-				console.log(index);
-				console.log(names[index]);
-			}
-		方式三：
-			while(条件){
-				// break;
-				// continue;
-			}
-	3）异常处理
-		try {
-			//这段代码从上往下运行，其中任何一个语句抛出异常该代码块就结束运行
-		}
-		catch (e) {
-			// 如果try代码块中抛出了异常，catch代码块中的代码就会被执行。
-			//e是一个局部变量，用来指向Error对象或者其他抛出的对象
-		}
-		finally {
-			//无论try中代码是否有异常抛出（甚至是try代码块中有return语句），finally代码块中始终会被执行。
-		}
-8.函数
-	1）JavaScript中函数主要有三类
-		// 普通函数
-			function func(arg){
-				return true;
-			}
-		// 匿名函数
-			var func = function(arg){
-				return "tony";
-			}
-		// 自执行函数
-			(function(arg){
-				console.log(arg);
-			})('123')
+### 循环语句：JavaScript中支持三种循环语句
+#### 方式一：
+	var names = ["alex", "tony", "rain"];
+	for(var i=0;i<names.length;i++){
+		console.log(i);
+		console.log(names[i]);
+	}
+#### 方式二：
+	var names = ["alex", "tony", "rain"];
+	for(var index in names){
+		console.log(index);
+		console.log(names[index]);
+	}
+#### 方式三：
+	while(条件){
+		// break;
+		// continue;
+	}
+### 异常处理
+	try {
+		//这段代码从上往下运行，其中任何一个语句抛出异常该代码块就结束运行
+	}
+	catch (e) {
+		// 如果try代码块中抛出了异常，catch代码块中的代码就会被执行。
+		//e是一个局部变量，用来指向Error对象或者其他抛出的对象
+	}
+	finally {
+		//无论try中代码是否有异常抛出（甚至是try代码块中有return语句），finally代码块中始终会被执行。
+	}
+## 8.函数
+### JavaScript中函数主要有三类
+#### 普通函数
+	function func(arg){
+		return true;
+	}
+#### 匿名函数
+	var func = function(arg){
+		return "tony";
+	}
+#### 自执行函数
+	(function(arg){
+		console.log(arg);
+	})('123')
 			
-		PS: 对于JavaScript中函数参数，实际参数的个数可能小于形式参数的个数，函数内的特殊值arguments中封装了所有实际参数
-	2）作用域：所有的作用域在创建函数且未执行时候就已经存在
-		JavaScript中每个函数都有自己的作用域，当出现函数嵌套时，就出现了作用域链。当内层函数使用变量时，会根据作用域链从内到外一层层的循环，如果不存在，则异常	
-		代码：
-			function f2(){
-				var arg= 111;
-				function f3(){
-					console.log(arg);
-				}
-				return f3;
-			}
-			ret = f2();
-			ret();
-	3）闭包
-		a. 闭包是可以包含自由变量(未绑定到特定对象)的代码块
-		b. 闭包是拥有多个变量和绑定了这些变量的环境表达式(通常是函数)，这些变量也是该表达式/函数的一部分
-		c. 由于作用域链只能从内向外找，默认外部无法获取函数内部变量,闭包需要在外部获取函数内部的变量
-		代码：
-		function f2(){
-			var arg= [11,22];
-			function f3(){
-				return arg;
-			}
-			return f3;
+	PS: 对于JavaScript中函数参数，实际参数的个数可能小于形式参数的个数，函数内的特殊值arguments中封装了所有实际参数
+### 作用域：
+	所有的作用域在创建函数且未执行时候就已经存在
+	JavaScript中每个函数都有自己的作用域，当出现函数嵌套时，就出现了作用域链。当内层函数使用变量时，会根据作用域链从内到外一层层的循环，如果不存在，则异常	
+#### Demo
+	function f2(){
+		var arg= 111;
+		function f3(){
+			console.log(arg);
 		}
-		ret = f2();
-		ret();
-	4）面向对象
-		function Foo (name,age) {
-			this.Name = name;
-			this.Age = age;
-			this.Func = function(arg){
-				return this.Name + arg;
-			}
+		return f3;
+	}
+	ret = f2();
+	ret();
+### 闭包
+	a. 闭包是可以包含自由变量(未绑定到特定对象)的代码块
+	b. 闭包是拥有多个变量和绑定了这些变量的环境表达式(通常是函数)，这些变量也是该表达式/函数的一部分
+	c. 由于作用域链只能从内向外找，默认外部无法获取函数内部变量,闭包需要在外部获取函数内部的变量
+#### 代码：
+	function f2(){
+		var arg= [11,22];
+		function f3(){
+			return arg;
 		}
-		var obj = new Foo('alex', 18);
-		var ret = obj.Func("sb");
-		console.log(ret);
-		对于上述代码需要注意：
-			Foo充当的构造函数
-			this代指对象
-			创建对象时需要使用 new
-		上述代码中每个对象中均保存了一个相同的Func函数，从而浪费内存。使用原型和可以解决该问题
-			function Foo (name,age) {
-				this.Name = name;
-				this.Age = age;
-			}
-			Foo.prototype = {
-				GetInfo: function(){
-					return this.Name + this.Age
-				},
-				Func : function(arg){
-					return this.Name + arg;
-				}
-			}
+		return f3;
+	}
+	ret = f2();
+	ret();
+### 面向对象
+	function Foo (name,age) {
+		this.Name = name;
+		this.Age = age;
+		this.Func = function(arg){
+			return this.Name + arg;
+		}
+	}
+	var obj = new Foo('alex', 18);
+	var ret = obj.Func("sb");
+	console.log(ret);
+#### 对于上述代码需要注意：
+	Foo充当的构造函数
+	this代指对象
+	创建对象时需要使用 new
+#### 上述代码中每个对象中均保存了一个相同的Func函数，从而浪费内存。使用原型和可以解决该问题
+	function Foo (name,age) {
+		this.Name = name;
+		this.Age = age;
+	}
+	Foo.prototype = {
+		GetInfo: function(){
+			return this.Name + this.Age
+		},
+		Func : function(arg){
+			return this.Name + arg;
+		}
+	}
 		
