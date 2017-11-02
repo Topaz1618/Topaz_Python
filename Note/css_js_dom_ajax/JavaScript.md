@@ -1,4 +1,5 @@
-## 1.JavaScript 是一门编程语言，浏览器内置了JavaScript语言的解释器，可以对 JavaScript 解释并做出相应的处理
+## 1.JavaScript 
+	JavaScript 是一门编程语言,浏览器内置了JavaScript语言的解释器，可以对 JavaScript 解释并做出相应的处理
 ## 2.JavaScript存在形式
 ### 方式一
 	<script type"text/javascript" src="JS文件"></script>
@@ -77,80 +78,80 @@
 													$`：位于匹配子串左侧的文本；
 													$'：位于匹配子串右侧的文本
 													$$：直接量$符号
-	3）布尔类型
-		布尔类型仅包含真假，与Python不同的是其首字母小写
-			==      比较值相等
-			!=       不等于
-			===   比较值和类型相等
-			!===  不等于
-			||        或
-			&&      且
-	4）数组
-		JavaScript中的数组类似于Python中的列表
-		常用功能：
-			obj.length          数组的大小
-			obj.push(ele)       尾部追加元素
-			obj.pop()           尾部获取一个元素
-			obj.unshift(ele)    头部插入元素
-			obj.shift()         头部移除元素
-			obj.slice( )        切片
-			obj.reverse( )      反转
-			obj.join(sep)       将数组元素连接起来以构建一个字符串
-			obj.concat(val,..)  连接数组
-			obj.sort( )         对数组元素进行排序
-			obj.splice(start, deleteCount, value, ...)  插入、删除或替换数组的元素
+### 布尔类型
+	布尔类型仅包含真假，与Python不同的是其首字母小写
+		==      比较值相等
+		!=       不等于
+		===   比较值和类型相等
+		!===  不等于
+		||        或
+		&&      且
+### 数组
+	JavaScript中的数组类似于Python中的列表
+	常用功能：
+		obj.length          数组的大小
+		obj.push(ele)       尾部追加元素
+		obj.pop()           尾部获取一个元素
+		obj.unshift(ele)    头部插入元素
+		obj.shift()         头部移除元素
+		obj.slice( )        切片
+		obj.reverse( )      反转
+		obj.join(sep)       将数组元素连接起来以构建一个字符串
+		obj.concat(val,..)  连接数组
+		obj.sort( )         对数组元素进行排序
+		obj.splice(start, deleteCount, value, ...)  插入、删除或替换数组的元素
 								obj.splice(n,0,val) 指定位置插入元素
 								obj.splice(n,1,val) 指定位置替换元素
 								obj.splice(n,1)     指定位置删除元素							
-6.其他
-	1）序列化
-		JSON.stringify(obj)    序列化
-		JSON.parse(str)        反序列化
+## 6.其他
+### 序列化
+	JSON.stringify(obj)    序列化
+	JSON.parse(str)        反序列化
 		
-	2）转义
-		decodeURI( )            URl中未转义的字符
-		decodeURIComponent( )   URI组件中的未转义字符
-		encodeURI( )            URI中的转义字符
-		encodeURIComponent( )   转义URI组件中的字符
-		escape( )               对字符串转义
-		unescape( )             给转义字符串解码
-		URIError                由URl的编码和解码方法抛出
-	3）eval		
-		JavaScript中的eval是Python中eval和exec的合集，既可以编译代码也可以获取返回值
-		eval() 
-		EvalError   执行字符串中的JavaScript代码
-	4）正则表达式
-		a.定义正则表达式
-			/.../  用于定义正则表达式
-			/.../g 表示全局匹配
-			/.../i 表示不区分大小写
-			/.../m 表示多行匹配
-			JS正则匹配时本身就是支持多行，此处多行匹配只是影响正则表达式^和$，m模式也会使用^$来匹配换行的内容
-				var pattern = /^Java\w*/gm;
-				var text = "JavaScript is more fun than \nJavaEE or JavaBeans!";
-				result = pattern.exec(text)
-			PS：定义正则表达式也可以  reg= new RegExp()	
-		b.匹配
-			JavaScript中支持正则表达式，其主要提供了两个功能
-			test(string),检查字符串中是否和正则匹配
-				n = 'uui99sdf'
-				reg = /\d+/
-				reg.test(n)  ---> true   #只要正则在字符串中存在就匹配，如果想要开头和结尾匹配的话，就需要在正则前后加 ^和$
-			exec(string),获取正则表达式匹配的内容，如果未匹配，值为null，否则获取匹配成功的数组
-				非全局模式: 获取匹配结果数组，注意：第一个元素是第一个匹配的结果，后面元素是正则子匹配（正则内容分组匹配）
-					var pattern = /\bJava\w*\b/;
-					var text = "JavaScript is more fun than Java or JavaBeans!";
-					result = pattern.exec(text)
-					var pattern = /\b(Java)\w*\b/;
-					var text = "JavaScript is more fun than Java or JavaBeans!";
-					result = pattern.exec(text)
-				全局模式: 需要反复调用exec方法，来一个一个获取结果，直到匹配获取结果为null表示获取完毕
-				    var pattern = /\bJava\w*\b/g;
-					var text = "JavaScript is more fun than Java or JavaBeans!";
-					result = pattern.exec(text)
-					var pattern = /\b(Java)\w*\b/g;
-					var text = "JavaScript is more fun than Java or JavaBeans!";
-					result = pattern.exec(text)
+### 转义
+	decodeURI( )            URl中未转义的字符
+	decodeURIComponent( )   URI组件中的未转义字符
+	encodeURI( )            URI中的转义字符
+	encodeURIComponent( )   转义URI组件中的字符
+	escape( )               对字符串转义
+	unescape( )             给转义字符串解码
+	URIError                由URl的编码和解码方法抛出
+### eval		
+	JavaScript中的eval是Python中eval和exec的合集，既可以编译代码也可以获取返回值
+	eval() 
+	EvalError   执行字符串中的JavaScript代码
+### 正则表达式
+#### 定义正则表达式
+	/.../  用于定义正则表达式
+	/.../g 表示全局匹配
+	/.../i 表示不区分大小写
+	/.../m 表示多行匹配
+	JS正则匹配时本身就是支持多行，此处多行匹配只是影响正则表达式^和$，m模式也会使用^$来匹配换行的内容
+		var pattern = /^Java\w*/gm;
+		var text = "JavaScript is more fun than \nJavaEE or JavaBeans!";
+		result = pattern.exec(text)
+	PS：定义正则表达式也可以  reg= new RegExp()	
+#### 匹配
+	JavaScript中支持正则表达式，其主要提供了两个功能
+	test(string),检查字符串中是否和正则匹配
+		n = 'uui99sdf'
+		reg = /\d+/
+		reg.test(n)  ---> true   #只要正则在字符串中存在就匹配，如果想要开头和结尾匹配的话，就需要在正则前后加 ^和$
+	exec(string),获取正则表达式匹配的内容，如果未匹配，值为null，否则获取匹配成功的数组
+		非全局模式: 获取匹配结果数组，注意：第一个元素是第一个匹配的结果，后面元素是正则子匹配（正则内容分组匹配）
+			var pattern = /\bJava\w*\b/;
+			var text = "JavaScript is more fun than Java or JavaBeans!";
+			result = pattern.exec(text)
+			var pattern = /\b(Java)\w*\b/;
+			var text = "JavaScript is more fun than Java or JavaBeans!";
+			result = pattern.exec(text)
+		全局模式: 需要反复调用exec方法，来一个一个获取结果，直到匹配获取结果为null表示获取完毕
+		    var pattern = /\bJava\w*\b/g;
+			var text = "JavaScript is more fun than Java or JavaBeans!";
+			result = pattern.exec(text)
+			var pattern = /\b(Java)\w*\b/g;
+			var text = "JavaScript is more fun than Java or JavaBeans!";
+			result = pattern.exec(text)
 		c.字符串中相关方法
 			obj.search(regexp)                   获取索引位置，搜索整个字符串，返回匹配成功的第一个位置(g模式无效)
 			obj.match(regexp)                    获取匹配内容，搜索整个字符串，获取找到第一个匹配内容，如果正则是g模式找到全部
@@ -160,31 +161,30 @@
 													$`：位于匹配子串左侧的文本；
 													$'：位于匹配子串右侧的文本
 													$$：直接量$符号
-	5）时间处理：JavaScript中提供了时间相关的操作，时间操作分为两种
-		时间统一时间
-		本地时间（东8区）
-		更多操作参见：http://www.shouce.ren/api/javascript/main.html	
-7.语句和异常
-	1）条件语句：JavaScript中支持两个中条件语句，分别是if 和 switch
-		if语句：		
-			if(条件){
-			
-			}else if(条件){
-			
-			}else{
+#### 时间处理：JavaScript中提供了时间相关的操作，时间操作分为两种
+	时间统一时间
+	本地时间（东8区）
+	更多操作参见：http://www.shouce.ren/api/javascript/main.html	
+## 7.语句和异常
+### 条件语句：JavaScript中支持两个中条件语句，分别是if 和 switch
+#### if语句：		
+	if(条件){
 	
-			}
-		switch语句：
-			switch(name){
-				case '1':
-					age = 123;
-					break;
-				case '2':
-					age = 456;
-					break;
-				default :
-					age = 777;
-			}
+	}else if(条件){
+	
+	}else{
+	}
+#### switch语句：
+	switch(name){
+		case '1':
+			age = 123;
+			break;
+		case '2':
+			age = 456;
+			break;
+		default :
+			age = 777;
+	}
 	2）循环语句：JavaScript中支持三种循环语句
 		方式一：
 			var names = ["alex", "tony", "rain"];
