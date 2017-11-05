@@ -1,0 +1,1177 @@
+JavaScript
+	1. JavaScript 是一门编程语言，浏览器内置了JavaScript语言的解释器，可以对 JavaScript 解释并做出相应的处理
+	2. JavaScript存在形式
+			方式一：
+				<script type"text/javascript" src="JS文件"></script>
+			方式二：
+				<script type"text/javascript">
+					Js代码内容
+				</script>
+	3. JavaScript存放位置
+		HTML的head中
+		HTML的body代码块底部(推荐) #由于Html代码是从上到下执行，如果Head中的js代码耗时严重，就会导致用户长时间无法看到页面，如果放置在body代码块底部，那么即使js代码耗时严重，也不会影响用户看到页面效果，只是js实现特效慢而已
+		代码：
+			<script src="https://www.gstatic.com/og/_/js/k=og.og2.en_US.iF4jnkQuaf0.O/rt=j/t=zcms/m=def/exm=in,fot/d=1/ed=1/rs=AA2YrTv5-POC4Ks9GtGRdY2ywUWisqz7-Q"></script>
+			<script>
+				alert('123');
+			</script>
+	4.变量
+		局部变量必须以 var 开头，如果未使用var，则默认表示声明的是全局变量
+		代码：
+			<script type="text/javascript">
+				// 全局变量	
+				name = 'seven';
+			
+				function func(){
+					// 局部变量
+					var age = 18;
+			
+					// 全局变量
+					gender = "男"
+				}
+			</script>
+			
+		PS：JavaScript中代码注释：单行 // 多行 /*  */  此注释仅在Script块中生效	
+	5.数据类型
+		原始类型：
+			数字
+			字符串
+			布尔值
+		对象类型：
+			数组
+			字典	
+
+		PS：数字、布尔值、null、undefined、字符串是不可变
+			null是JavaScript语言的关键字，它表示一个特殊值，常用来描述“空值”
+			undefined是一个特殊值，表示变量未定义
+	
+		1）数字
+			JavaScript所有数字均用浮点数值表示，因为不区分整数值和浮点数值
+			转换：
+				parseInt(..)    将某值转换成数字，不成功则NaN
+				parseFloat(..)  将某值转换成浮点数，不成功则NaN
+			
+			特殊值：
+				NaN，非数字。可使用 isNaN(num) 来判断。
+				Infinity，无穷大。可使用 isFinite(num) 来判断
+			数值计算:自己搜，网上一大把 http://www.cnblogs.com/wupeiqi/articles/5602773.html
+		2）字符串
+			字符串是由字符组成的数组，但在JavaScript中字符串是不可变的，可以访问字符串任意位置的文本，不过JavaScript未提供修改已知字符串内容的方法
+			常见功能：
+				obj.length                           长度
+				obj.trim()                           移除空白
+				obj.trimLeft()
+				obj.trimRight)
+				obj.charAt(n)                        返回字符串中的第n个字符
+				obj.concat(value, ...)               拼接
+				obj.indexOf(substring,start)         子序列位置
+				obj.lastIndexOf(substring,start)     子序列位置
+				obj.substring(from, to)              根据索引获取子序列
+				obj.slice(start, end)                切片
+				obj.toLowerCase()                    大写
+				obj.toUpperCase()                    小写
+				obj.split(delimiter, limit)          分割
+				obj.search(regexp)                   从头开始匹配，返回匹配成功的第一个位置(g无效)
+				obj.match(regexp)                    全局搜索，如果正则中有g表示找到全部，否则只找到第一个。
+				obj.replace(regexp, replacement)     替换，正则中有g则替换所有，否则只替换第一个匹配项，
+														$数字：匹配的第n个组内容；
+														$&：当前匹配的内容；
+														$`：位于匹配子串左侧的文本；
+														$'：位于匹配子串右侧的文本
+														$$：直接量$符号
+		3）布尔类型
+			布尔类型仅包含真假，与Python不同的是其首字母小写
+				==      比较值相等
+				!=       不等于
+				===   比较值和类型相等
+				!===  不等于
+				||        或
+				&&      且
+		4）数组
+			JavaScript中的数组类似于Python中的列表
+			常用功能：
+				obj.length          数组的大小
+				obj.push(ele)       尾部追加元素
+				obj.pop()           尾部获取一个元素
+				obj.unshift(ele)    头部插入元素
+				obj.shift()         头部移除元素
+				obj.slice( )        切片
+				obj.reverse( )      反转
+				obj.join(sep)       将数组元素连接起来以构建一个字符串
+				obj.concat(val,..)  连接数组
+				obj.sort( )         对数组元素进行排序
+				obj.splice(start, deleteCount, value, ...)  插入、删除或替换数组的元素
+									obj.splice(n,0,val) 指定位置插入元素
+									obj.splice(n,1,val) 指定位置替换元素
+									obj.splice(n,1)     指定位置删除元素							
+	6.其他
+		1）序列化
+			JSON.stringify(obj)    序列化
+			JSON.parse(str)        反序列化
+			
+		2）转义
+			decodeURI( )            URl中未转义的字符
+			decodeURIComponent( )   URI组件中的未转义字符
+			encodeURI( )            URI中的转义字符
+			encodeURIComponent( )   转义URI组件中的字符
+			escape( )               对字符串转义
+			unescape( )             给转义字符串解码
+			URIError                由URl的编码和解码方法抛出
+		3）eval		
+			JavaScript中的eval是Python中eval和exec的合集，既可以编译代码也可以获取返回值
+			eval() 
+			EvalError   执行字符串中的JavaScript代码
+		4）正则表达式
+			a.定义正则表达式
+				/.../  用于定义正则表达式
+				/.../g 表示全局匹配
+				/.../i 表示不区分大小写
+				/.../m 表示多行匹配
+				JS正则匹配时本身就是支持多行，此处多行匹配只是影响正则表达式^和$，m模式也会使用^$来匹配换行的内容
+					var pattern = /^Java\w*/gm;
+					var text = "JavaScript is more fun than \nJavaEE or JavaBeans!";
+					result = pattern.exec(text)
+				PS：定义正则表达式也可以  reg= new RegExp()	
+			b.匹配
+				JavaScript中支持正则表达式，其主要提供了两个功能
+				test(string),检查字符串中是否和正则匹配
+					n = 'uui99sdf'
+					reg = /\d+/
+					reg.test(n)  ---> true   #只要正则在字符串中存在就匹配，如果想要开头和结尾匹配的话，就需要在正则前后加 ^和$
+				exec(string),获取正则表达式匹配的内容，如果未匹配，值为null，否则获取匹配成功的数组
+					非全局模式: 获取匹配结果数组，注意：第一个元素是第一个匹配的结果，后面元素是正则子匹配（正则内容分组匹配）
+						var pattern = /\bJava\w*\b/;
+						var text = "JavaScript is more fun than Java or JavaBeans!";
+						result = pattern.exec(text)
+						var pattern = /\b(Java)\w*\b/;
+						var text = "JavaScript is more fun than Java or JavaBeans!";
+						result = pattern.exec(text)
+					全局模式: 需要反复调用exec方法，来一个一个获取结果，直到匹配获取结果为null表示获取完毕
+					    var pattern = /\bJava\w*\b/g;
+						var text = "JavaScript is more fun than Java or JavaBeans!";
+						result = pattern.exec(text)
+						var pattern = /\b(Java)\w*\b/g;
+						var text = "JavaScript is more fun than Java or JavaBeans!";
+						result = pattern.exec(text)
+			c.字符串中相关方法
+				obj.search(regexp)                   获取索引位置，搜索整个字符串，返回匹配成功的第一个位置(g模式无效)
+				obj.match(regexp)                    获取匹配内容，搜索整个字符串，获取找到第一个匹配内容，如果正则是g模式找到全部
+				obj.replace(regexp, replacement)     替换匹配替换，正则中有g则替换所有，否则只替换第一个匹配项，
+														$数字：匹配的第n个组内容；
+														$&：当前匹配的内容；
+														$`：位于匹配子串左侧的文本；
+														$'：位于匹配子串右侧的文本
+														$$：直接量$符号
+		5）时间处理：JavaScript中提供了时间相关的操作，时间操作分为两种
+			时间统一时间
+			本地时间（东8区）
+			更多操作参见：http://www.shouce.ren/api/javascript/main.html	
+	7.语句和异常
+		1）条件语句：JavaScript中支持两个中条件语句，分别是if 和 switch
+			if语句：		
+				if(条件){
+				
+				}else if(条件){
+				
+				}else{
+		
+				}
+			switch语句：
+				switch(name){
+					case '1':
+						age = 123;
+						break;
+					case '2':
+						age = 456;
+						break;
+					default :
+						age = 777;
+				}
+		2）循环语句：JavaScript中支持三种循环语句
+			方式一：
+				var names = ["alex", "tony", "rain"];
+				for(var i=0;i<names.length;i++){
+					console.log(i);
+					console.log(names[i]);
+				}
+			方式二：
+				var names = ["alex", "tony", "rain"];
+				for(var index in names){
+					console.log(index);
+					console.log(names[index]);
+				}
+			方式三：
+				while(条件){
+					// break;
+					// continue;
+				}
+		3）异常处理
+			try {
+				//这段代码从上往下运行，其中任何一个语句抛出异常该代码块就结束运行
+			}
+			catch (e) {
+				// 如果try代码块中抛出了异常，catch代码块中的代码就会被执行。
+				//e是一个局部变量，用来指向Error对象或者其他抛出的对象
+			}
+			finally {
+				//无论try中代码是否有异常抛出（甚至是try代码块中有return语句），finally代码块中始终会被执行。
+			}
+	8.函数
+		1）JavaScript中函数主要有三类
+			// 普通函数
+				function func(arg){
+					return true;
+				}
+			// 匿名函数
+				var func = function(arg){
+					return "tony";
+				}
+			// 自执行函数
+				(function(arg){
+					console.log(arg);
+				})('123')
+				
+			PS: 对于JavaScript中函数参数，实际参数的个数可能小于形式参数的个数，函数内的特殊值arguments中封装了所有实际参数
+		2）作用域：所有的作用域在创建函数且未执行时候就已经存在
+			JavaScript中每个函数都有自己的作用域，当出现函数嵌套时，就出现了作用域链。当内层函数使用变量时，会根据作用域链从内到外一层层的循环，如果不存在，则异常	
+			代码：
+				function f2(){
+					var arg= 111;
+					function f3(){
+						console.log(arg);
+					}
+					return f3;
+				}
+				ret = f2();
+				ret();
+		3）闭包
+			a. 闭包是可以包含自由变量(未绑定到特定对象)的代码块
+			b. 闭包是拥有多个变量和绑定了这些变量的环境表达式(通常是函数)，这些变量也是该表达式/函数的一部分
+			c. 由于作用域链只能从内向外找，默认外部无法获取函数内部变量,闭包需要在外部获取函数内部的变量
+			代码：
+			function f2(){
+				var arg= [11,22];
+				function f3(){
+					return arg;
+				}
+				return f3;
+			}
+			ret = f2();
+			ret();
+		4）面向对象
+			function Foo (name,age) {
+				this.Name = name;
+				this.Age = age;
+				this.Func = function(arg){
+					return this.Name + arg;
+				}
+			}
+			var obj = new Foo('alex', 18);
+			var ret = obj.Func("sb");
+			console.log(ret);
+			对于上述代码需要注意：
+				Foo充当的构造函数
+				this代指对象
+				创建对象时需要使用 new
+			上述代码中每个对象中均保存了一个相同的Func函数，从而浪费内存。使用原型和可以解决该问题
+				function Foo (name,age) {
+					this.Name = name;
+					this.Age = age;
+				}
+				Foo.prototype = {
+					GetInfo: function(){
+						return this.Name + this.Age
+					},
+					Func : function(arg){
+						return this.Name + arg;
+					}
+				}
+			
+		
+AJAX 全套
+	1.概念
+		Asynchronous JavaScript and XML(异步的JavaScript和XML）,一种创建交互式网页应用的网页开发技术方案
+		1) 异步的JavaScript			
+			使用JavaScript语言和浏览器提供的相关类库的功能，向服务端发送请求，服务端处理完请求后，自动执行某个JavaScript的回调函数
+			PS：以上请求和响应的整个过程是偷偷进行的，页面上无任何感知
+		2）XML
+			XML是一种标记语言，是Ajax在和后台交互时传输数据的格式之一
+		3）AJAX可以做：
+			a.注册时，输入用户名自动检测用户是否已经存在。
+			b.登陆时，提示用户名密码错误	
+			c.删除数据行时，将行ID发送到后台，后台在数据库中删除，数据库删除成功后，在页面DOM中将数据行也删除。（博客园）
+	2."伪"AJAX
+		需求：用户输入URL，使用iframe将目标url加载到页面指定位置(局部刷新)
+		HTML标签的iframe标签具有局部加载内容的特性，所以可以使用其来伪造Ajax请求
+		PS：iframe可以模仿AJAX，但有一定局限性
+		代码：
+			<!DOCTYPE html>
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<title>Title</title>
+			</head>
+			<body>
+				<div>
+						<p>请输入要加载的地址：<span id="currentTime"></span></p>
+						<p>
+							<input id="url" type="text" />
+							<input type="button" value="刷新" onclick="LoadPage();">
+						</p>
+					</div>
+				<div>
+					<h3>加载页面位置：</h3>
+					<iframe id="iframePosition" style="width: 100%;height: 500px;"></iframe>
+				</div>
+				<script type="text/javascript">
+					window.onload= function(){
+						var myDate = new Date();
+						document.getElementById('currentTime').innerText = myDate.getTime();
+					};
+					function LoadPage(){
+						var targetUrl =  document.getElementById('url').value;
+						document.getElementById("iframePosition").src = targetUrl;
+					}
+				</script>
+			</body>
+			</html>		
+	3.原生AJAX
+		Ajax主要就是使用 XmlHttpRequest 对象来完成请求操作，该对象在主流浏览器中均存在(除早起的IE)，Ajax首次出现IE5.5中存在（ActiveX控件）
+			1）XmlHttpRequest对象的主要方法
+				a. void open(String method,String url,Boolen async) #用于创建请求
+					[参数]
+					method： 请求方式（字符串类型），如：POST、GET、DELETE...
+					url：    要请求的地址（字符串类型）
+					async：  是否异步（布尔类型）
+				b. void send(String body)			#用于发送请求
+					[参数]
+					body： 要发送的数据（字符串类型）
+				c.void setRequestHeader(String header,String value)	#用于设置请求头
+					[参数]
+					header： 请求头的key（字符串类型）
+					vlaue：  请求头的value（字符串类型）
+				d. String getAllResponseHeaders()	#获取所有响应头
+					[返回值]响应头数据（字符串类型
+				e. String getResponseHeader(String header)			#获取响应头中指定header的值
+					[参数]
+					header： 响应头的key（字符串类型）
+					[返回值]
+					响应头中指定的header对应的值
+				f. void abort()						#终止请求
+			2）XmlHttpRequest对象的主要属性
+				a. Number readyState		#状态值（整数）
+					0 未初始化，尚未调用open()方法；
+					1 启动，调用了open()方法，未调用send()方法；
+					2 发送，已经调用了send()方法，未接收到响应；
+					3 接收，已经接收到部分响应数据
+					4 完成，已经接收到全部响应数据
+				b. Function onreadystatechange 	#当readyState的值改变时自动触发执行其对应的函数（回调函数）
+				c. String responseText			#服务器返回的数据（字符串类型）
+				d. XmlDocument responseXML		#服务器返回的数据（Xml对象）
+				e. Number states				#状态码（整数），如：200、404...
+				f. String statesText			#状态文本（字符串），如：OK、NotFound...
+			3）发送AJAX请求
+				- xhr = new XmlHttpRequest() #新建一个XmlHttpRequest对象
+				- xhr.onreadystatechange = func #绑定一个回调函数，send之后会执行
+				- xhr.open("GET","url",true) #打开一个url
+				- xhr.send()				 #发送内容			
+			4）跨浏览器支持
+				XmlHttpRequest ：IE7+, Firefox, Chrome, Opera, etc.
+				ActiveXObject("Microsoft.XMLHTTP") ：IE6, IE5			
+			Demo1：
+				<body>
+					<h1>XMLHttpRequest - Ajax请求</h1>
+					<input type="button" onclick="XhrGetRequest();" value="Get发送请求" />
+					<input type="button" onclick="XhrPostRequest();" value="Post发送请求" />
+					<script type="text/javascript">
+						function GetXHR(){
+							var xhr = null;
+							if(XMLHttpRequest){
+								xhr = new XMLHttpRequest();
+							}else{
+								xhr = new ActiveXObject();
+							}
+							return xhr;
+						}
+						function XhrPostRequest(){
+							var xhr = GetXHR();
+							// 定义回调函数
+							xhr.onreadystatechange = function(){
+								// 已经接收到全部响应数据，执行以下操作
+								if(xhr.readyState == 4){
+									var data = xhr.responseText;
+									console.log(data);
+								}
+							};
+							// 指定连接方式和地址----文件方式
+							xhr.open('POST', "data1.json", true);
+							xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset-UTF-8');   // 设置请求头
+							xhr.send('name=1;age=1;');     // 发送请求
+						}
+						function XhrGetRequest(){
+							var xhr = GetXHR();
+							// 定义回调函数
+							xhr.onreadystatechange = function(){
+								// 已经接收到全部响应数据，执行以下操作
+								if(xhr.readyState == 4){
+									var data = xhr.responseText;
+									console.log(data);
+								}
+							};
+							xhr.open('get', "data.json", true); // 指定连接方式和地址----文件方式
+							xhr.send();     // 发送请求
+						}
+					</script>
+				</body>
+			Demo2：
+				<!DOCTYPE html>
+				<html>
+				<head lang="en">
+					<meta charset="UTF-8">
+					<title></title>
+				</head>
+				<body>
+					<input type="submit" onclick="Test();"/>
+					<div style="width: 100px;height: 100px" id="result"></div>
+					<script type="text/javascript">
+						var xhr = null;
+						console.log(xhr);
+						function Test() {
+							console.log("test");
+							xhr = new XMLHttpRequest();
+							xhr.onreadystatechange = WTF;		//绑定一个回调函数，send之后执行
+							xhr.open('GET','data.json',true);	//打开一个文本
+							xhr.send()							//发送内容为空
+						}
+						function WTF() {
+							if(xhr.readyState==4){				//如果接收到全部响应数据
+								console.log("wtf");
+								var r = xhr.responseText;		//赋值给r
+								document.getElementById('result').innerHTML = r; //获取到id为result的标签并把html内容设置为r
+							}
+						}
+					</script>
+				</body>
+				</html>
+	4.jQuery AJAX 
+		基于jQuery的AJAX
+		jQuery 是 JavaScript 的类库，将复杂的功能做了上层封装，开发者可以写更少的代码实现更多的功能
+		使用jQuery Ajax本质还是使用的 XMLHttpRequest 或 ActiveXObject插件 
+		PS: 2.+版本不再支持IE9以下的浏览器
+		1）jQuery操作AJAX方法
+			jQuery.ajax(...)
+				[参数]
+				- url：请求地址
+				- type：请求方式，GET、POST（1.9.0之后用method）
+				- headers：请求头
+				- data：要发送的数据
+				- contentType：即将发送信息至服务器的内容编码类型(默认: "application/x-www-form-urlencoded; charset=UTF-8")
+				- async：是否异步
+				- timeout：设置请求超时时间（毫秒）
+				- beforeSend：发送请求前执行的函数(全局)
+				- complete：完成之后执行的回调函数(全局)
+				- success：成功之后执行的回调函数(全局)
+				- error：失败之后执行的回调函数(全局)
+				- accepts：通过请求头发送给服务器，告诉服务器当前客户端课接受的数据类型
+				- dataType：将服务器端返回的数据转换成指定类型
+					"xml": 将服务器端返回的内容转换成xml格式
+					"text": 将服务器端返回的内容转换成普通文本格式
+					"html": 将服务器端返回的内容转换成普通文本格式，在插入DOM中时，如果包含JavaScript标签，则会尝试去执行。
+					"script": 尝试将返回值当作JavaScript去执行，然后再将服务器端返回的内容转换成普通文本格式
+					"json": 将服务器端返回的内容转换成相应的JavaScript对象
+					"jsonp": JSONP 格式,使用 JSONP 形式调用函数时，如 "myurl?callback=?" jQuery 将自动替换 ? 为正确的函数名，以执行回调函数
+					如果不指定，jQuery 将自动根据HTTP包MIME信息返回相应类型
+				- converters： 转换器，将服务器端的内容根据指定的dataType转换类型，并传值给success回调函数
+					$.ajax({
+						accepts: {
+						mycustomtype: 'application/x-some-custom-type'
+						},
+						
+						// Expect a `mycustomtype` back from server
+						dataType: 'mycustomtype'
+					
+						// Instructions for how to deserialize a `mycustomtype`
+						converters: {
+						'text mycustomtype': function(result) {
+							// Do Stuff
+							return newresult;
+						}
+						},
+					});							
+			jQuery.post(...)/jQuery.get(...)
+				[参数]
+				- url: 待载入页面的URL地址
+				- data: 待发送 Key/value 参数
+				- success: 载入成功时回调函数
+				- dataType: 返回内容格式，xml, json,  script, text, html
+			jQuery.getJSON(...)/jQuery.getScript(...)
+				[参数]
+				- url: 待载入页面的URL地址
+				- data: 待发送 Key/value 参数
+				- success: 载入成功时回调函数
+		2）Demo
+			<body>
+			<input type="submit" onclick="MyTest();"/>
+			<script type="text/javascript" src="jquery-1.12.4.js"></script>
+			<script type="text/javascript">
+				function MyTest(){
+					console.log("func");
+					jQuery.get({			//使用jQuery进行ajax操作
+						url:'data.json',	//这里用的本地文件
+						dataType:'text',	//返回内容的格式
+						success: function(data,textStatus,xmlHttpRequest){  //载入成功时使用的回调函数
+							console.log("成了");
+							console.log(data,typeof data);			//返回的内容
+							console.log(textStatus);	//返回状态的文本
+							console.log(xmlHttpRequest)	//返回的HttpRequest对象
+						}
+					});
+				}
+			</script>
+	5.跨域AJAX
+		- 跨域，跨域名访问，如：http://www.c1.com 域名向 http://www.c2.com域名发送请求
+		- 浏览器存在同源策略机制,阻止从源加载的文档/脚本，去获取或设置另一个源加载的文档
+		- 同源策略是浏览器的限制，所以请求的发送和响应可以进行，只是浏览器不接受罢了
+		- 浏览器同源策略并不是对所有的请求均制约：
+			制约： XmlHttpRequest
+			不制约： img、iframe、script等具有src属性的标签
+		1）JSONP实现跨域请求			
+			JSONP 是 JSON 的一种使用模式，利用script标签的src属性（浏览器允许script标签跨域）
+			<!DOCTYPE html>
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<title>Title</title>
+			</head>
+			
+			<body>
+				<p><input type="button" onclick="J1();"  value='提交'/></p>
+				<p><input type="button" onclick="J2();" value='提交'/></p>
+			
+				<script type="text/javascript" src="jquery-1.12.4.js"></script>
+				<script>
+					function J1(){
+						var tag = document.createElement('script');
+						tag.src = "https://www.baidu.com/";
+						document.head.appendChild(tag);
+						document.head.removeChild(tag);
+					}
+					function J2(){
+						$.ajax({
+							url: "data.json",
+							type: 'GET',
+							dataType: 'JSONP',
+							success: function(data, statusText, xmlHttpRequest){
+								console.log(data, statusText, xmlHttpRequest);
+							}
+						})
+					}
+				</script>
+			</body>
+			</html>
+		2）CORS
+			随着技术的发展，现在的浏览器可以支持主动设置从而允许跨域请求，即：跨域资源共享（CORS，Cross-Origin Resource Sharing），其本质是设置响应头，使得浏览器允许跨域请求
+			a.简单请求 OR 非简单请求
+				[条件]
+				- 请求方式
+					HEAD、GET、POST
+				- 请头信息
+					Accept
+					Accept-Language
+					Content-Language
+					Last-Event-ID
+					Content-Type 对应的值是以下三个中的任意一个
+											application/x-www-form-urlencoded
+											multipart/form-data
+											text/plain				
+				PS：同时满足以上两个条件时，则是简单请求，否则为复杂请求
+			b.简单请求和非简单请求的区别
+				- 简单请求：一次请求
+				- 非简单请求：两次请求，在发送数据之前会先发一次请求用于做“预检”，只有“预检”通过后才再发送一次请求用于数据传输。
+			c.关于“预检”
+				- 请求方式：OPTIONS
+				- “预检”其实就是做检查，检查如果通过则允许传输数据，检查不通过则不再发送真正想要发送的消息
+				- 如何“预检”
+					=> 如果复杂请求是PUT等请求，则服务端需要设置允许某请求，否则“预检”不通过
+						Access-Control-Request-Method
+					=> 如果复杂请求设置了请求头，则服务端需要设置允许某请求头，否则“预检”不通过
+						Access-Control-Request-Headers
+			d.基于cors实现AJAX请求
+			
+			
+CSS	
+	1.设置CSS两种方式
+		1）设置style属性
+			<div style="background-color: #2aabd2;height: 100px"></div>   #设置背景颜色;设置高度
+		2）CSS选择器：head里创建style标签
+			- id 选择器，因为id不能重复，所以没办法重复使用
+				<style>
+					#i1{
+						background-color: #699737;
+						height: 100px;
+					}
+				</style>		
+				<div id="i1"></div>	
+			- class 选择器,可重复使用
+			    <style>
+					.c1{
+						background-color: #ad80a7;
+						height: 100px;
+					}
+				</style>
+			    <div class="c1">fly me to the moon</div>
+				<div class="c1">two little beautiful girl</div>	
+			- 标签选择器	 #例子：给下面所有的div做设置			
+			    div{	
+					background-color: black;
+					color: white;
+				}
+			- 层级选择器	#给c1下的c2下的div做设置
+				.c1 .c2 div{
+				
+				}
+			- 组合选择器	#给id为i1，i2，i3的都做设置
+				#i1,#i2,#i3{
+				
+				}
+			- 属性选择器 
+				.c1[name="topaz"]{
+					background-color: #ad80a7;
+				}
+			    <div class="c1" name="topaz">fly me to the moon</div>
+	2.优先级:style属性优先级最高，其他就近原则
+		1）样式不冲突时效果合并
+			<style>
+				.c1{
+					background-color: red;
+				}
+				.c2{
+					color: #ad80a7;
+				}
+			</style>
+			<div class="c1 c2">fly me to the moon</div>
+	
+		2）冲突时style属性优先级最高，没有style属性最后边的选择器优先级最高
+		    <style>
+				.c1{
+					background-color: red;
+					color: white;
+		
+				}
+				.c2{
+					color: #ad80a7;
+				}
+			</style>
+			<div class="c1 c2" style="color: pink">fly me to the moon</div>
+	3.CSS文件格式及使用
+		1）格式
+			.c1{
+				background-color: red;
+				color: white;
+			
+			}
+			.c2{
+				color: #ad80a7;
+			}
+		2）使用
+			<head>
+			    <link rel="stylesheet" href="c.css">
+			</head>
+	4.边框
+		- border
+		- border-left
+		- border-right
+		例子：border宽度为1，样式为虚线，颜色为红色
+			<div style="border: 1px dotted red;height: 50px;">fuck </div>		
+	3.text-align :横向居中
+		<div style="border:1px dotted red;height: 100px;text-align: center;">fuck </div>
+	4.line-height：纵向居中
+		<div style="border:1px dotted red;height: 100px;16px;text-align: center;line-height: 100px;">fuck </div>
+	5.字体
+		- font-size		字体大小
+		- font-weight	字体加粗
+	    <div style="border:1px dotted red;height: 100px;font-size: 16px;font-weight: bold;text-align: center;line-height: 100px;">fuck </div>
+	6.height,width
+		- height 高度	
+		- width 宽度，可使用像素方式设置，也可以使用百分比方式
+		<div style="border:1px dotted red;height:100px;width: 80%">fuck </div>
+		<div style="border:1px dotted red;height: 100px;width: 100px">you</div>	
+	7.float：块级标签也可以堆叠到一行
+		- 都往左漂移
+			<div style="width: 20%;background-color: #2aabd2;float: left">slay</div>
+			<div style="width:80%;background-color: red;float: left">you bitch</div>
+		- 一个往左一个往右
+		    <div style="width: 20%;background-color: #2aabd2;float: left">slay</div>
+			<div style="width:40%;background-color: red;float: right">you bitch</div>
+		PS:	1.如果百分比超过100就换行
+			2.如果前面的div没有float，后面的div有float他俩也不会漂移到一行
+			3.如果子标签有float，父标签没有float，父标签hold不住子标签，边框消失时添加：<div style="clear: both;"></div>
+	8.display
+		- display: inline 块级标签变成行内标签
+			<div style="width: 20%;border: 1px solid pink;display: inline">s</div>
+			<span>o( =?ω?= )m</span>
+		- display: block 行内标签变成块级标签
+			<div style="width: 20%;border: 1px solid pink;display: inline">s</div>
+			<span style="display: block;border: 1px solid pink">o( =?ω?= )m</span>
+		- display: inline-block 可以让块级标签和行内标签具有对方的特性，块级标签不占整行了，行内标签可以设置高度宽度了
+		    <div style="width: 20%;border: 1px solid pink;display: inline-block">s</div>
+			<span style="display: inline-block;border: 1px solid pink">o( =?ω?= )m</span>
+		- display:none display等于none时标签消失
+		PS：行内标签无法设置高度，宽度，边距(padding,margin)，块级标签可以	
+	9.padding	内边距
+		- padding-top	#子标签的底部离父标签顶部有多少像素
+		    <div style="width: 20%;height: 100px;border: 1px solid pink">
+				<div style="width:100%;height: 30px;border: 1px solid pink;padding-top: 0px">FUCK</div>
+			</div>
+	10.margin(0,atuo) 外边距
+		- margin-top 	#离父标签的顶部有多少像素
+		    <div style="width: 20%;height: 100px;border: 1px solid pink">
+				<div style="width:100%;height: 30px;border: 1px solid pink;margin-top: 0px">FUCK</div>
+			</div>
+		- margin： 0 auto	#上下为0,左右自动
+			<body style="margin: 0">	#页面最上方边距为0，顶格
+			<div style="width: 100%;height: 30px;border: 1px solid pink;">
+				<div style="width:90%;height: 30px;border: 1px solid pink;padding-top: 0px;margin: 0 auto">FUCK</div>
+			</div>
+			</body>
+	11.postion 标签固定
+		- position: fixed	#结合上下左右固定在页面某个位置
+			- top		#离顶部多远
+			- bottom	#离底部多远
+			- left		#离左边多远
+			- right		#离右边多远
+			top标签实例：
+				<div style="width: 50px;height: 50px;border: 1px solid pink;position: fixed;bottom:20px;right: 20px"> Top</div>
+				<div style="width: 100%;height: 1000px;border: 1px solid pink;"></div>
+			标题栏实例：
+			    <div style="width: 100%;height: 48px;border: 1px solid pink;position: fixed;top:0;">标题栏</div>
+				<div style="width: 100%;height: 1000px;border: 1px solid pink;margin-top: 50px;">内容</div>
+		- position: absolute #绝对定位，一锤子买卖，和relative结合才有意义
+			#可以试一下，一滚动滑轮就跟着走了
+			<div style="width: 100%;height: 48px;border: 1px solid pink;position: absolute;bottom: 0;">标题栏</div>
+			<div style="width: 100%;height: 1000px;border: 1px solid pink;">内容</div>
+		- position: relative #单独存在没意义，不发生任何变化，和absolute结合使用
+		- position: relative + position: absolute #在父类标签的某个位置,下面用三个例子多方面展示下
+			<div style="width: 300px;height: 100px;border: 1px solid pink;position: relative;margin: 0 auto;">
+				<div style="width: 30px;height: 30px;border: 1px solid pink;position: absolute;top:0;left: 0">Sisi</div>
+			</div>
+		
+			<div style="width: 300px;height: 100px;border: 1px solid pink;position: relative;margin: 0 auto;">
+				<div style="width: 30px;height: 30px;border: 1px solid pink;position: absolute;top: 40px;left: 130px">Lala</div>
+			</div>
+		
+			<div style="width: 300px;height: 100px;border: 1px solid pink;position: relative;margin: 0 auto;">
+				<div style="width: 30px;height: 30px;border: 1px solid pink;position: absolute;bottom: 0;right: 0">Bo</div>
+			</div>
+			PS：抽屉网的点赞效果，点赞有个+1飞出来，点赞图标就是父标签 relative,飞起来的+1就是 absolute,相对于父标签逐渐增加距离，飞起来的效果就实现了
+	12.opacity 透明度：数值越小越透明
+		<div style="background-color:pink;position: fixed;top: 0;left: 0;right: 0;bottom: 0;opacity: 0.5"></div>
+		<div style="width: 150px;height: 30px;border: 1px solid blue;top:0;left: 0">o(*////▽////*)o</div>	
+	13.z-index 优先级：数值大的在上面
+		#注意这里骚操作，横向居中left: 50% 之后再使用 margin-left: -250px，往回走本身宽度的一半
+		<div style="z-index: 10;position: fixed;background-color: white;height: 150px;width: 500px;top: 50%;left: 50%;margin-left: -250px;"></div>
+		<div style="z-index: 9;background-color:pink;position: fixed;top: 0;left: 0;right: 0;bottom: 0;opacity: 0.5"></div>
+		<div style="width: 150px;height: 30px;top:0;left: 0">o(*////▽////*)o</div>
+	14.overflow
+		- overflow: hidden #超过范围隐藏
+			<div style="width: 150px;height: 200px;overflow: hidden">
+				<img src="DogeggLi.png">
+			</div>
+		- overflow: auto #超过范围出现滚动条
+			<div style="width: 150px;height: 200px;overflow: auto">
+				<img src="DogeggLi.png">	#当然也可以直接给图片设置高度宽度
+			</div>
+	15.hover 鼠标移上去时，样式发生变化
+		<head>
+			<style>
+				.menu{
+					padding: 0 10px;
+					background-color: #1b6d85;
+					color: white;
+				}
+				.menu:hover{
+					background-color: greenyellow;
+					color: black;
+				}
+			</style>
+		</head>
+		<body style="margin: 0">
+			<div style="background-color: #2aabd2;width: 100%;height: 30px">
+				<div style="margin-left: 300px;padding-top: 5px;">
+					<a class="menu">W</a>
+					<a class="menu">T</a>
+					<a class="menu">F</a>
+				</div>
+			</div>
+		</body>
+	16.background 背景
+		- background-image   背景图片,图片横向纵向堆叠到和div一样大
+			<div style="width:100%;height:400px;background-image:url('DogeggLi.png');"></div>			
+		- background-repeat: repeat-y/repeat-x/no-repeat; 只横向堆叠/只纵向堆叠/不堆叠
+			<div style="width:100%;height:400px;background-image:url('DogeggLi.png');background-repeat: repeat-y;"></div>
+		- background-position-x: 0;background-position-y:0 相对于div横向或者纵向移动	
+			<div style="width:200px;height:400px;background-image:url('DogeggLi.png');background-repeat: no-repeat;background-position-x: 0;background-position-y:0 "></div>
+		PS:以上内容可简写到一个里,background:url(1.png) -100px -200px no-repeat
+		
+jQuery
+	1.介绍：
+		- jQuery是一个兼容多浏览器,对javascript进行了封装,集合DOM/javascript的类库 （Python里叫做模块，其他语言里叫类库）
+		- 核心理念是write less,do more,开发更便捷，兼容性方面十分优秀
+	2.jQuery主流版本
+		- 1.x	兼容性更好
+		- 2.x	忽略掉ie低版本
+		- 3.x	功能更多
+		PS：上线改成min版本,无换行，更省资源	
+	3.jQuery引入调用及转换
+		1) 引入
+			<script src="jquery-1.12.4.js"></script>
+		2) 调用
+			<script>
+				$('#i1')
+			</script>
+		3) jQuery 和 dom 的转换
+			jQuery内部使用的dom，所以这两个之间可以做转换
+			- jQuery 
+				> $('i1')		#获取到jQuery对象，具有$('i1').xxx的jQuery功能		
+				< [div#i1, context: document, selector: "#i1"]	
+				转换：
+				> $('i1')[0]	#加索引0，获取到dom对象
+				< <div id=?"i1">?123?</div>?			
+			- dom	
+				> document.getElementById('i1')
+				< <div id=?"i1">?123?</div>?
+				转换：
+				> $(document.getElementById('i1'))	#$()括起来，获取到jQuery对象
+				> [div#i1, context: div#i1]			
+			PS：chrome下的console
+	4.jQuery做些什么		
+		1)查找元素
+		2)操作元素
+	5.查找元素
+		JavaScript查找元素由选择器和筛选共同完成，更灵活，DOM查找元素只由10个左右的选择器来完成	
+		1)选择器		
+			- id		$('#i1')		#找到id为i1的				
+			- class 	$('.c1')		#找到class为c1的
+			- 标签		$('a')			#找到所有a标签
+			- 组合选择器	$('a','.c1')	#找到所有的a标签和class为c1的
+			- 层级选择器	
+				$('.c1 a')		#找到class为c1下子子孙孙里的a标签
+				$('.c1>a')		#在它的儿子里找
+		2)筛选器
+			- :first		#找到第一个
+			- :last			#找到最后一个
+			- :eq(0)		#找到索引第x个的，从0开始索引，
+			- :gt(index)	#索引大于多少的
+			- .next(div)	#下一个标签
+			- .prev(div)	#上一个标签
+			- .parent()		#父标签	
+			- .sibling()	#兄弟标签
+			- .children()	#孩子标签
+			- .find()		#找特定标签
+		3)属性
+			[attribute]		#找到属性为val的
+			[attribute=value]	$('[wtf=fuck]')  #找到属性等于val的
+			[attribute!=value]	$('[wtf!=fuck]') #找到属性不等于的val的
+			[attribute^=value]	$('[wtf=^fuck]') #属性以val开头的
+			[attribute$=value]	$('[wtf$=fuck]') #属性以val结尾的
+			[attribute*=value]	$('[wtf*=fuck]') #匹配到就算的
+			- 组合使用，超灵活是不是
+				$('.c1 a[wtf^=fuck]')		
+			- Demo1：表单全选/反选/取消两种方式)
+				<!DOCTYPE html>
+				<html lang="en">
+				<head>
+					<meta charset="UTF-8">
+					<title>Title</title>
+				</head>
+				<body>
+					<input type="button" value="全选" onclick="checkAll()">
+					<input type="button" value="反选" onclick="reverseAll()">
+					<input type="button" value="取消" onclick="cancelAll()">
+					<table border="1" id="table">
+						<tr>
+							<th>选项</th>
+							<th>Ip</th>
+							<th>Port</th>
+						</tr>
+						<tr>
+							<td><input type="checkbox"/></td>
+							<td>10.0.0.1</td>
+							<td>80</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox"/></td>
+							<td>10.0.0.16</td>
+							<td>81</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox"/></td>
+							<td>10.0.0.12</td>
+							<td>82</td>
+						</tr>
+					</table>
+				<script type="text/javascript" src="jquery-1.12.4.js"></script>
+				<script>
+					function checkAll() {
+						$('[type=checkbox]').prop('checked',true);  //dom 需要拿到之后循环打对号，jQuery只需要一个命令
+					}
+					function cancelAll() {
+						$('[type=checkbox]').prop('checked',false);
+					}
+					function reverseAll() {
+						//for(var i=0;i<10;i++){
+							//dom的方式1
+						//}
+						//for(var item in [list]){
+							//dom的方式2
+						//}
+						$(':checkbox').each(function () {
+							//jQuery的方式
+							//this,dom对象,代指当前循环的每一个元素,dom直接打印标签，jQuery外边是方括号,打印时可以看到区别，						
+							//方式一：三元运算
+							var v = this.checked?false:true;
+							this.checked = v;
+							//方式二：
+							if(this.checked){
+									this.checked = false;
+								}else{
+									this.checked = true;
+								}
+						})
+					}
+				
+				</script>
+				
+				</body>
+				</html>
+			- Demo2：点击标题后隐藏其他内容，并显示当前标题栏的内容
+				#使用筛选器 sibling,parent,find,next 
+				<!DOCTYPE html>
+				<html lang="en">
+				<head>
+					<meta charset="UTF-8">
+					<title>Title</title>
+					<style>
+						.header{
+							background-color: red;
+							color: black;
+						}
+						.content{
+							background-color: black;
+							color: white;
+						}
+						.hide {
+							display: none;
+						}
+					</style>
+				
+				</head>
+				<body>
+					<div style='border: solid red 1px;width: 200px;height: 500px'>
+					<div class="item">
+						<div class="header">标题一</div>
+						<div class="content">内容1</div>
+					</div>
+					<div class="item">
+						<div class="header">标题一</div>
+						<div class="content hide">内容2</div>
+					</div>
+					<div class="item">
+						<div class="header">标题一</div>
+						<div class="content hide">内容3</div>
+					</div>
+					</div>
+				<script type="text/javascript" src="jquery-1.12.4.js"></script>
+				<script>
+					$('.header').click(function(){
+						$(this).next().removeClass('hide');
+						$(this).parent().siblings().find('.content').addClass('hide')
+					})
+				</script>
+				</body>
+				</html>
+	6.操作元素
+		文本操作
+			- $(..).text() 		#获取文本内容
+			- $(..).text('a') 	#设置文本内容，不解析html
+			- $(..).html() 		#获取html内容
+			- $(..).html('<a></a>') #设置html内容
+			- $(..).val()		#获取内容，
+			- $(..).val('aaa')	#设置内容
+		样式操作：
+			- addClass
+			- removeClass
+			- toggleClass
+		属性操作：
+			- $(..).attr('type') 				#获取标签上的属性
+			- $(..).attr('name','alex') 		#设置属性
+			- $（'#i1'）.removeAttr('value')	#删除属性
+			- $(..).(prop)						#专门用于checkbox和radio
+		PS:http://jquery.cuishifeng.cn/	==> 	其他自己去看		
+	参考：http://jquery.cuishifeng.cn/
+			
+DOM编程
+	文件对象模型（Document Object Model，简称DOM），使用它可以重构html文档，对页面上的东西移除，增加是W3C组织推荐的处理可扩展标志语言的标准编程接口
+	1.选择器：
+		document.getElementById('id')
+		document.getElementsByName('name')
+		document.getElementsByTagName('tagname')
+	2.内容：
+		- innerText
+		- innerHTML
+		var obj = document.getElementById('nid')
+		obj.innerText                       # 获取文本内容
+		obj.innerText = "hello"             # 设置文本内容
+		obj.innerHTML                       # 获取HTML内容
+		obj.innerHTML = "<h1>asd</h1>"      # 设置HTML内容
+	3.创建标签
+		1）方式一
+			var obj = document.createElement('a');	#创建标签
+			obj.href = "http://www.topaz.com";
+			var container = document.getElementById('container');
+			//container.appendChild(obj);
+			//container.insertBefore(obj, container.firstChild);	放到第一个儿子前面
+			//container.insertBefore(obj, document.getElementById('cat'));	放到id为cat的前面
+		2）方式二
+			var container = document.getElementById('container');
+			var obj = "<input  type='text' />";
+			container.innerHTML = obj;
+			// 'beforeBegin', 'afterBegin', 'beforeEnd',  'afterEnd'
+			//container.insertAdjacentHTML("beforeEnd",obj);
+	4.标签属性	
+		var obj = document.getElementById('container');
+		1)固定属性
+			obj.id
+			obj.id = "nid"
+			obj.className		#获取或者修改样式
+			obj.style.fontSize = "88px";
+			obj.style.属性		#获取或修改样式中的属性
+		2)自定义属性
+			obj.setAttribute(name,value)	#设置属性
+			obj.getAttribute(name)			#获取属性
+			obj.removeAttribute(name)
+	5.提交表单
+		document.geElementById('form').submit()
+	6.事件
+		1）常用事件
+			属性			此事件发生在何事
+			onabort			#图片的加载被中断
+			onblur			#元素失去焦点
+			onchange		#域的内容被改变
+			onclick			#当用户点击某个对象时调用的事件句柄
+			ondblclick		#当用户双击某个对象时调用的事件句柄
+			onerror			#在加载文档或图片时发生错误
+			onfocus			#元素获得焦点
+			onkeydown		#某个键盘元素被按下时
+			onkeypress		#某个键盘元素被按下并松开
+			onkeyup			#某个键盘元素被松开
+			onload			#一张页面或一张图片完成加载
+			onmousedown		#鼠标按钮被按下
+			onmouseout		#鼠标被移动
+			onmouseover		#鼠标移到某元素之上
+			onmouseup		#鼠标按键被松开
+			onreset			#重置按钮被点击
+			onresize		#窗口或框架被重新调整大小
+			onselect		#文本被选中
+			onsubmit		#确认按钮被点击
+			onunload		#用户退出页面
+		2）onload和ready两者区别
+			- 注册
+				onload只能注册一次；ready可以注册多次
+			- 创建
+				onload: body标签里添加onload事件/window.onload = function(){}
+				ready：$(document).ready(function(){})/$(function(){})
+			- 触发
+				onload：所有DOM元素创建、图片加载完毕后才触发
+				ready：DOM元素创建完毕后触发，不等图片加载完毕，图片还没有渲染，就可以进行事件的执行
+			- 例子
+				window.onload = function(){
+				
+				}
+				jQuery ==> $(document).ready(function(){
+				
+				}) 	
+	7.其他功能
+		console.log()	#打印，相当于print
+		alert()			#弹出框
+		confirm()		
+			- 语法 confirm(message)
+			- message 要在弹出框中显示的纯文本（而非 HTML 文本）
+			- 说明
+				a.用户点击确定按钮，则 confirm() 返回 true，如果点击取消按钮，则 confirm() 返回 false
+				b.用户点击确定按钮或取消按钮把对话框关闭之前，它将阻止用户对浏览器的所有输入
+				c.在调用 confirm() 时，将暂停对 JavaScript 代码的执行，在用户作出响应之前，不会执行下一条语句
+		URL和刷新
+			location.href	
+			location.href = "url"  window.location.reload()
+		定时器	
+			setInterval("alert()",2000);   
+			clearInterval(obj)
+			setTimeout();   
+			clearTimeout(obj)
+			demo1（跑马灯）：
+				<!DOCTYPE html>
+				<html lang="en">
+				<head>
+					<meta charset="UTF-8">
+						<title>欢迎blue shit莅临指导&nbsp;&nbsp</title>
+						<script type='text/javascript'>
+							function Go(){
+								var content = document.title;
+								var firstChar = content.charAt(0);  //找到第一个字符
+								var sub = content.substring(1,content.length);  //类似于Python 的列表切片
+								document.title = sub + firstChar;   //标题第一个字符移到最后一个
+							}
+							setInterval('Go()',10); //十秒一次
+						</script>
+				</head>
+				<body>
+				</body>
+				</html>
+			demo2（搜索框变化）：
+				<!DOCTYPE html>
+				<html>
+					<head>
+						<meta charset='utf-8' />
+						<title></title>
+						<style>
+							.gray{
+								color:red;
+							}
+							.black{
+								color:blue;
+							}
+						</style>
+						<script type="text/javascript">
+							function Enter(){
+							var id= document.getElementById("tip");
+							id.className = 'black';
+							if(id.value=='请输入关键字'||id.value.trim()==''){
+									id.value = ''
+							}
+							}
+							function Leave(){
+								var id= document.getElementById("tip")
+								var val = id.value;
+								if(val.length==0||id.value.trim()==''){
+									id.value = '请输入关键字';
+									id.className = 'gray';
+								}else{
+									console.log(id.value.trim());
+									id.className = 'black';
+								}
+							}
+						</script>
+					</head>
+					<body>
+						<input type='text' class='gray' id='tip' value='请输入关键字' onfocus='Enter();'  onblur='Leave();'/>
+					</body>
+				</html>
+			
+			
+			
+			
+			
+			
+				
+			
