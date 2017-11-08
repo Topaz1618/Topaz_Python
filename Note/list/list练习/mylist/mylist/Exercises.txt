@@ -1,0 +1,2747 @@
+================= Python 100例 ====================
+题目:
+					
+Demo:
+
+输出:
+
+================= Python 练习实例1 ====================
+题目:有四个数字：1、2、3、4，能组成多少个互不相同且无重复数字的三位数？各是多少？
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+for i in range(1,5):
+    for j in range(1,5):
+        for k in range(1,5):
+            if( i != k ) and (i != j) and (j != k):
+                print i,j,k
+输出:
+
+1 2 3
+1 2 4
+1 3 2
+1 3 4
+1 4 2
+1 4 3
+2 1 3
+2 1 4
+2 3 1
+2 3 4
+2 4 1
+2 4 3
+3 1 2
+3 1 4
+3 2 1
+3 2 4
+3 4 1
+3 4 2
+4 1 2
+4 1 3
+4 2 1
+4 2 3
+4 3 1
+4 3 2
+
+================= Python 练习实例13 ====================
+题目:打印出所有的"水仙花数"，所谓"水仙花数"是指一个三位数，其各位数字立方和等于该数本身。例如：153是一个"水仙花数"，因为153=1的三次方＋5的三次方＋3的三次方。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+for n in range(100,1000):
+    i = n / 100
+    j = n / 10 % 10
+    k = n % 10
+    if n == i ** 3 + j ** 3 + k ** 3:
+        print n
+输出:
+
+153
+370
+371
+407
+
+================= Python 练习实例5 ====================
+题目:输入三个整数x,y,z，请把这三个数由小到大输出。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+l = []
+for i in range(3):
+    x = int(raw_input('integer:\n'))
+    l.append(x)
+l.sort()
+print l
+输出:
+
+integer:
+8
+integer:
+5
+integer:
+6
+[5, 6, 8]
+
+================= Python 练习实例6 ====================
+题目:斐波那契数列。 
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+def fib(n):
+    a,b = 1,1
+    for i in range(n-1):
+        a,b = b,a+b
+    return a
+ 
+# 输出了第10个斐波那契数列
+print fib(10)#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+# 使用递归
+def fib(n):
+    if n==1 or n==2:
+        return 1
+    return fib(n-1)+fib(n-2)
+ 
+# 输出了第10个斐波那契数列
+print fib(10)#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+def fib(n):
+    if n == 1:
+        return [1]
+    if n == 2:
+        return [1, 1]
+    fibs = [1, 1]
+    for i in range(2, n):
+        fibs.append(fibs[-1] + fibs[-2])
+    return fibs
+ 
+# 输出前 10 个斐波那契数列
+print fib(10)
+输出:
+
+F0 = 0     (n=0)
+F1 = 1    (n=1)
+Fn = F[n-1]+ F[n-2](n=>2)
+
+55
+
+[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+
+================= Python 练习实例7 ====================
+题目:将一个列表的数据复制到另一个列表中。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+a = [1, 2, 3]
+b = a[:]
+print b
+输出:
+
+[1, 2, 3]
+
+================= Python 练习实例2 ====================
+题目:企业发放的奖金根据利润提成。利润(I)低于或等于10万元时，奖金可提10%；利润高于10万元，低于20万元时，低于10万元的部分按10%提成，高于10万元的部分，可提成7.5%；20万到40万之间时，高于20万元的部分，可提成5%；40万到60万之间时高于40万元的部分，可提成3%；60万到100万之间时，高于60万元的部分，可提成1.5%，高于100万元时，超过100万元的部分按1%提成，从键盘输入当月利润I，求应发放奖金总数？
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+i = int(raw_input('净利润:'))
+arr = [1000000,600000,400000,200000,100000,0]
+rat = [0.01,0.015,0.03,0.05,0.075,0.1]
+r = 0
+for idx in range(0,6):
+    if i>arr[idx]:
+        r+=(i-arr[idx])*rat[idx]
+        print (i-arr[idx])*rat[idx]
+        i=arr[idx]
+print r
+输出:
+
+净利润:120000
+1500.0
+10000.0
+11500.0
+================= Python 练习实例10 ====================
+题目:暂停一秒输出，并格式化当前时间。 
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+import time
+ 
+print time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+ 
+# 暂停一秒
+time.sleep(1)
+ 
+print time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+输出:
+
+2015-10-21 17:48:40
+2015-10-21 17:48:41
+
+================= Python 练习实例4 ====================
+题目:输入某年某月某日，判断这一天是这一年的第几天？
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+year = int(raw_input('year:\n'))
+month = int(raw_input('month:\n'))
+day = int(raw_input('day:\n'))
+ 
+months = (0,31,59,90,120,151,181,212,243,273,304,334)
+if 0 < month <= 12:
+    sum = months[month - 1]
+else:
+    print 'data error'
+sum += day
+leap = 0
+if (year % 400 == 0) or ((year % 4 == 0) and (year % 100 != 0)):
+    leap = 1
+if (leap == 1) and (month > 2):
+    sum += 1
+print 'it is the %dth day.' % sum
+输出:
+
+year:
+2015
+month:
+6
+day:
+7
+it is the 158th day.
+
+================= Python 练习实例3 ====================
+题目:一个整数，它加上100后是一个完全平方数，再加上168又是一个完全平方数，请问该数是多少？
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+for i in range(1,85):
+    if 168 % i == 0:
+        j = 168 / i;
+        if  i > j and (i + j) % 2 == 0 and (i - j) % 2 == 0 :
+            m = (i + j) / 2
+            n = (i - j) / 2
+            x = n * n - 100
+            print(x)
+输出:
+
+-99
+21
+261
+1581
+
+================= Python 练习实例11 ====================
+题目:古典问题：有一对兔子，从出生后第3个月起每个月都生一对兔子，小兔子长到第三个月后每个月又生一对兔子，假如兔子都不死，问每个月的兔子总数为多少？ 
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+f1 = 1
+f2 = 1
+for i in range(1,22):
+    print '%12ld %12ld' % (f1,f2),
+    if (i % 3) == 0:
+        print ''
+    f1 = f1 + f2
+    f2 = f1 + f2
+输出:
+
+           1           1            2           3            5           8 
+          13          21           34          55           89         144 
+         233         377          610         987         1597        2584 
+        4181        6765        10946       17711        28657       46368 
+       75025      121393       196418      317811       514229      832040 
+     1346269     2178309      3524578     5702887      9227465    14930352 
+    24157817    39088169     63245986   102334155    165580141   267914296 
+
+================= Python 练习实例12 ====================
+题目:判断101-200之间有多少个素数，并输出所有素数。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+h = 0
+leap = 1
+from math import sqrt
+from sys import stdout
+for m in range(101,201):
+    k = int(sqrt(m + 1))
+    for i in range(2,k + 1):
+        if m % i == 0:
+            leap = 0
+            break
+    if leap == 1:
+        print '%-4d' % m
+        h += 1
+        if h % 10 == 0:
+            print ''
+    leap = 1
+print 'The total is %d' % h
+输出:
+
+101 
+103 
+107 
+109 
+113 
+127 
+131 
+137 
+139 
+149 
+
+151 
+157 
+163 
+167 
+173 
+179 
+181 
+191 
+193 
+197 
+
+199 
+The total is 21
+
+================= Python 练习实例9 ====================
+题目:暂停一秒输出。 
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+import time
+ 
+myD = {1: 'a', 2: 'b'}
+for key, value in dict.items(myD):
+    print key, value
+    time.sleep(1) # 暂停 1 秒
+输出:
+
+1 a
+2 b
+
+================= Python 练习实例17 ====================
+题目:输入一行字符，分别统计出其中英文字母、空格、数字和其它字符的个数。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+import string
+s = raw_input('input a string:\n')
+letters = 0
+space = 0
+digit = 0
+others = 0
+for c in s:
+    if c.isalpha():
+        letters += 1
+    elif c.isspace():
+        space += 1
+    elif c.isdigit():
+        digit += 1
+    else:
+        others += 1
+print 'char = %d,space = %d,digit = %d,others = %d' % (letters,space,digit,others)
+输出:
+
+input a string:
+runoob
+char = 6,space = 0,digit = 0,others = 0
+
+================= Python 练习实例16 ====================
+题目:输出指定格式的日期。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+import datetime
+ 
+if __name__ == '__main__':
+ 
+    # 输出今日日期，格式为 dd/mm/yyyy。更多选项可以查看 strftime() 方法
+    print(datetime.date.today().strftime('%d/%m/%Y'))
+ 
+    # 创建日期对象
+    miyazakiBirthDate = datetime.date(1941, 1, 5)
+ 
+    print(miyazakiBirthDate.strftime('%d/%m/%Y'))
+ 
+    # 日期算术运算
+    miyazakiBirthNextDay = miyazakiBirthDate + datetime.timedelta(days=1)
+ 
+    print(miyazakiBirthNextDay.strftime('%d/%m/%Y'))
+ 
+    # 日期替换
+    miyazakiFirstBirthday = miyazakiBirthDate.replace(year=miyazakiBirthDate.year + 1)
+ 
+    print(miyazakiFirstBirthday.strftime('%d/%m/%Y'))
+输出:
+
+21/10/2015
+05/01/1941
+06/01/1941
+05/01/1942
+
+================= Python 练习实例15 ====================
+题目:利用条件运算符的嵌套来完成此题：学习成绩>=90分的同学用A表示，60-89分之间的用B表示，60分以下的用C表示。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+score = int(raw_input('输入分数:\n'))
+if score >= 90:
+    grade = 'A'
+elif score >= 60:
+    grade = 'B'
+else:
+    grade = 'C'
+ 
+print '%d 属于 %s' % (score,grade)
+输出:
+
+输入分数:
+89
+89 属于 B
+
+================= Python 练习实例70 ====================
+题目:写一个函数，求一个字符串的长度，在main函数中输入字符串，并输出其长度。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+if __name__ == '__main__':
+    s = raw_input('please input a string:\n')
+    print 'the string has %d characters.' % len(s)
+
+please input a string:
+abc
+the string has 3 characters.
+
+================= Python 练习实例100 ====================
+题目:列表转换为字典。 
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+i = ['a', 'b']
+l = [1, 2]
+print dict([i,l])
+输出:
+
+{'a': 'b', 1: 2}
+
+================= Python 练习实例8 ====================
+题目:输出 9*9 乘法口诀表。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+for i in range(1, 10):
+    print 
+    for j in range(1, i+1):
+        print "%d*%d=%d" % (i, j, i*j),
+输出:
+
+1*1=1
+2*1=2 2*2=4
+3*1=3 3*2=6 3*3=9
+4*1=4 4*2=8 4*3=12 4*4=16
+5*1=5 5*2=10 5*3=15 5*4=20 5*5=25
+6*1=6 6*2=12 6*3=18 6*4=24 6*5=30 6*6=36
+7*1=7 7*2=14 7*3=21 7*4=28 7*5=35 7*6=42 7*7=49
+8*1=8 8*2=16 8*3=24 8*4=32 8*5=40 8*6=48 8*7=56 8*8=64
+9*1=9 9*2=18 9*3=27 9*4=36 9*5=45 9*6=54 9*7=63 9*8=72 9*9=81
+
+================= Python 练习实例18 ====================
+题目:求s=a+aa+aaa+aaaa+aa...a的值，其中a是一个数字。例如2+22+222+2222+22222(此时共有5个数相加)，几个数相加由键盘控制。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+Tn = 0
+Sn = []
+n = int(raw_input('n = '))
+a = int(raw_input('a = '))
+for count in range(n):
+    Tn = Tn + a
+    a = a * 10
+    Sn.append(Tn)
+    print Tn
+ 
+Sn = reduce(lambda x,y : x + y,Sn)
+print "计算和为：",Sn
+输出:
+
+n = 4
+a = 4
+4
+44
+444
+4444
+计算和为： 4936
+
+================= Python 练习实例99 ====================
+题目:有两个磁盘文件A和B,各存放一行字母,要求把这两个文件中的信息合并(按字母顺序排列), 输出到一个新文件C中。 
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    import string
+    fp = open('test1.txt')
+    a = fp.read()
+    fp.close()
+ 
+    fp = open('test2.txt')
+    b = fp.read()
+    fp.close()
+ 
+    fp = open('test3.txt','w')
+    l = list(a + b)
+    l.sort()
+    s = ''
+    s = s.join(l)
+    fp.write(s)
+    fp.close()
+输出:
+
+123456
+
+================= Python 练习实例98 ====================
+题目:从键盘输入一个字符串，将小写字母全部转换成大写字母，然后输出到一个磁盘文件"test"中保存。 
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    fp = open('test.txt','w')
+    string = raw_input('please input a string:\n')
+    string = string.upper()
+    fp.write(string)
+    fp = open('test.txt','r')
+    print fp.read()
+    fp.close()
+输出:
+
+please input a string:
+runoob.com
+RUNOOB.COM
+
+================= Python 练习实例97 ====================
+题目:从键盘输入一些字符，逐个把它们写到磁盘文件上，直到输入一个 
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    from sys import stdout
+    filename = raw_input('输入文件名:\n')
+    fp = open(filename,"w")
+    ch = raw_input('输入字符串:\n')
+    while ch != '#':
+        fp.write(ch)
+        stdout.write(ch)
+        ch = raw_input('')
+    fp.close()
+输出:
+
+输入文件名:
+runoobfile.txt
+输入字符串:
+runoob   
+runoob
+google
+google#
+
+$ cat runoobfile.txt 
+runoobgoogle
+
+================= Python 练习实例96 ====================
+题目:计算字符串中子串出现的次数。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    str1 = raw_input('请输入一个字符串:\n')
+    str2 = raw_input('请输入一个子字符串:\n')
+    ncount = str1.count(str2)
+    print ncount
+输出:
+
+请输入一个字符串:
+www.runoob.com
+请输入一个子字符串:
+runoob
+1
+
+================= Python 练习实例95 ====================
+题目:字符串日期转换为易读的日期格式。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+from dateutil import parser
+dt = parser.parse("Aug 28 2015 12:00AM")
+print dt
+
+2015-08-28 00:00:00
+
+================= Python 练习实例94 ====================
+题目:时间函数举例4,一个猜数游戏，判断一个人反应快慢。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    import time
+    import random
+    
+    play_it = raw_input('do you want to play it.(\'y\' or \'n\')')
+    while play_it == 'y':
+        c = raw_input('input a character:\n')
+        i = random.randint(0,2**32) % 100
+        print 'please input number you guess:\n'
+        start = time.clock()
+        a = time.time()
+        guess = int(raw_input('input your guess:\n'))
+        while guess != i:
+            if guess > i:
+                print 'please input a little smaller'
+                guess = int(raw_input('input your guess:\n'))
+            else:
+                print 'please input a little bigger'
+                guess = int(raw_input('input your guess:\n'))
+        end = time.clock()
+        b = time.time()
+        var = (end - start) / 18.2
+        print var
+        # print 'It took you %6.3 seconds' % time.difftime(b,a))
+        if var < 15:
+            print 'you are very clever!'
+        elif var < 25:
+            print 'you are normal!'
+        else:
+            print 'you are stupid!'
+        print 'Congradulations'
+        print 'The number you guess is %d' % i
+        play_it = raw_input('do you want to play it.')
+输出:
+
+do you want to play it.('y' or 'n')y
+input a character:
+5
+please input number you guess:
+
+input your guess:
+60
+……
+please input a little bigger
+input your guess:
+29
+please input a little smaller
+input your guess:
+28
+3.81868131868e-05
+you are very clever!
+Congradulations
+The number you guess is 28
+do you want to play it.
+
+================= Python 练习实例93 ====================
+题目:时间函数举例3。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+if __name__ == '__main__':
+    import time
+    start = time.clock()
+    for i in range(10000):
+        print i
+    end = time.clock()
+    print 'different is %6.3f' % (end - start)
+
+0
+1
+2
+3
+4
+……
+different is  0.014
+
+================= Python 练习实例92 ====================
+题目:时间函数举例2。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    import time
+    start = time.time()
+    for i in range(3000):
+        print i
+    end = time.time()
+ 
+    print end - start
+输出:
+
+0
+1
+2
+3
+4
+……
+
+================= Python 练习实例87 ====================
+题目:回答结果（结构体变量传递）。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+if __name__ == '__main__':
+    class student:
+        x = 0
+        c = 0
+    def f(stu):
+        stu.x = 20
+        stu.c = 'c'
+    a= student()
+    a.x = 3
+    a.c = 'a'
+    f(a)
+    print a.x,a.c
+
+20 c
+
+================= Python 练习实例86 ====================
+题目:两个字符串连接程序。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+if __name__ == '__main__':
+    a = "acegikm"
+    b = "bdfhjlnpq"
+
+    # 连接字符串
+    c = a + b
+    print c
+
+acegikmbdfhjlnpq
+
+================= Python 练习实例84 ====================
+题目:连接字符串。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+delimiter = ','
+mylist = ['Brazil', 'Russia', 'India', 'China']
+print delimiter.join(mylist)
+输出:
+
+Brazil,Russia,India,China
+
+================= Python 练习实例91 ====================
+题目:时间函数举例1。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+if __name__ == '__main__':
+    import time
+    print time.ctime(time.time())
+    print time.asctime(time.localtime(time.time()))
+    print time.asctime(time.gmtime(time.time()))
+
+Wed Oct 21 17:08:51 2015
+Wed Oct 21 17:08:51 2015
+Wed Oct 21 09:08:51 2015
+
+================= Python 练习实例90 ====================
+题目:列表使用实例。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+#list  
+#新建列表  
+testList=[10086,'中国移动',[1,2,4,5]]  
+  
+#访问列表长度  
+print len(testList)  
+#到列表结尾  
+print testList[1:]  
+#向列表添加元素  
+testList.append('i\'m new here!')  
+  
+print len(testList)  
+print testList[-1]  
+#弹出列表的最后一个元素  
+print testList.pop(1)  
+print len(testList)  
+print testList  
+#list comprehension  
+#后面有介绍，暂时掠过  
+matrix = [[1, 2, 3],  
+[4, 5, 6],  
+[7, 8, 9]]  
+print matrix  
+print matrix[1]  
+col2 = [row[1] for row in matrix]#get a  column from a matrix  
+print col2  
+col2even = [row[1] for row in matrix if  row[1] % 2 == 0]#filter odd item  
+print col2even  
+
+3
+['\xe4\xb8\xad\xe5\x9b\xbd\xe7\xa7\xbb\xe5\x8a\xa8', [1, 2, 4, 5]]
+4
+i'm new here!
+中国移动
+3
+[10086, [1, 2, 4, 5], "i'm new here!"]
+[[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+[4, 5, 6]
+[2, 5, 8]
+[2, 8]
+
+================= Python 练习实例89 ====================
+题目:某个公司采用公用电话传递数据，数据是四位的整数，在传递过程中是加密的，加密规则如下：每位数字都加上5,然后用和除以10的余数代替该数字，再将第一位和第四位交换，第二位和第三位交换。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+from sys import stdout
+if __name__ == '__main__':
+    a = int(raw_input('输入四个数字:\n'))
+    aa = []
+    aa.append(a % 10)
+    aa.append(a % 100 / 10)
+    aa.append(a % 1000 / 100)
+    aa.append(a / 1000)
+ 
+    for i in range(4):
+        aa[i] += 5
+        aa[i] %= 10
+    for i in range(2):
+        aa[i],aa[3 - i] = aa[3 - i],aa[i]
+    for i in range(3,-1,-1):
+        stdout.write(str(aa[i]))
+输出:
+
+输入四个数字:
+1234
+9876
+
+================= Python 练习实例88 ====================
+题目:读取7个数（1—50）的整数值，每读取一个值，程序打印出该值个数的＊。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    n = 1
+    while n <= 7:
+        a = int(raw_input('input a number:\n'))
+        while a < 1 or a > 50:
+            a = int(raw_input('input a number:\n'))
+        print a * '*'
+        n += 1
+输出:
+
+input a number:
+9
+*********
+input a number:
+5
+*****
+input a number:
+6
+******
+input a number:
+
+================= Python 练习实例85 ====================
+题目:输入一个正整数，然后判断最少几个 9 除于该数的结果为整数。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    zi = int(raw_input('输入一个数字:\n'))
+    n1 = 1
+    c9 = 1
+    m9 = 9
+    sum = 9
+    while n1 != 0:
+        if sum % zi == 0:
+            n1 = 0
+        else:
+            m9 *= 10
+            sum += m9
+            c9 += 1
+    print '%d 个 9 可以被 %d 整除 : %d' % (c9,zi,sum)
+    r = sum / zi
+    print '%d / %d = %d' % (sum,zi,r)
+输出:
+
+输入一个数字:
+13
+6 个 9 可以被 13 整除 : 999999
+999999 / 13 = 76923
+
+================= Python 练习实例83 ====================
+题目:求0—7所能组成的奇数个数。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    sum = 4
+    s = 4
+    for j in range(2,9):
+        print sum
+        if j <= 2:
+            s *= 7
+        else:
+            s *= 8
+        sum += s
+    print 'sum = %d' % sum
+输出:
+
+4
+32
+256
+2048
+16384
+131072
+1048576
+sum = 8388608
+
+================= Python 练习实例82 ====================
+题目:八进制转换为十进制
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    n = 0
+    p = raw_input('input a octal number:\n')
+    for i in range(len(p)):
+        n = n * 8 + ord(p[i]) - ord('0')
+    print n
+输出:
+
+input a octal number:
+122
+82
+
+================= Python 练习实例81 ====================
+题目:809*??=800*??+9*?? 其中??代表的两位数, 809*??为四位数，8*??的结果为两位数，9*??的结果为3位数。求??代表的两位数，及809*??后的结果。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+a = 809
+for i in range(10,100):
+    b = i * a
+    if b >= 1000 and b <= 10000 and 8 * i < 100 and 9 * i >= 100:
+        print b,' = 800 * ', i, ' + 9 * ', i
+输出:
+
+9708  = 800 *  12  + 9 *  12
+
+================= Python 练习实例80 ====================
+题目:海滩上有一堆桃子，五只猴子来分。第一只猴子把这堆桃子平均分为五份，多了一个，这只猴子把多的一个扔入海中，拿走了一份。第二只猴子把剩下的桃子又平均分成五份，又多了一个，它同样把多的一个扔入海中，拿走了一份，第三、第四、第五只猴子都是这样做的，问海滩上原来最少有多少个桃子？
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    i = 0
+    j = 1
+    x = 0
+    while (i < 5) :
+        x = 4 * j
+        for i in range(0,5) :
+            if(x%4 != 0) :
+                break
+            else :
+                i += 1
+            x = (x/4) * 5 +1
+        j += 1
+    print x
+输出:
+
+3121
+
+================= Python 练习实例79 ====================
+题目:字符串排序。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    str1 = raw_input('input string:\n')
+    str2 = raw_input('input string:\n')
+    str3 = raw_input('input string:\n')
+    print str1,str2,str3
+    
+    if str1 > str2 : str1,str2 = str2,str1
+    if str1 > str3 : str1,str3 = str3,str1
+    if str2 > str3 : str2,str3 = str3,str2
+ 
+    print 'after being sorted.'
+    print str1,str2,str3
+输出:
+
+input string:
+abcde
+input string:
+efdis
+input string:
+adk
+abcde efdis adk
+after being sorted.
+abcde adk efdis
+
+================= Python 练习实例78 ====================
+题目:找到年龄最大的人，并输出。请找出程序中有什么问题。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    person = {"li":18,"wang":50,"zhang":20,"sun":22}
+    m = 'li'
+    for key in person.keys():
+        if person[m] < person[key]:
+            m = key
+ 
+    print '%s,%d' % (m,person[m])
+输出:
+
+wang,50
+
+================= Python 练习实例77 ====================
+题目:循环输出列表
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    s = ["man","woman","girl","boy","sister"]
+    for i in range(len(s)):
+        print s[i]
+输出:
+
+man
+woman
+girl
+boy
+sister
+
+================= Python 练习实例75 ====================
+题目:放松一下，算一道简单的题目。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    for i in range(5):
+        n = 0
+        if i != 1: n += 1
+        if i == 3: n += 1
+        if i == 4: n += 1
+        if i != 4: n += 1
+        if n == 3: print 64 + i
+输出:
+
+67
+
+================= Python 练习实例74 ====================
+题目:列表排序及连接。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    a = [1,3,2]
+    b = [3,4,5]
+    a.sort()     # 对列表 a 进行排序
+    print a
+ 
+    # 连接列表 a 与 b
+    print a+b
+    
+    # 连接列表 a 与 b
+    a.extend(b)
+    print a
+输出:
+
+[1, 2, 3]
+[1, 2, 3, 3, 4, 5]
+[1, 2, 3, 3, 4, 5]
+
+================= Python 练习实例76 ====================
+题目:编写一个函数，输入n为偶数时，调用函数求1/2+1/4+...+1/n,当输入n为奇数时，调用函数1/1+1/3+...+1/n
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+def peven(n):
+    i = 0
+    s = 0.0
+    for i in range(2,n + 1,2):
+        s += 1.0 / i   # Python里，整数除整数，只能得出整数，所以需要使用 浮点数 1.0
+    return s
+ 
+def podd(n):
+    s = 0.0
+    for i in range(1, n + 1,2):
+        s += 1.0 / i    # Python里，整数除整数，只能得出整数，所以需要使用 浮点数 1.0
+    return s
+ 
+def dcall(fp,n):
+    s = fp(n)
+    return s
+ 
+if __name__ == '__main__':
+    n = int(raw_input('input a number:\n'))
+    if n % 2 == 0:
+        sum = dcall(peven,n)
+    else:
+        sum = dcall(podd,n)
+    print sum
+输出:
+
+input a number:
+6
+0.916666666667
+
+================= Python 练习实例73 ====================
+题目:反向输出一个链表。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+if __name__ == '__main__':
+    ptr = []
+    for i in range(5):
+        num = int(raw_input('please input a number:\n'))
+        ptr.append(num)
+    print ptr
+    ptr.reverse()
+    print ptr
+
+please input a number:
+6
+please input a number:
+5
+please input a number:
+3
+please input a number:
+4
+please input a number:
+8
+[6, 5, 3, 4, 8]
+[8, 4, 3, 5, 6]
+
+================= Python 练习实例72 ====================
+题目:创建一个链表。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+if __name__ == '__main__':
+    ptr = []
+    for i in range(5):
+        num = int(raw_input('please input a number:\n'))
+        ptr.append(num)
+    print ptr
+
+please input a number:
+3
+please input a number:
+5
+please input a number:
+7
+please input a number:
+8
+please input a number:
+2
+[3, 5, 7, 8, 2]
+
+================= Python 练习实例71 ====================
+题目:编写input()和output()函数输入，输出5个学生的数据记录。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+N = 3
+#stu
+# num : string
+# name : string
+# score[4]: list
+student = []
+for i in range(5):
+    student.append(['','',[]])
+ 
+def input_stu(stu):
+    for i in range(N):
+        stu[i][0] = raw_input('input student num:\n')
+        stu[i][1] = raw_input('input student name:\n')
+        for j in range(3):
+            stu[i][2].append(int(raw_input('score:\n')))
+ 
+def output_stu(stu):
+    for i in range(N):
+        print '%-6s%-10s' % ( stu[i][0],stu[i][1] )
+        for j in range(3):
+            print '%-8d' % stu[i][2][j]
+ 
+if __name__ == '__main__':
+    input_stu(student)
+    print student
+    output_stu(student)
+输出:
+
+input student num:
+2
+input student name:
+aaa
+score:
+89
+score:
+98
+score:
+67
+input student num:
+bbb
+input student name:
+ccc
+score:
+87
+score:
+45
+score:
+68
+input student num:
+ddd
+input student name:
+eee
+score:
+56
+score:
+78
+score:
+56
+[['2', 'aaa', [89, 98, 67]], ['bbb', 'ccc', [87, 45, 68]], ['ddd', 'eee', [56, 78, 56]], ['', '', []], ['', '', []]]
+2     aaa       
+89      
+98      
+67      
+bbb   ccc       
+87      
+45      
+68      
+ddd   eee       
+56      
+78      
+56    
+
+================= Python 练习实例69 ====================
+题目:有n个人围成一圈，顺序排号。从第一个人开始报数（从1到3报数），凡报到3的人退出圈子，问最后留下的是原来第几号的那位。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    nmax = 50
+    n = int(raw_input('请输入总人数:'))
+    num = []
+    for i in range(n):
+        num.append(i + 1)
+ 
+    i = 0
+    k = 0
+    m = 0
+ 
+    while m < n - 1:
+        if num[i] != 0 : k += 1
+        if k == 3:
+            num[i] = 0
+            k = 0
+            m += 1
+        i += 1
+        if i == n : i = 0
+ 
+    i = 0
+    while num[i] == 0: i += 1
+    print num[i]
+输出:
+
+$ python test.py 
+请输入总人数:34
+10
+
+================= Python 练习实例68 ====================
+题目:有n个整数，使其前面各数顺序向后移m个位置，最后m个数变成最前面的m个数
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    n = int(raw_input('整数 n 为:\n'))
+    m = int(raw_input('向后移 m 个位置为:\n'))
+ 
+    def move(array,n,m):
+        array_end = array[n - 1]
+        for i in range(n - 1,-1,- 1):
+            array[i] = array[i - 1]
+        array[0] = array_end
+        m -= 1
+        if m > 0:move(array,n,m)
+        
+    number = []
+    for i in range(n):
+        number.append(int(raw_input('输入一个数字:\n')))
+    print '原始列表:',number
+ 
+    move(number,n,m)
+ 
+    print '移动之后:',number
+输出:
+
+整数 n 为:
+8
+向后移 m 个位置为:
+5
+输入一个数字:
+2
+输入一个数字:
+8
+输入一个数字:
+6
+输入一个数字:
+1
+输入一个数字:
+78
+输入一个数字:
+45
+输入一个数字:
+34
+输入一个数字:
+2
+原始列表: [2, 8, 6, 1, 78, 45, 34, 2]
+移动之后: [1, 78, 45, 34, 2, 2, 8, 6]
+
+================= Python 练习实例67 ====================
+题目:输入数组，最大的与第一个元素交换，最小的与最后一个元素交换，输出数组。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+def inp(numbers):
+    for i in range(6):
+        numbers.append(int(raw_input('输入一个数字:\n')))
+p = 0
+ 
+def arr_max(array):
+    max = 0
+    for i in range(1,len(array) - 1):
+        p = i
+        if array[p] > array[max] : max = p
+    k = max
+    array[0],array[k] = array[k],array[0]
+def arr_min(array):
+    min = 0
+    for i in range(1,len(array) - 1):
+        p = i
+        if array[p] < array[min] : min = p
+    l = min
+    array[5],array[l] = array[l],array[5]
+ 
+def outp(numbers):
+    for i  in range(len(numbers)):
+        print numbers[i]
+ 
+if __name__ == '__main__':
+    array = []
+    inp(array)        # 输入 6 个数字并放入数组
+    arr_max(array)    # 获取最大元素并与第一个元素交换
+    arr_min(array)    # 获取最小元素并与最后一个元素交换
+    print '计算结果：'
+    outp(array)
+输出:
+
+输入一个数字:
+1
+输入一个数字:
+2
+输入一个数字:
+3
+输入一个数字:
+7
+输入一个数字:
+9
+输入一个数字:
+8
+计算结果：
+9
+2
+3
+7
+8
+1
+
+================= Python 练习实例66 ====================
+题目:输入3个数a,b,c，按大小顺序输出。　　　
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    n1 = int(raw_input('n1 = :\n'))
+    n2 = int(raw_input('n2 = :\n'))
+    n3 = int(raw_input('n3 = :\n'))
+ 
+    def swap(p1,p2):
+        return p2,p1
+ 
+    if n1 > n2 : n1,n2 = swap(n1,n2)
+    if n1 > n3 : n1,n3 = swap(n1,n3)
+    if n2 > n3 : n2,n3 = swap(n2,n3)
+ 
+    print n1,n2,n3
+输出:
+
+n1 = :
+123
+n2 = :
+456
+n3 = :
+789
+123 456 789
+
+================= Python 练习实例65 ====================
+题目:一个最优美的图案。　　
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+import math
+class PTS:
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+points = []
+
+def LineToDemo():
+    from Tkinter import *
+    screenx = 400
+    screeny = 400
+    canvas = Canvas(width = screenx,height = screeny,bg = 'white')
+
+    AspectRatio = 0.85
+    MAXPTS = 15
+    h = screeny
+    w = screenx
+    xcenter = w / 2
+    ycenter = h / 2
+    radius = (h - 30) / (AspectRatio * 2) - 20
+    step = 360 / MAXPTS
+    angle = 0.0
+    for i in range(MAXPTS):
+        rads = angle * math.pi / 180.0
+        p = PTS()
+        p.x = xcenter + int(math.cos(rads) * radius)
+        p.y = ycenter - int(math.sin(rads) * radius * AspectRatio)
+        angle += step
+        points.append(p)
+    canvas.create_oval(xcenter - radius,ycenter - radius,
+                       xcenter + radius,ycenter + radius)
+    for i in range(MAXPTS):
+        for j in range(i,MAXPTS):
+            canvas.create_line(points[i].x,points[i].y,points[j].x,points[j].y)
+
+    canvas.pack()
+    mainloop()
+if __name__ == '__main__':
+    LineToDemo()
+
+================= Python 练习实例64 ====================
+题目:利用ellipse 和 rectangle 画图。。　
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+if __name__ == '__main__':
+    from Tkinter import *
+    canvas = Canvas(width = 400,height = 600,bg = 'white')
+    left = 20
+    right = 50
+    top = 50
+    num = 15
+    for i in range(num):
+        canvas.create_oval(250 - right,250 - left,250 + right,250 + left)
+        canvas.create_oval(250 - 20,250 - top,250 + 20,250 + top)
+        canvas.create_rectangle(20 - 2 * i,20 - 2 * i,10 * (i + 2),10 * ( i + 2))
+        right += 5
+        left += 5
+        top += 10
+
+    canvas.pack()
+    mainloop()
+
+================= Python 练习实例63 ====================
+题目:画椭圆。　
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    from Tkinter import *
+    x = 360
+    y = 160
+    top = y - 30
+    bottom = y - 30
+    
+    canvas = Canvas(width = 400,height = 600,bg = 'white')
+    for i in range(20):
+        canvas.create_oval(250 - top,250 - bottom,250 + top,250 + bottom)
+        top -= 5
+        bottom += 5
+    canvas.pack()
+    mainloop()
+输出:
+
+================= Python 练习实例62 ====================
+题目:查找字符串。　　
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+sStr1 = 'abcdefg'
+sStr2 = 'cde'
+print sStr1.find(sStr2)
+
+2
+
+================= Python 练习实例61 ====================
+题目:打印出杨辉三角形（要求打印出10行如下图）。　　
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    a = []
+    for i in range(10):
+        a.append([])
+        for j in range(10):
+            a[i].append(0)
+    for i in range(10):
+        a[i][0] = 1
+        a[i][i] = 1
+    for i in range(2,10):
+        for j in range(1,i):
+            a[i][j] = a[i - 1][j-1] + a[i - 1][j]
+    from sys import stdout
+    for i in range(10):
+        for j in range(i + 1):
+            stdout.write(str(a[i][j]))
+            stdout.write(' ')
+        print
+输出:
+
+1 
+1 1 
+1 2 1 
+1 3 3 1 
+1 4 6 4 1 
+1 5 10 10 5 1 
+1 6 15 20 15 6 1 
+1 7 21 35 35 21 7 1 
+1 8 28 56 70 56 28 8 1 
+1 9 36 84 126 126 84 36 9 1
+
+================= Python 练习实例60 ====================
+题目:计算字符串长度。　　
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+sStr1 = 'strlen'
+print len(sStr1)
+输出:
+
+6
+
+================= Python 练习实例59 ====================
+题目:画图，综合例子。　　
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+if __name__  == '__main__':
+    from Tkinter import *
+    canvas = Canvas(width = 300,height = 300,bg = 'green')
+    canvas.pack(expand = YES,fill = BOTH)
+    x0 = 150
+    y0 = 100
+    canvas.create_oval(x0 - 10,y0 - 10,x0 + 10,y0 + 10)
+    canvas.create_oval(x0 - 20,y0 - 20,x0 + 20,y0 + 20)
+    canvas.create_oval(x0 - 50,y0 - 50,x0 + 50,y0 + 50)
+    import math
+    B = 0.809
+    for i in range(16):
+        a = 2 * math.pi / 16 * i
+        x = math.ceil(x0 + 48 * math.cos(a))
+        y = math.ceil(y0 + 48 * math.sin(a) * B)
+        canvas.create_line(x0,y0,x,y,fill = 'red')
+    canvas.create_oval(x0 - 60,y0 - 60,x0 + 60,y0 + 60)
+    
+
+    for k in range(501):
+        for i in range(17):
+            a = (2 * math.pi / 16) * i + (2 * math.pi / 180) * k
+            x = math.ceil(x0 + 48 * math.cos(a))
+            y = math.ceil(y0 + 48 + math.sin(a) * B)
+            canvas.create_line(x0,y0,x,y,fill = 'red')
+        for j in range(51):
+            a = (2 * math.pi / 16) * i + (2* math.pi / 180) * k - 1
+            x = math.ceil(x0 + 48 * math.cos(a))
+            y = math.ceil(y0 + 48 * math.sin(a) * B)
+            canvas.create_line(x0,y0,x,y,fill = 'red')
+    mainloop()
+
+================= Python 练习实例58 ====================
+题目:画图，学用rectangle画方形。　　　
+Demo:
+
+输出:
+rectangle(int left, int top, int right, int bottom)
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+if __name__ == '__main__':
+    from Tkinter import *
+    root = Tk()
+    root.title('Canvas')
+    canvas = Canvas(root,width = 400,height = 400,bg = 'yellow')
+    x0 = 263
+    y0 = 263
+    y1 = 275
+    x1 = 275
+    for i in range(19):
+        canvas.create_rectangle(x0,y0,x1,y1)
+        x0 -= 5
+        y0 -= 5
+        x1 += 5
+        y1 += 5
+        
+    canvas.pack()
+    root.mainloop()
+
+================= Python 练习实例57 ====================
+题目:画图，学用line画直线。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    from Tkinter import *
+ 
+    canvas = Canvas(width=300, height=300, bg='green')   
+    canvas.pack(expand=YES, fill=BOTH)                  
+    x0 = 263
+    y0 = 263
+    y1 = 275
+    x1 = 275
+    for i in range(19):
+        canvas.create_line(x0,y0,x0,y1, width=1, fill='red')
+        x0 = x0 - 5
+        y0 = y0 - 5
+        x1 = x1 + 5
+        y1 = y1 + 5
+ 
+    x0 = 263
+    y1 = 275
+    y0 = 263
+    for i in range(21):
+        canvas.create_line(x0,y0,x0,y1,fill = 'red')
+        x0 += 5
+        y0 += 5
+        y1 += 5
+ 
+    mainloop()
+输出:
+
+================= Python 练习实例56 ====================
+题目:画图，学用circle画圆形。　　　
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    from Tkinter import *
+ 
+    canvas = Canvas(width=800, height=600, bg='yellow')  
+    canvas.pack(expand=YES, fill=BOTH)                
+    k = 1
+    j = 1
+    for i in range(0,26):
+        canvas.create_oval(310 - k,250 - k,310 + k,250 + k, width=1)
+        k += j
+        j += 0.3
+ 
+    mainloop()
+输出:
+
+================= Python 练习实例55 ====================
+题目:学习使用按位取反~。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+if __name__ == '__main__':
+    a = 234
+    b = ~a
+    print 'The a\'s 1 complement is %d' % b
+    a = ~a
+    print 'The a\'s 2 complement is %d' % a
+
+The a's 1 complement is -235
+The a's 2 complement is -235
+
+================= Python 练习实例53 ====================
+题目:学习使用按位异或 ^ 。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+if __name__ == '__main__':
+    a = 077
+    b = a ^ 3
+    print 'The a ^ 3 = %d' % b
+    b ^= 7
+    print 'The a ^ b = %d' % b
+
+The a ^ 3 = 60
+The a ^ b = 59
+
+================= Python 练习实例52 ====================
+题目:学习使用按位或 | 。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+if __name__ == '__main__':
+    a = 077
+    b = a | 3
+    print 'a | b is %d' % b
+    b |= 7
+    print 'a | b is %d' % b
+
+a | b is 63
+a | b is 63
+
+================= Python 练习实例51 ====================
+题目:学习使用按位与 & 。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+if __name__ == '__main__':
+    a = 077
+    b = a & 3
+    print 'a & b = %d' % b
+    b &= 7
+    print 'a & b = %d' % b
+
+a & b = 3
+a & b = 3
+
+================= Python 练习实例50 ====================
+题目:输出一个随机数。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+import random
+ 
+#生成 10 到 20 之间的随机数
+print random.uniform(10, 20)
+输出:
+
+14.4012371357
+
+================= Python 练习实例49 ====================
+题目:使用lambda来创建匿名函数。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+MAXIMUM = lambda x,y :  (x > y) * x + (x < y) * y
+MINIMUM = lambda x,y :  (x > y) * y + (x < y) * x
+ 
+if __name__ == '__main__':
+    a = 10
+    b = 20
+    print 'The largar one is %d' % MAXIMUM(a,b)
+    print 'The lower one is %d' % MINIMUM(a,b)
+输出:
+
+The largar one is 20
+The lower one is 10
+
+================= Python 练习实例48 ====================
+题目:数字比较。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    i = 10
+    j = 20
+    if i > j:
+        print '%d 大于 %d' % (i,j)
+    elif i == j:
+        print '%d 等于 %d' % (i,j)
+    elif i < j:
+        print '%d 小于 %d' % (i,j)
+    else:
+        print '未知'
+输出:
+
+10 小于 20
+
+================= Python 练习实例47 ====================
+题目:两个变量值互换。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+def exchange(a,b):
+    a,b = b,a
+    return (a,b)
+ 
+if __name__ == '__main__':
+    x = 10
+    y = 20
+    print 'x = %d,y = %d' % (x,y)
+    x,y = exchange(x,y)
+    print 'x = %d,y = %d' % (x,y)
+输出:
+
+x = 10,y = 20
+x = 20,y = 10
+
+================= Python 练习实例46 ====================
+题目:求输入数字的平方，如果平方运算后小于 50 则退出。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+TRUE = 1
+FALSE = 0
+def SQ(x):
+    return x * x
+print '如果输入的数字小于 50，程序将停止运行。'
+again = 1
+while again:
+    num = int(raw_input('请输入一个数字：'))
+    print '运算结果为: %d' % (SQ(num))
+    if SQ(num) >= 50:
+        again = TRUE
+    else:
+        again = FALSE
+输出:
+
+如果输入的数字小于 50，程序将停止运行。
+请输入一个数字：12
+运算结果为: 144
+请输入一个数字：14
+运算结果为: 196
+请输入一个数字：1
+运算结果为: 1
+
+================= Python 练习实例45 ====================
+题目:统计 1 到 100 之和。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+tmp = 0
+for i in range(1,101):
+    tmp += i
+print 'The sum is %d' % tmp
+输出:
+
+The sum is 5050
+
+================= Python 练习实例44 - Python 两个矩阵相加 ====================
+题目:两个 3 行 3 列的矩阵，实现其对应位置的数据相加，并返回一个新矩阵：
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+X = [[12,7,3],
+    [4 ,5,6],
+    [7 ,8,9]]
+ 
+Y = [[5,8,1],
+    [6,7,3],
+    [4,5,9]]
+ 
+result = [[0,0,0],
+         [0,0,0],
+         [0,0,0]]
+ 
+# 迭代输出行
+for i in range(len(X)):
+   # 迭代输出列
+   for j in range(len(X[0])):
+       result[i][j] = X[i][j] + Y[i][j]
+ 
+for r in result:
+   print(r)
+输出:
+
+X = [[12,7,3],
+    [4 ,5,6],
+    [7 ,8,9]]
+
+Y = [[5,8,1],
+    [6,7,3],
+    [4,5,9]]
+
+[17, 15, 4]
+[10, 12, 9]
+[11, 13, 18]
+
+================= Python 练习实例43 ====================
+题目:模仿静态变量(static)另一案例。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+class Num:
+    nNum = 1
+    def inc(self):
+        self.nNum += 1
+        print 'nNum = %d' % self.nNum
+
+if __name__ == '__main__':
+    nNum = 2
+    inst = Num()
+    for i in range(3):
+        nNum += 1
+        print 'The num = %d' % nNum
+        inst.inc()
+
+The num = 3
+nNum = 2
+The num = 4
+nNum = 3
+The num = 5
+nNum = 4
+
+================= Python 练习实例42 ====================
+题目:学习使用auto定义变量的用法。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+num = 2
+def autofunc():
+    num = 1
+    print 'internal block num = %d' % num
+    num += 1
+for i in range(3):
+    print 'The num = %d' % num
+    num += 1
+    autofunc()
+
+The num = 2
+internal block num = 1
+The num = 3
+internal block num = 1
+The num = 4
+internal block num = 1
+
+================= Python 练习实例41 ====================
+题目:模仿静态变量的用法。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+def varfunc():
+    var = 0
+    print 'var = %d' % var
+    var += 1
+if __name__ == '__main__':
+    for i in range(3):
+        varfunc()
+
+# 类的属性
+# 作为类的一个属性吧
+class Static:
+    StaticVar = 5
+    def varfunc(self):
+        self.StaticVar += 1
+        print self.StaticVar
+
+print Static.StaticVar
+a = Static()
+for i in range(3):
+    a.varfunc()
+
+var = 0
+var = 0
+var = 0
+5
+6
+7
+8
+
+================= Python 练习实例40 ====================
+题目:将一个数组逆序输出。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    a = [9,6,5,4,1]
+    N = len(a) 
+    print a
+    for i in range(len(a) / 2):
+        a[i],a[N - i - 1] = a[N - i - 1],a[i]
+    print a
+输出:
+
+[9, 6, 5, 4, 1]
+[1, 4, 5, 6, 9]
+
+================= Python 练习实例39 ====================
+题目:有一个已经排好序的数组。现输入一个数，要求按原来的规律将它插入数组中。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    # 方法一 ： 0 作为加入数字的占位符
+    a = [1,4,6,9,13,16,19,28,40,100,0]
+    print '原始列表:'
+    for i in range(len(a)):
+        print a[i],
+    number = int(raw_input("\n插入一个数字:\n"))
+    end = a[9]
+    if number > end:
+        a[10] = number
+    else:
+        for i in range(10):
+            if a[i] > number:
+                temp1 = a[i]
+                a[i] = number
+                for j in range(i + 1,11):
+                    temp2 = a[j]
+                    a[j] = temp1
+                    temp1 = temp2
+                break
+    print '排序后列表:'
+    for i in range(11):
+        print a[i],
+输出:
+
+原始列表:
+1 4 6 9 13 16 19 28 40 100 0 
+插入一个数字:
+7
+排序后列表:
+1 4 6 7 9 13 16 19 28 40 100
+
+================= Python 练习实例38 ====================
+题目:求一个3*3矩阵对角线元素之和。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == '__main__':
+    a = []
+    sum = 0.0
+    for i in range(3):
+        a.append([])
+        for j in range(3):
+            a[i].append(float(raw_input("input num:\n")))
+    for i in range(3):
+        sum += a[i][i]
+    print sum
+输出:
+
+input num:
+78
+input num:
+34
+input num:
+23
+input num:
+34
+input num:
+56
+input num:
+33
+input num:
+12
+input num:
+21
+input num:
+2
+136.0
+
+================= Python 练习实例37 ====================
+题目:对10个数进行排序。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+if __name__ == "__main__":
+    N = 10
+    # input data
+    print '请输入10个数字:\n'
+    l = []
+    for i in range(N):
+        l.append(int(raw_input('输入一个数字:\n')))
+    print
+    for i in range(N):
+        print l[i]
+    print
+ 
+    # 排列10个数字
+    for i in range(N - 1):
+        min = i
+        for j in range(i + 1,N):
+            if l[min] > l[j]:min = j
+        l[i],l[min] = l[min],l[i]
+    print '排列之后：'
+    for i in range(N):
+        print l[i]
+输出:
+
+请输入10个数字:
+
+输入一个数字:
+5
+输入一个数字:
+3
+输入一个数字:
+23
+输入一个数字:
+67
+输入一个数字:
+2
+输入一个数字:
+56
+输入一个数字:
+45
+输入一个数字:
+98
+输入一个数字:
+239
+输入一个数字:
+9
+
+5
+3
+23
+67
+2
+56
+45
+98
+239
+9
+
+排列之后：
+2
+3
+5
+9
+23
+45
+56
+67
+98
+239
+
+================= Python 练习实例36 ====================
+题目:求100之内的素数。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+# 输出指定范围内的素数
+ 
+# 用户输入数据
+lower = int(input("输入区间最小值: "))
+upper = int(input("输入区间最大值: "))
+ 
+for num in range(lower,upper + 1):
+    # 素数大于 1
+    if num > 1:
+        for i in range(2,num):
+            if (num % i) == 0:
+                break
+        else:
+            print(num)
+输出:
+
+输入区间最小值: 1
+输入区间最大值: 100
+2
+3
+5
+7
+11
+13
+17
+19
+23
+29
+31
+37
+41
+43
+47
+53
+59
+61
+67
+71
+73
+79
+83
+89
+97
+
+================= Python 练习实例35 ====================
+题目:文本颜色设置。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+print bcolors.WARNING + "警告的颜色字体?" + bcolors.ENDC
+
+警告的颜色字体?    # 浅黄色
+
+================= Python 练习实例34 ====================
+题目:练习函数调用。
+Demo:
+
+输出:
+
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+def hello_world():
+    print 'hello world'
+
+def three_hellos():
+    for i in range(3):
+        hello_world()
+if __name__ == '__main__':
+    three_hellos()
+
+hello world
+hello world
+hello world
+
+================= Python 练习实例33 ====================
+题目:按逗号分隔列表。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+L = [1,2,3,4,5]
+s1 = ','.join(str(n) for n in L)
+print s1
+输出:
+
+1,2,3,4,5
+
+================= Python 练习实例32 ====================
+题目:按相反的顺序输出列表的值。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+a = ['one', 'two', 'three']
+for i in a[::-1]:
+    print i
+输出:
+
+three
+two
+one
+
+================= Python 练习实例31 ====================
+题目:请输入星期几的第一个字母来判断一下是星期几，如果第一个字母一样，则继续判断第二个字母。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+letter = raw_input("please input:")
+#while letter  != 'Y':
+if letter == 'S':
+    print ('please input second letter:')
+    letter = raw_input("please input:")
+    if letter == 'a':
+        print ('Saturday')
+    elif letter  == 'u':
+        print ('Sunday')
+    else:
+        print ('data error')
+    
+elif letter == 'F':
+    print ('Friday')
+    
+elif letter == 'M':
+    print ('Monday')
+    
+elif letter == 'T':
+    print ('please input second letter')
+    letter = raw_input("please input:")
+ 
+    if letter  == 'u':
+        print ('Tuesday')
+    elif letter  == 'h':
+        print ('Thursday')
+    else:
+        print ('data error')
+        
+elif letter == 'W':
+    print ('Wednesday')
+else:
+    print ('data error')
+输出:
+
+please input:S
+please input second letter:
+please input:a
+Saturday
+
+================= Python 练习实例30 ====================
+题目:一个5位数，判断它是不是回文数。即12321是回文数，个位与万位相同，十位与千位相同。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+a = int(raw_input("请输入一个数字:\n"))
+x = str(a)
+flag = True
+ 
+for i in range(len(x)/2):
+    if x[i] != x[-i - 1]:
+        flag = False
+        break
+if flag:
+    print "%d 是一个回文数!" % a
+else:
+    print "%d 不是一个回文数!" % a
+输出:
+
+请输入一个数字:
+12321
+12321 是一个回文数!
+
+================= Python 练习实例29 ====================
+题目:给一个不多于5位的正整数，要求：一、求它是几位数，二、逆序打印出各位数字。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+x = int(raw_input("请输入一个数:\n"))
+a = x / 10000
+b = x % 10000 / 1000
+c = x % 1000 / 100
+d = x % 100 / 10
+e = x % 10
+ 
+if a != 0:
+    print "5 位数：",e,d,c,b,a
+elif b != 0:
+    print "4 位数：",e,d,c,b,
+elif c != 0:
+    print "3 位数：",e,d,c
+elif d != 0:
+    print "2 位数：",e,d
+else:
+    print "1 位数：",e
+输出:
+
+请输入一个数:
+23459
+5 位数： 9 5 4 3 2
+
+请输入一个数:
+3472
+4 位数： 2 7 4 3
+
+================= Python 练习实例28 ====================
+题目:有5个人坐在一起，问第五个人多少岁？他说比第4个人大2岁。问第4个人岁数，他说比第3个人大2岁。问第三个人，又说比第2人大两岁。问第2个人，说比第一个人大两岁。最后问第一个人，他说是10岁。请问第五个人多大？
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+def age(n):
+    if n == 1: c = 10
+    else: c = age(n - 1) + 2
+    return c
+print age(5)
+输出:
+
+18
+
+================= Python 练习实例27 ====================
+题目:利用递归函数调用方式，将所输入的5个字符，以相反顺序打印出来。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+def output(s,l):
+    if l==0:
+       return
+    print (s[l-1])
+    output(s,l-1)
+ 
+s = raw_input('Input a string:')
+l = len(s)
+output(s,l)
+输出:
+
+Input a string:abcde
+e
+d
+c
+b
+a
+
+================= Python 练习实例26 ====================
+题目:利用递归方法求5!。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+def fact(j):
+    sum = 0
+    if j == 0:
+        sum = 1
+    else:
+        sum = j * fact(j - 1)
+    return sum
+ 
+for i in range(5):
+    print '%d! = %d' % (i,fact(i))
+输出:
+
+0! = 1
+1! = 1
+2! = 2
+3! = 6
+4! = 24
+
+================= Python 练习实例25 ====================
+题目:求1+2!+3!+...+20!的和。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+n = 0
+s = 0
+t = 1
+for n in range(1,21):
+    t *= n
+    s += t
+print '1! + 2! + 3! + ... + 20! = %d' % s#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+s = 0
+l = range(1,21)
+def op(x):
+    r = 1
+    for i in range(1,x + 1):
+        r *= i
+    return r
+s = sum(map(op,l))
+print '1! + 2! + 3! + ... + 20! = %d' % s
+输出:
+
+1! + 2! + 3! + ... + 20! = 2561327494111820313
+
+================= Python 练习实例24 ====================
+题目:有一分数序列：2/1，3/2，5/3，8/5，13/8，21/13...求出这个数列的前20项之和。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+a = 2.0
+b = 1.0
+s = 0
+for n in range(1,21):
+    s += a / b
+    t = a
+    a = a + b
+    b = t
+print s#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+a = 2.0
+b = 1.0
+s = 0.0
+for n in range(1,21):
+    s += a / b
+    b,a = a , a + b
+print s
+ 
+s = 0.0
+for n in range(1,21):
+    s += a / b
+    b,a = a , a + b
+print s#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+a = 2.0
+b = 1.0
+l = []
+l.append(a / b)
+for n in range(1,20):
+    b,a = a,a + b
+    l.append(a / b)
+print reduce(lambda x,y: x + y,l)
+输出:
+
+32.6602607986
+
+================= Python 练习实例23 ====================
+题目:打印出如下图案（菱形）:
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+from sys import stdout
+for i in range(4):
+    for j in range(2 - i + 1):
+        stdout.write(' ')
+    for k in range(2 * i + 1):
+        stdout.write('*')
+    print
+ 
+for i in range(3):
+    for j in range(i + 1):
+        stdout.write(' ')
+    for k in range(4 - 2 * i + 1):
+        stdout.write('*')
+    print
+输出:
+
+   *
+  ***
+ *****
+*******
+ *****
+  ***
+   *
+
+   *
+  ***
+ *****
+*******
+ *****
+  ***
+   *
+
+================= Python 练习实例21 ====================
+题目:猴子吃桃问题：猴子第一天摘下若干个桃子，当即吃了一半，还不瘾，又多吃了一个第二天早上又将剩下的桃子吃掉一半，又多吃了一个。以后每天早上都吃了前一天剩下的一半零一个。到第10天早上想再吃时，见只剩下一个桃子了。求第一天共摘了多少。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+x2 = 1
+for day in range(9,0,-1):
+    x1 = (x2 + 1) * 2
+    x2 = x1
+print x1
+输出:
+
+1534
+
+================= Python 练习实例20 ====================
+题目:一球从100米高度自由落下，每次落地后反跳回原高度的一半；再落下，求它在第10次落地时，共经过多少米？第10次反弹多高？
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+tour = []
+height = []
+ 
+hei = 100.0 # 起始高度
+tim = 10 # 次数
+ 
+for i in range(1, tim + 1):
+    # 从第二次开始，落地时的距离应该是反弹高度乘以2（弹到最高点再落下）
+    if i == 1:
+        tour.append(hei)
+    else:
+        tour.append(2*hei) 
+    hei /= 2
+    height.append(hei)
+ 
+print('总高度：tour = {0}'.format(sum(tour)))
+print('第10次反弹高度：height = {0}'.format(height[-1]))
+输出:
+
+总高度：tour = 299.609375
+第10次反弹高度：height = 0.09765625
+
+================= Python 练习实例19 ====================
+题目:一个数如果恰好等于它的因子之和，这个数就称为"完数"。例如6=1＋2＋3.编程找出1000以内的所有完数。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+from sys import stdout
+for j in range(2,1001):
+    k = []
+    n = -1
+    s = j
+    for i in range(1,j):
+            if j % i == 0:
+                n += 1
+                s -= i
+                k.append(i)
+    
+    if s == 0:
+        print j
+        for i in range(n):
+            stdout.write(str(k[i]))
+            stdout.write(' ')
+        print k[n]
+输出:
+
+6
+1 2 3
+28
+1 2 4 7 14
+496
+1 2 4 8 16 31 62 124 248
+
+================= Python 练习实例14 ====================
+题目:将一个正整数分解质因数。例如：输入90,打印出90=2*3*3*5。
+Demo:
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+def reduceNum(n):
+    print '{} = '.format(n),
+    if not isinstance(n, int) or n <= 0 :
+        print '请输入一个正确的数字 !'
+        exit(0)
+    elif n in [1] :
+        print '{}'.format(n)
+    while n not in [1] : # 循环保证递归
+        for index in xrange(2, n + 1) :
+            if n % index == 0:
+                n /= index # n 等于 n/index
+                if n == 1: 
+                    print index 
+                else : # index 一定是素数
+                    print '{} *'.format(index),
+                break
+reduceNum(90)
+reduceNum(100)
+输出:
+
+90 =  2 * 3 * 3 * 5
+100 =  2 * 2 * 5 * 5
+
