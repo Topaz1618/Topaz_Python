@@ -1,8 +1,8 @@
 ## 100个 List 操作练习： 
    http://www.runoob.com/python/python-100-examples.html
 ### 这个链接里的练习很多，就是要一个个点进去，非常麻烦，写了个重用性不是很高的爬虫
-    scrapy crawl list_exercise  #启动爬虫
-    Exercises.txt               #100个练习就写到这个文件里啦~ 
+      scrapy crawl list_exercise  #启动爬虫
+      Exercises.txt               #100个练习就写到这个文件里啦~ 
 ### 可以根据自己需求做些更改
     - 每个练习写到单独的文件里，piplines.py下取消注释
     def process_item(self, item, spider):
