@@ -1,4 +1,5 @@
-## 100个 List 操作练习： http://www.runoob.com/python/python-100-examples.html
+## 100个 List 操作练习： 
+   http://www.runoob.com/python/python-100-examples.html
 ### 这个链接里的练习很多，就是要一个个点进去，非常麻烦，写了个重用性不是很高的爬虫
     scrapy crawl list_exercise  #启动爬虫
     Exercises.txt               #100个练习就写到这个文件里啦~ 
