@@ -1,5 +1,5 @@
 ## 目录
-	/mylist 	#scrapy爬虫
+	mylist 		#scrapy爬虫
 	Exercises.txt	#列表操作练习
 
 ## 100个 List 操作练习： 
