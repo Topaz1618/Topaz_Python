@@ -1,5 +1,9 @@
+## 目录
+	/mylist 	#scrapy爬虫
+	Exercises.txt	#列表操作练习
+
 ## 100个 List 操作练习： 
-      这个链接里的练习很多，就是要一个个点进去，非常麻烦，写了个重用性不是很高的爬虫
+      这个链接里的练习很多，就是要一个个点进去，非常麻烦，写了个爬虫
       http://www.runoob.com/python/python-100-examples.html
       
 ## 启动
