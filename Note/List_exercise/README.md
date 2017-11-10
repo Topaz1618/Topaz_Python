@@ -10,18 +10,18 @@
       Exercises.txt               #100个练习就写到这个文件里啦~ 
       
 ## 按照自己需求做更改爬虫
-      - 每个练习写到单独的文件里（piplines.py下取消注释）
+	- 每个练习写到单独的文件里（piplines.py下取消注释）
       	def process_item(self, item, spider):
-	   '''
-	   file_name = '%s.txt' %item['name']
-	   with open(os.path.join('Exercises', file_name), mode='ab') as f:
-	   	title = bytes('题目:%s\n'%item['title'] ,encoding='utf-8')
-	   	content = bytes('Demo:\n%s\n输出:\n%s\n'%(item['demo'],item['output']),encoding='utf-8')
-	   	f.write(title)
-	   	f.write(content)
-	   	f.flush()
-	   '''
-      - 只爬题目不爬答案，体验小学生做练习题的感觉（注释下面这行）~~ 
+	   	'''
+	   	file_name = '%s.txt' %item['name']
+	   	with open(os.path.join('Exercises', file_name), mode='ab') as f:
+	   		title = bytes('题目:%s\n'%item['title'] ,encoding='utf-8')
+	   		content = bytes('Demo:\n%s\n输出:\n%s\n'%(item['demo'],item['output']),encoding='utf-8')
+	   		f.write(title)
+	   		f.write(content)
+	   		f.flush()
+	   	'''
+	- 只爬题目不爬答案，体验小学生做练习题的感觉（注释下面这行）~~ 
       	content = bytes('Demo:\n%s\n输出:\n%s\n'%(item['demo'],item['output']),encoding='utf-8')
 
 
