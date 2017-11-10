@@ -2,16 +2,16 @@
 	mylist 		#scrapy爬虫
 	Exercises.txt	#列表操作练习
 
-## 100个 List 操作练习： 
-      这个链接里的练习很多，就是要一个个点进去，非常麻烦，写了个爬虫
+## List 操作练习链接： 
+      这个链接有100个list操作练习，看的话需要挨个点进去，非常麻烦，写了个爬虫
       http://www.runoob.com/python/python-100-examples.html
       
-## 启动
+## 爬虫启动
       scrapy crawl list_exercise  #启动爬虫
       Exercises.txt               #100个练习就写到这个文件里啦~ 
       
-## 按照自己需求做更改
-      - 每个练习写到单独的文件里（piplines.py下取消注释）
+## 按照自己需求做更改爬虫
+      - 每个练习写到单独的文件里（piplines.py下取消注释）
       	def process_item(self, item, spider):
 	   '''
 	   file_name = '%s.txt' %item['name']
