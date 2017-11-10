@@ -2,7 +2,7 @@
 	mylist 		#scrapy爬虫
 	Exercises.txt	#列表练习文本
 
-## List 操作练习链接：
+## List 操作练习链接
 	http://www.runoob.com/python/python-100-examples.html	#链接里有100个list操作练习，看的话需要挨个点进去，非常麻烦，写了个爬虫
       
 ## 爬虫启动
