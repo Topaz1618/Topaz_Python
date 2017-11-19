@@ -71,4 +71,4 @@ Windows下select模型
 		5.此时就可以调用recv函数接收数据。否则，该套接字不可读      
 		
 基础知识看完了，是不是要来个例子结合理解下呢：		
-https://github.com/Topaz1618/Topaz_Python/blob/master/Note/socket/socket.py
+<a herf= "https://github.com/Topaz1618/Topaz_Python/blob/master/Note/socket/socket.py">点</a>
