@@ -69,3 +69,6 @@ Windows下select模型
 		3.当select函数返回时，应用程序判断该套接字是否仍然存在于readfds集合
 		4.如果该套接字存在与readfds集合，则表明该套接字可读
 		5.此时就可以调用recv函数接收数据。否则，该套接字不可读      
+		
+基础知识看完了，是不是要来个例子结合理解下呢：		
+https://github.com/Topaz1618/Topaz_Python/blob/master/Note/socket/socket.py
